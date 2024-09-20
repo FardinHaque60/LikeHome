@@ -3,5 +3,6 @@ from . import views
 from django.conf import settings
 
 urlpatterns = [
-    path('', views.test_view),
+    path('get/', views.get_view),
+    path('post/', views.post_view),
 ]
