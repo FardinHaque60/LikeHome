@@ -1,8 +1,9 @@
 from django.urls import path
-from . import views
+from .views import * # imports all the routes from views, see views/__init__.py
 from django.conf import settings
 
 urlpatterns = [
-    path('get/', views.get_view),
-    path('post/', views.post_view),
+    #TODO: test methods, delete later 
+    path('get/', get_view),
+    path('post/', post_view),
 ]
