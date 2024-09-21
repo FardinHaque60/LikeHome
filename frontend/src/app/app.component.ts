@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
+    //TODO: abstract HTTP requests into service layer
     this.http.get<ApiResponse[]>('http://localhost:8000/get/')
       .subscribe(response => {
         console.log(response);
