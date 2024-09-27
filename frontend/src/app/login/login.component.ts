@@ -6,23 +6,21 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 @Component({
     selector: 'app-login',
     standalone: true,
-    templateUrl: './register.component.html',
-    styleUrl: './register.component.scss',
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss',
     imports: [RouterLink, RouterOutlet, ReactiveFormsModule],
 })
 
-export class RegisterComponent {
+export class LoginComponent {
     
-    registerForm = new FormGroup({
-        email: new FormControl(''),
+    loginForm = new FormGroup({
         username: new FormControl(''),
         password: new FormControl(''),
     });
 
-    formSubmit() {
-        alert( this.registerForm.value.email +
-             ' '+this.registerForm.value.username + 
-            ' ' + this.registerForm.value.password);
-    }   
+    loginSubmit() {
+        alert(this.loginForm.value.username + 
+            ' ' + this.loginForm.value.password);
+    }
 
 }

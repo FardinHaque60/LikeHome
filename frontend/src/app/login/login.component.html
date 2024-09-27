@@ -6,15 +6,15 @@
 <div id="login-container">
     <div id="login-box">
         <h1 id="signtitle">LOGIN</h1>
-    <form id="login-details">
+    <form id="login-details" [formGroup]="loginForm" (ngSubmit)="loginSubmit()">
 
         <div class="form-label">
             <label class="form-header" for="Username">Username: </label>
-            <input type="text" class="login-text" name="Username" placeholder="Enter Your Username...">
+            <input type="text" class="login-text" name="Username" placeholder="Enter Your Username..." formControlName ="username">
         </div>
         <div class="form-label">
             <label class="form-header" for="Password">Password: </label>
-            <input type="text" class="login-text" name="Password" placeholder="Enter Your Password..." >
+            <input type="text" class="login-text" name="Password" placeholder="Enter Your Password..." formControlName ="password">
 
         </div>
 
