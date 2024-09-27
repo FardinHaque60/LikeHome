@@ -6,13 +6,14 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 @Component({
     selector: 'app-login',
     standalone: true,
-    templateUrl: './login.component.html',
-    styleUrl: './login.component.scss',
+    templateUrl: './register.component.html',
+    styleUrl: './register.component.scss',
     imports: [RouterLink, RouterOutlet],
 })
 
-export class LoginComponent {
+export class RegisterComponent {
     
+    emailaddress = '';
     username = '';
     passowrd = '';
 }

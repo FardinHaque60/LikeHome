@@ -2,9 +2,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-   // width: 100%;
-  //  height:100%;
-
 }
 
 body {
@@ -43,7 +40,6 @@ h1 {
 
     min-width: 600px;
 
-
     background-color: hsl(217, 84%, 59%);
     border-radius: 25px;
 }
@@ -51,16 +47,17 @@ h1 {
 #bannerStmnt{
 
     display:flex;
+    flex-direction: column;
     justify-content: flex-start;
 
     width: 100%;
     height: 50%;
 
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: bold;
     color: white;
 
-    padding: 15px 0px 0px 30px;
+    padding: 0px 0px 0px 30px;
 }
 
 #bannerBtn{
@@ -69,15 +66,15 @@ h1 {
     height: 50%;
 
     display: flex;
-
     align-items: flex-end;
+
     padding: 0px 0px 30px 30px;
 }
 
 .homeBtn{
     width: 100px;
-    height: 50px;
-    font-size: 1.25rem;
+    height: 40px;
+    font-size: 1.10rem;
     font-weight: bold;
     color:hsl(217, 84%, 59%);
     border: none;
@@ -92,4 +89,5 @@ h1 {
     color: hsl(61, 67%, 70%);
     transition: 0.5s;
 }
+
 

@@ -5,9 +5,13 @@
 <body>
 <div id="login-container">
     <div id="login-box">
-        <h1 id="signtitle">LOGIN</h1>
+        <h1 id="signtitle">SIGN UP</h1>
     <form id="login-details">
 
+        <div class="form-label">
+            <label class="form-header" for="Email">Email Address:</label> 
+            <input type="text" class="login-text" name="Email" placeholder="name@gmail.com...">
+        </div>
         <div class="form-label">
             <label class="form-header" for="Username">Username: </label>
             <input type="text" class="login-text" name="Username" placeholder="Enter Your Username...">
@@ -15,12 +19,11 @@
         <div class="form-label">
             <label class="form-header" for="Password">Password: </label>
             <input type="text" class="login-text" name="Password" placeholder="Enter Your Password..." >
-
         </div>
+        
+        <p id="register-link">Already have an account?<a routerLink="../login">Click here</a></p>
 
-        <p id="register-link">Don't have an account?<a routerLink="../register">Click here</a></p>
-
-        <input id="submitBtn" type="submit" value="SIGN IN">
+        <input id="submitBtn" type="submit" value="REGISTER">
 
     </form>
     </div>
