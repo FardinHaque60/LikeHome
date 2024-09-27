@@ -6,8 +6,27 @@
 <!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
 <!-- * * * * * * * to get started with your project! * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!doctype html>
+<html lang="en">
+<head>
+</head>
+<body>
+  <div id = "home-container">
+    <h1 id="nexusTitle">NEXUS</h1>
+    <div id="banner">
+      <div id="bannerStmnt">
+        <p>Sign Up, It's Free!</p>
+      </div>
+      <div id="bannerBtn">
+        <button class ="homeBtn" routerLink='../login'>SIGN UP</button>
+        <button class ="homeBtn" routerLink='../login'>LOGIN</button>
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</body>
+</html>
 
-<router-outlet></router-outlet>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
@@ -18,3 +37,4 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
 
+<router-outlet />
