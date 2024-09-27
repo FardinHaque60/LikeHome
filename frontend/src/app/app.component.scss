@@ -1,0 +1,25 @@
+#nexus-header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#nexus-title{
+    display: flex;
+    font-family: Arial;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+#nexus-logo{
+    width: 73px;
+    height: 50px;
+}
+    
+#nexus-title:hover{
+    background: linear-gradient(45deg, hsl(0, 0%, 1%),hsl(217, 84%, 59%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 1;
+    transition: 1.5s;
+}

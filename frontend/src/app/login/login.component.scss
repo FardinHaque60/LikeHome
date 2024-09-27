@@ -1,4 +1,6 @@
-body{
+html, body{
+    margin: 0;
+    padding: 0;
     height: 100vh;
 }
 
@@ -9,16 +11,8 @@ h1 {
     opacity: 0.9;
 }
 
-#nexusTitle{
-    justify-content:  flex-start;
-}
-
-#nexusTitle:hover{
-    background: linear-gradient(45deg, hsl(0, 0%, 0%),hsl(217, 84%, 59%));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    opacity: 1;
-    transition: 1.5s;
+#signtitle{
+    color: white;
 }
 
 #login-container{
@@ -38,9 +32,10 @@ h1 {
     height: 500px;
 
     width: 100%;
-    border: solid 2px;
     border-radius: 20px;
     padding: 20px;
+
+    background-color:hsl(217, 84%, 59%);
     
 }
 
@@ -56,16 +51,33 @@ h1 {
     width: 350px;
     height: 30px;
     margin: 20px 0px 20px 0px; 
-    padding: 5px;
+    padding: 10px;
+    border: none;
     border-radius: 10px;
-}
 
-.submit-container{
+    background-color: white;
+    font-weight: bold;
 }
 
 #submitBtn{
-    font-size: 1rem;
-    width: 200px;
-    height: 40px;
+    font-size: 1.10rem;
+    font-weight: bold;
+    color: hsl(217, 84%, 59%);
+    background-color: white; 
+    width: 150px;
+    height: 50px;
+    border: none;
     border-radius: 10px;
+    cursor: pointer;
+    margin: 10px 0px 0px 0px;
+}
+
+#submitBtn:hover{
+    background-color: black;
+    color: white;
+    transition: 0.5s;
+}
+
+.login-text:focus{
+    outline: none;
 }
