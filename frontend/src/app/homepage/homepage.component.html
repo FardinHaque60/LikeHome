@@ -1,5 +1,23 @@
 <!-- landing page for [TODO details of what this will have]-->
-
-<p> {{ testText }}</p>
-
-<p>homepage works!</p>
+<!doctype html>
+<html lang="en">
+<head>
+</head>
+<body>
+  <app-navbar />
+  <div id = "home-container">
+    <div id="banner">
+      <div id="banner-details">
+        <div id="bannerStmnt">
+          <p>Looking for Rooms {{ currentUser }}?</p>
+        </div>
+        <div id="bannerBtn">
+          <button class ="homeBtn" routerLink='/create-account'>SIGN UP</button>
+          <button class ="homeBtn" routerLink='/login'>LOGIN</button>
+        </div>
+      </div>
+      <img id="bannerImg" src="assets/placeholder_banner.png">
+    </div>
+  </div>
+</body>
+</html>

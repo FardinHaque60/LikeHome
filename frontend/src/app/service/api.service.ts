@@ -11,16 +11,16 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
 
-  private baseUrl: string = "http://localhost:8000/";
+  private baseUrl: string = "http://localhost:8000";
 
   constructor(private http: HttpClient) { }
 
   getBackendRequest(endpoint: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/${endpoint}`);
+    return this.http.get<any>(`${this.baseUrl}/${endpoint}/`);
   }
 
   postBackendRequest(endpoint: string, payload: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/${endpoint}`, payload);
+    return this.http.post<any>(`${this.baseUrl}/${endpoint}/`, payload);
   }
 
   getRegRequest(endpoint: string): Observable<any> {
