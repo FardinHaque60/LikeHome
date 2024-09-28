@@ -5,3 +5,5 @@ class TestDataSerializer(serializers.ModelSerializer):
     class Meta:
         model=TestModel
         fields=('name',)
+
+# TODO: add additional serializers

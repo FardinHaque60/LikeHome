@@ -2,15 +2,16 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .session import set_current_user
 # import Django default user model
 
-#TODO: accept username login info in request and return success/fail messages
-@api_view(['POST'])
-def login(request):
-    print(request.data.get('username'))
-    print(request.data.get('password'))
+current_user = None # init current user to no one on start up
 
-    # set_current_user()
+def set_current_user(user):
+    global current_user
+    current_user = user
+
+@api_view(['GET'])
+def current_user_info(request):
+    # TODO get fields of current user
 
     return Response({'status': 'OK'}, status=status.HTTP_200_OK)
