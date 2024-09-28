@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import { Component,Injectable, EventEmitter } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
     selector: 'app-login',
@@ -11,16 +11,23 @@ import { RouterLink, RouterOutlet } from '@angular/router';
     imports: [RouterLink, RouterOutlet, ReactiveFormsModule],
 })
 
+
+@Injectable({
+    providedIn: 'root'
+})
 export class LoginComponent {
-    
+
+    isLoggedIn: boolean = false;
+
+    constructor(private router: Router){}
+  
     loginForm = new FormGroup({
-        username: new FormControl(''),
-        password: new FormControl(''),
+        username: new FormControl('', Validators.required),
+        password: new FormControl('',Validators.required),
     });
 
     loginSubmit() {
-        alert(this.loginForm.value.username + 
-            ' ' + this.loginForm.value.password);
+        this.isLoggedIn = true;
+        this.router.navigate(['../home']);
     }
-
 }

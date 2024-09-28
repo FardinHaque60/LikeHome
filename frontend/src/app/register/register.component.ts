@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
-    selector: 'app-login',
+    selector: 'app-register',
     standalone: true,
     templateUrl: './register.component.html',
     styleUrl: './register.component.scss',
@@ -14,15 +14,14 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 export class RegisterComponent {
     
     registerForm = new FormGroup({
-        email: new FormControl(''),
-        username: new FormControl(''),
-        password: new FormControl(''),
+        email: new FormControl('', [Validators.required, Validators.email]),
+        username: new FormControl('',Validators.required),
+        password: new FormControl('', Validators.required),
     });
 
-    formSubmit() {
-        alert( this.registerForm.value.email +
-             ' '+this.registerForm.value.username + 
-            ' ' + this.registerForm.value.password);
-    }   
+    constructor(private router: Router){}
 
+    formSubmit() {       
+        this.router.navigate(['../home']);
+    }
 }

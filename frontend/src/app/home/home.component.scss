@@ -16,26 +16,15 @@ h1 {
     opacity: 0.9;
 }
 
-#nexusTitle{
-    justify-content:  flex-start;
-}
-
-#nexusTitle:hover{
-    background: linear-gradient(45deg, hsl(0, 0%, 0%),hsl(217, 84%, 59%));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    opacity: 1;
-    transition: 1.5s;
-}
-
+//HOLDS BANNER FOR REGISTER/LOGIN
 
 #banner{
 
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     position: relative;
     
-    width: 700px;
+    width: 1000px;
     height: 225px;
 
     min-width: 600px;
@@ -43,6 +32,8 @@ h1 {
     background-color: hsl(217, 84%, 59%);
     border-radius: 25px;
 }
+
+//STATEMENT ON BANNER
 
 #bannerStmnt{
 
@@ -60,6 +51,8 @@ h1 {
     padding: 0px 0px 0px 30px;
 }
 
+//HOLDS LOGIN AND REGISTER BUTTONS
+
 #bannerBtn{
 
     width: 100%;
@@ -70,6 +63,8 @@ h1 {
 
     padding: 0px 0px 30px 30px;
 }
+
+//LOGIN AND REGISTER BUTTONS
 
 .homeBtn{
     width: 100px;
@@ -88,6 +83,17 @@ h1 {
     background-color: black;
     color: hsl(61, 67%, 70%);
     transition: 0.5s;
+}
+
+#banner-details{
+    display: flex;
+    flex-direction: column;
+}
+
+#bannerImg{
+    width: 30%;
+    height: 100%;
+    padding-left: 274px;
 }
 
 

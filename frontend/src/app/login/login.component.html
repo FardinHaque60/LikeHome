@@ -15,13 +15,11 @@
         <div class="form-label">
             <label class="form-header" for="Password">Password: </label>
             <input type="text" class="login-text" name="Password" placeholder="Enter Your Password..." formControlName ="password">
-
         </div>
 
         <p id="register-link">Don't have an account?<a routerLink="../register">Click here</a></p>
 
-        <input id="submitBtn" type="submit" value="SIGN IN">
-
+        <input id="submitBtn" type="submit" value="SIGN IN" [disabled]="!loginForm.valid">
     </form>
     </div>
     <router-outlet></router-outlet>

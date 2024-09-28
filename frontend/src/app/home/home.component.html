@@ -13,16 +13,19 @@
 <body>
   <div id = "home-container">
     <div id="banner">
-      <div id="bannerStmnt">
-        <p>Looking for Rooms?</p>
+      <div id="banner-details">
+        <div id="bannerStmnt">
+          <p>Looking for Rooms?</p>
+        </div>
+        <div id="bannerBtn">
+          <button class ="homeBtn" routerLink='../register'>SIGN UP</button>
+          <button class ="homeBtn" routerLink='../login'>LOGIN</button>
+        </div>
       </div>
-      <div id="bannerBtn">
-        <button class ="homeBtn" routerLink='../register'>SIGN UP</button>
-        <button class ="homeBtn" routerLink='../login'>LOGIN</button>
-      </div>
+      <img id="bannerImg" src="assets/placeholder_banner.png">
     </div>
-    <router-outlet></router-outlet>
   </div>
+  <router-outlet></router-outlet>
 </body>
 </html>
 

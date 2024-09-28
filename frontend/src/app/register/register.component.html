@@ -23,7 +23,7 @@
         
         <p id="register-link">Already have an account?<a routerLink="../login">Click here</a></p>
 
-        <input id="submitBtn" type="submit" value="REGISTER">
+        <input id="submitBtn" type="submit" value="REGISTER" [disabled]="!registerForm.valid">
 
     </form>
     </div>
