@@ -15,11 +15,19 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  getRequest(endpoint: string): Observable<any> {
+  getBackendRequest(endpoint: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/${endpoint}`);
   }
 
-  postRequest(endpoint: string, payload: any): Observable<any> {
+  postBackendRequest(endpoint: string, payload: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/${endpoint}`, payload);
+  }
+
+  getRegRequest(endpoint: string): Observable<any> {
+    return this.http.get<any>(endpoint);
+  }
+
+  postRegRequest(endpoint: string, payload: any): Observable<any> {
+    return this.http.post<any>(endpoint, payload);
   }
 }
