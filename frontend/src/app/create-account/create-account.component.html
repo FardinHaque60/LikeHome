@@ -3,33 +3,74 @@
 <head>
 </head>
 <body>
+
+<!-- TODO REFACTOR UNDERWAY SOON, SEE login.component.html for styling -->
+
 <div id="login-container">
     <div id="login-box">
-        <h1 id="signtitle">SIGN UP</h1>
-    <form id="login-details" [formGroup]="registerForm" (ngSubmit)="formSubmit()">
+        <h1 id="signtitle">Create an Account</h1>
+        <form id="login-details" [formGroup]="registerForm" (ngSubmit)="formSubmit()">
 
-        <div class="form-label">
-            <label class="form-header" for="Email">Email Address*:</label> 
-            <input type="text" class="login-text" name="Email" placeholder="name@gmail.com..." formControlName ="email">
-        </div>
-        <div class="form-label">
-            <label class="form-header" for="Phone">Phone Number:</label> 
-            <input type="text" class="login-text" name="Phone" placeholder="XXX-XXX-XXXX" formControlName ="phone">
-        </div>
-        <div class="form-label">
-            <label class="form-header" for="Username">Username: </label>
-            <input type="text" class="login-text" name="Username" placeholder="Enter Your Username..." formControlName ="username">
-        </div>
-        <div class="form-label">
-            <label class="form-header" for="Password">Password: </label>
-            <input type="text" class="login-text" name="Password" placeholder="Enter Your Password..." formControlName ="password">
-        </div>
-        
-        <p id="register-link">Already have an account?<a routerLink="/login">Click here</a></p>
+            <div class="form-label">
+                <label class="form-header" for="Email">Email Address*:</label> 
+                <input type="text" class="login-text" name="Email" placeholder="name@gmail.com..." formControlName="email" NgModel required>
+            </div>
+            <div class="alert alert-danger" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+                <small *ngIf="registerForm.get('email')?.errors?.['required']">Email is required.</small>
+                <small *ngIf="registerForm.get('email')?.errors?.['email']">Email is invalid.</small>
+            </div>
 
-        <input id="submitBtn" type="submit" value="REGISTER">
+            <div class="form-label">
+                <label class="form-header" for="Username">First Name*: </label>
+                <input type="text" class="login-text" name="Username" placeholder="Enter Your First Name..." formControlName ="first_name">
+            </div>
+            <div class="alert alert-danger" *ngIf="registerForm.get('first_name')?.touched && registerForm.get('first_name')?.invalid">
+                <small *ngIf="registerForm.get('first_name')?.errors?.['required']">First Name is required.</small>
+            </div>
 
-    </form>
+            <div class="form-label">
+                <label class="form-header" for="Username">Last Name: </label>
+                <input type="text" class="login-text" name="Username" placeholder="Enter Your Last Name..." formControlName ="last_name">
+            </div>
+
+            <div class="form-label">
+                <label class="form-header" for="Username">Username*: </label>
+                <input type="text" class="login-text" name="Username" placeholder="Enter Your Username..." formControlName ="username">
+            </div>
+            <div class="alert alert-danger" *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.invalid">
+                <small *ngIf="registerForm.get('username')?.errors?.['required']">Username is required.</small>
+            </div>
+
+            <div class="form-label">
+                <label class="form-header" for="Password">Password*: </label>
+                <input type="password" class="login-text" name="Password" placeholder="Enter Your Password..." formControlName ="password">
+            </div>
+            <div class="alert alert-danger" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+                <small *ngIf="registerForm.get('password')?.errors?.['required']">Password is required.</small>
+            </div>
+
+            <div class="form-label">
+                <label class="form-header" for="Password">Confirm Password*: </label>
+                <input type="password" class="login-text" name="Password" placeholder="Confirm Your Password..." formControlName ="passwordConf">
+            </div>
+            <!-- error for passwords not matching -->
+            <div class="alert alert-danger" *ngIf="(registerForm.get('[passwordConf]')?.touched || registerForm.get('passwordConf')?.dirty) && registerForm.errors?.['mismatch']">
+                <small>Passwords do not match.</small>
+            </div>
+
+            <div class="form-label">
+                <label class="form-header" for="Phone">Phone Number: +1</label> 
+                <input type="tel" class="login-text" name="Phone" placeholder="XXX-XXX-XXXX" formControlName ="phone">
+            </div>
+            
+            <div class="alert alert-danger" *ngIf="emailTaken">
+                <small>Email is taken.</small>
+            </div>
+            
+            <p id="register-link">Already have an account?<a routerLink="/login">Click here</a></p>
+
+            <input id="submitBtn" type="submit" value="REGISTER">
+        </form>
     </div>
 </div>
 </body>
