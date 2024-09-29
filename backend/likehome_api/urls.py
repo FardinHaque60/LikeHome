@@ -5,4 +5,5 @@ from django.conf import settings
 urlpatterns = [
     path('login/', login),
     path('create-account/', create_account),
+    path('get-user-info/', current_user_info),
 ]
