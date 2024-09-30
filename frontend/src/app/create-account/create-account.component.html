@@ -3,75 +3,93 @@
 <head>
 </head>
 <body>
+<section class="vh-100">
+    <div class="container-fluid">
+        <div class="row">
+        <div class="col-sm-6 text-black">
+            <div class="px-5 ms-xl-4 logo-text-box">
+                <img class="nexus-logo fas fa-crow fa-2x me-3 mt-xl-4" src="assets/images/nexus_logo.png"  alt="NEXUS LOGO">
+                <span class="h1 fw-bold mb-0">LikeHome</span> <!-- TODO update LikeHome font or replace with image potentially -->
+            </div>
+            <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-0 pt-xl-0 mt-xl-n5">
+                <form style="width: 85%;" [formGroup]="registerForm" (ngSubmit)="registerSubmit()">
+                    <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Create Account</h3>
+                    <div class="first-last-box d-flex justify-content-between">
+                        <!-- First Name field -->
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <input type="text" class="form-control form-control-lg" formControlName="first_name"/>
+                            <label class="form-label">First Name*</label>
+                            <div class="alert alert-danger" *ngIf="registerForm.get('first_name')?.touched && registerForm.get('first_name')?.invalid">
+                                <span *ngIf="registerForm.get('first_name')?.errors?.['required']">First Name is required.</span>
+                            </div>
+                        </div>
+                        <!-- Last Name field -->
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <input type="text" class="form-control form-control-lg" formControlName="last_name"/>
+                            <label class="form-label">Last Name</label>
+                        </div>
+                    </div>
+                    <div class="first-last-box d-flex justify-content-between">
+                        <!-- email field -->
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <input type="text" class="form-control form-control-lg" formControlName="email"/>
+                            <label class="form-label">Email*</label>
+                            <div class="alert alert-danger" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+                                <span *ngIf="registerForm.get('email')?.errors?.['required']">Email is required.</span>
+                                <span *ngIf="registerForm.get('email')?.errors?.['email']">Email is invalid.</span>
+                            </div>
+                        </div>
+                        <!-- phone number field -->
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <input type="text" class="form-control form-control-lg" formControlName="phone_number"/>
+                            <label class="form-label">Phone Number</label>
+                        </div>
+                    </div>
+                    <!-- username field -->
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input type="text" class="form-control form-control-lg" formControlName="username"/>
+                        <label class="form-label">Username*</label>
+                        <div class="alert alert-danger" *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.invalid">
+                            <span *ngIf="registerForm.get('username')?.errors?.['required']">Username is required.</span>
+                        </div>
+                    </div>
+                    <!-- password field -->
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input type="password" class="form-control form-control-lg" formControlName="password"/>
+                        <label class="form-label">Password*</label>
+                        <div class="alert alert-danger" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+                            <span *ngIf="registerForm.get('password')?.errors?.['required']">Password is required.</span>
+                        </div>
+                    </div>
+                    <!-- confirm password -->
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input type="password" class="form-control form-control-lg" formControlName="passwordConf"/>
+                        <label class="form-label">Confirm Password*</label>
+                        <div class="alert alert-danger" *ngIf="(registerForm.get('[passwordConf]')?.touched || registerForm.get('passwordConf')?.dirty) && registerForm.errors?.['mismatch']">
+                            <span>Passwords do not match.</span>
+                        </div>
+                    </div>
+                    <!-- Create Account button -->
+                    <div class="pt-1 mb-4">
+                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-lg btn-block" type="submit">Create</button>
+                    </div>
+                    <div class="alert alert-danger" *ngIf="emailTaken">
+                        <small>Email is taken.</small>
+                    </div>
 
-<!-- TODO REFACTOR UNDERWAY SOON, SEE login.component.html for styling -->
-
-<div id="login-container">
-    <div id="login-box">
-        <h1 id="signtitle">Create an Account</h1>
-        <form id="login-details" [formGroup]="registerForm" (ngSubmit)="formSubmit()">
-
-            <div class="form-label">
-                <label class="form-header" for="Email">Email Address*:</label> 
-                <input type="text" class="login-text" name="Email" placeholder="name@gmail.com..." formControlName="email" NgModel required>
+                    <!-- create account redirect button -->
+                    <!-- TODO forgot password functionality <p class="small mb-5 pb-lg-2"><a class="text-muted" href="#!">Forgot password?</a></p> -->
+                    <p>Already have an account? <a routerLink="/login" class="link-info">Login here</a></p>
+                </form>
             </div>
-            <div class="alert alert-danger" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
-                <small *ngIf="registerForm.get('email')?.errors?.['required']">Email is required.</small>
-                <small *ngIf="registerForm.get('email')?.errors?.['email']">Email is invalid.</small>
-            </div>
-
-            <div class="form-label">
-                <label class="form-header" for="Username">First Name*: </label>
-                <input type="text" class="login-text" name="Username" placeholder="Enter Your First Name..." formControlName ="first_name">
-            </div>
-            <div class="alert alert-danger" *ngIf="registerForm.get('first_name')?.touched && registerForm.get('first_name')?.invalid">
-                <small *ngIf="registerForm.get('first_name')?.errors?.['required']">First Name is required.</small>
-            </div>
-
-            <div class="form-label">
-                <label class="form-header" for="Username">Last Name: </label>
-                <input type="text" class="login-text" name="Username" placeholder="Enter Your Last Name..." formControlName ="last_name">
-            </div>
-
-            <div class="form-label">
-                <label class="form-header" for="Username">Username*: </label>
-                <input type="text" class="login-text" name="Username" placeholder="Enter Your Username..." formControlName ="username">
-            </div>
-            <div class="alert alert-danger" *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.invalid">
-                <small *ngIf="registerForm.get('username')?.errors?.['required']">Username is required.</small>
-            </div>
-
-            <div class="form-label">
-                <label class="form-header" for="Password">Password*: </label>
-                <input type="password" class="login-text" name="Password" placeholder="Enter Your Password..." formControlName ="password">
-            </div>
-            <div class="alert alert-danger" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
-                <small *ngIf="registerForm.get('password')?.errors?.['required']">Password is required.</small>
-            </div>
-
-            <div class="form-label">
-                <label class="form-header" for="Password">Confirm Password*: </label>
-                <input type="password" class="login-text" name="Password" placeholder="Confirm Your Password..." formControlName ="passwordConf">
-            </div>
-            <!-- error for passwords not matching -->
-            <div class="alert alert-danger" *ngIf="(registerForm.get('[passwordConf]')?.touched || registerForm.get('passwordConf')?.dirty) && registerForm.errors?.['mismatch']">
-                <small>Passwords do not match.</small>
-            </div>
-
-            <div class="form-label">
-                <label class="form-header" for="Phone">Phone Number: +1</label> 
-                <input type="tel" class="login-text" name="Phone" placeholder="XXX-XXX-XXXX" formControlName ="phone">
-            </div>
-            
-            <div class="alert alert-danger" *ngIf="emailTaken">
-                <small>Email is taken.</small>
-            </div>
-            
-            <p id="register-link">Already have an account?<a routerLink="/login">Click here</a></p>
-
-            <input id="submitBtn" type="submit" value="REGISTER">
-        </form>
+        </div>
+        <div class="col-sm-6 px-0 d-none d-sm-block">
+            <img src="https://images.unsplash.com/photo-1561501900-3701fa6a0864?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bHV4dXJ5JTIwaG90ZWx8ZW58MHx8MHx8fDA%3D"
+            alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
+        </div>
+        </div>
     </div>
-</div>
+</section>
+
 </body>
 </html>

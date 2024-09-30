@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { ApiService } from '../service/api.service';
 import { CommonModule } from '@angular/common';
 
@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 export class CreateAccountComponent {
   emailTaken: boolean = false;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private router: Router) {}
 
   passwordMatcher: ValidatorFn = (
     form: AbstractControl,
@@ -35,7 +35,7 @@ export class CreateAccountComponent {
     phone_number: new FormControl(''),
   }, { validators: this.passwordMatcher });
 
-  formSubmit(): void {
+  registerSubmit(): void {
     console.log(this.registerForm.value);
     if (this.registerForm.valid) {
       this.apiService.postBackendRequest('create-account', this.registerForm.value)
@@ -43,6 +43,8 @@ export class CreateAccountComponent {
           next: (response) => {
             console.log(response);
             console.log("Registration Success");
+            // TODO: update to go to confirmation code page
+            this.router.navigate(['/login']);
           },
           error: (error) => {
             console.log(error);
