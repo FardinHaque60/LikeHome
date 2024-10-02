@@ -11,7 +11,7 @@ Reference below for the simplified instructions:
 
 ### Configuring the Backend
 
-2.  `cd LikeHome` and create a venv with `python -m venv venv`
+2.  `cd LikeHome` and create a venv with `python3 -m venv venv`
 3.  Activate the venv with `source venv/bin/activate` (deactivate with `deactivate`)
 4.  Install the python dependencies with `pip install -r requirements.txt`
 5.  `cd backend` then `python manage.py makemigrations likehome_api && python manage.py migrate` to initialize the DB
