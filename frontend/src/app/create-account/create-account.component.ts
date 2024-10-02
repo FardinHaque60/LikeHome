@@ -44,14 +44,18 @@ export class CreateAccountComponent {
             console.log(response);
             console.log("Registration Success");
             // TODO: update to go to confirmation code page
-            this.router.navigate(['/login']);
+            this.router.navigate(['create-account/verification']);
           },
           error: (error) => {
             console.log(error);
-            if (error.email) {
-              this.emailTaken = false;
+            if (error.error.invalidEmail) {
+              this.emailTaken = true;
             }
             console.log("Registration Error");
+
+            setTimeout(() => { 
+              this.emailTaken = false;
+            }, 5000);
           }
       })
     }

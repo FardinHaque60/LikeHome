@@ -6,11 +6,14 @@
 <section class="vh-100">
     <div class="container-fluid">
         <div class="row">
-        <div class="col-sm-6 text-black">
+        <!-- left panel for form -->
+        <div class="col-sm-6 text-black" style="max-height: 100vh; overflow-y: auto;">
+            <!-- top bar for logo and text -->
             <div class="px-5 ms-xl-4 logo-text-box">
                 <img class="nexus-logo fas fa-crow fa-2x me-3 mt-xl-4" src="assets/images/nexus_logo.png"  alt="NEXUS LOGO">
                 <span class="h1 fw-bold mb-0">LikeHome</span> <!-- TODO update LikeHome font or replace with image potentially -->
             </div>
+            <!-- login form -->
             <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                 <form style="width: 23rem;" [formGroup]="loginForm" (ngSubmit)="loginSubmit()">
                     <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Log in</h3>
@@ -44,6 +47,7 @@
                 </form>
             </div>
         </div>
+        <!-- right panel for image -->
         <div class="col-sm-6 px-0 d-none d-sm-block">
             <img src="https://assets.hyatt.com/content/dam/hyatt/hyattdam/images/2014/09/21/1523/NCEHR-P167-Facade.jpg/NCEHR-P167-Facade.4x3.jpg"
             alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
