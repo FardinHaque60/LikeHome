@@ -17,3 +17,7 @@
     height: 100%; /* Ensure the image covers both width and height */
     object-fit: cover; /* Crop the image to fit inside the circle */
 }
+
+.inherit-bg-color {
+    background-color: inherit !important;
+}

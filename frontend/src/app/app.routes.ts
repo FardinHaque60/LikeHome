@@ -6,10 +6,17 @@ import { VerificationComponent } from './create-account/verification/verificatio
 import { AboutUsComponent } from './about-us/about-us.component';
 
 export const routes: Routes = [
-    { path: '', component: HomepageComponent},
-    { path: 'about-us', component: AboutUsComponent}, 
+    { 
+        path: '', 
+        component: HomepageComponent,
+        children: [
+            {
+                path: 'about-us',
+                component: AboutUsComponent
+            },
+        ]
+    },
     { path: 'login', component: LoginComponent }, // TODO: add protection, if user signed in then go to homepage
     { path: 'create-account', component: CreateAccountComponent}, // TODO: add protection, if user signed in then go to homepage
     { path: 'create-account/verification', component: VerificationComponent}, // TODO: add protection to this route, only accessed after creating account
-    { path: 'create-account/verification', component: VerificationComponent}, 
 ];
