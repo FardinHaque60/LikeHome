@@ -5,3 +5,15 @@
 .logo-img{
     background-image: url('../../../public/assets/images/nexus_logo.png');
 }
+
+.my-icon {
+    width: 9rem !important; /* Adjust this to change the circle size */
+    height: 9rem !important;
+    border-radius: 50%; /* Creates the circular shape */
+}
+
+.my-icon img {
+    width: 100%; /* Make the image fill the entire circle */
+    height: 100%; /* Ensure the image covers both width and height */
+    object-fit: cover; /* Crop the image to fit inside the circle */
+}
