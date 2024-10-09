@@ -4,17 +4,23 @@ import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/route
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FooterComponent } from '../shared/footer/footer.component';
 import { CommonModule } from '@angular/common';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-homepage',
   standalone: true,
-  imports: [RouterLink, NavbarComponent, FooterComponent, RouterOutlet, CommonModule],
+  imports: [RouterLink, NavbarComponent, FooterComponent, RouterOutlet, CommonModule, ReactiveFormsModule],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.scss'
 })
 export class HomepageComponent implements OnInit {
-  currentUser: string = '[USER]';
   hasChildren: boolean = false;
+  currentUser = {
+    'first_name': '',
+    'last_name': '',
+    'email': '',
+    'username': '',
+  };
 
   constructor(private apiService: ApiService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.router.events.subscribe(() => {
@@ -22,21 +28,46 @@ export class HomepageComponent implements OnInit {
     });
   }
 
+  hotelSearch = new FormGroup({
+    location: new FormControl('', Validators.required),
+    check_in: new FormControl('', Validators.required),
+    check_out: new FormControl('', Validators.required),
+    rooms: new FormControl('', Validators.required),
+    adults: new FormControl('', Validators.required),
+  });
+
+  hotelSearchSubmit(): void {
+    if (this.hotelSearch.valid) {
+      console.log('Hotel search form submitted:', this.hotelSearch.value);
+      this.router.navigate(['/search-results'], { queryParams: this.hotelSearch.value });
+      this.apiService.postBackendRequest('search', this.hotelSearch.value)
+        .subscribe({
+          next: (response) => {
+            console.log("Search Success");
+            console.log(response);
+          },
+          error: (error) => {
+            console.log("Search Error");
+            console.log(error);
+          }
+        })
+    }
+    else {
+      this.hotelSearch.markAllAsTouched();
+      console.log("Field Error");
+    }
+  }
+
   ngOnInit(): void {
-    /* TODO: replace with request to get homepage data: hotels, currently signed in user, etc.
-    this.apiService.getBackendRequest('get-feed')
-      .subscribe(response => {
-        console.log(response);
-      })
-    this.apiService.getBackendRequest('')
+    this.apiService.getBackendRequest('get-session')
       .subscribe({
         next: (response) => {
           console.log(response);
-          this.currentUser = response.name;
+          this.currentUser = response;
         },
-        error: (error) => {
-        } 
-      })
-    */
+        error: (error) => { 
+          console.log(error);
+        }
+      });
   }
 }
