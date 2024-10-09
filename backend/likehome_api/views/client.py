@@ -7,24 +7,31 @@ import json
 
 load_dotenv()
 
+# Your API credentials
+api_key = os.getenv("HOTELBEDS_API_KEY")
+secret = os.getenv("HOTELBEDS_SECRET")
+
+# Generate the signature using the API key, secret, and current time in seconds
+timestamp = str(int(time.time()))
+signature_raw = api_key + secret + timestamp
+signature = hashlib.sha256(signature_raw.encode('utf-8')).hexdigest()
+
+# Headers with API key and signature
+headers = {
+    "Accept": "application/json",
+    "Api-key": api_key,
+    "X-Signature": signature,
+    "Cache-Control": "no-cache",
+}
+
+# examples can be found on https://www.postman.com/simplenight-postman/hotelbeds/documentation/jbc85tu/apitude 
 def get_hotels():
-    # Your API credentials
-    api_key = os.getenv("HOTELBEDS_API_KEY")
-    secret = os.getenv("HOTELBEDS_SECRET")
+    # call either hotel details or availability
+    # get_hotel_details()
+    get_hotel_availability()
 
-    # Generate the signature using the API key, secret, and current time in seconds
-    timestamp = str(int(time.time()))
-    signature_raw = api_key + secret + timestamp
-    signature = hashlib.sha256(signature_raw.encode('utf-8')).hexdigest()
-
-    # Headers with API key and signature
-    headers = {
-        "Accept": "application/json",
-        "Api-key": api_key,
-        "X-Signature": signature,
-        "Cache-Control": "no-cache",
-    }
-
+# See https://developer.hotelbeds.com/documentation/hotels/content-api/api-reference/ for api details
+def get_hotel_details():
     # API endpoint and parameters
     url = "https://api.test.hotelbeds.com/hotel-content-api/1.0/hotels"
     params = {
@@ -36,7 +43,6 @@ def get_hotels():
     }
 
     # Make the GET request
-    '''
     response = requests.get(url, headers=headers, params=params)
     # Output the result (print or save to a file)
     if response.status_code == 200:
@@ -44,8 +50,10 @@ def get_hotels():
         print(response.json())
     else:
         print(f"Error: {response.status_code} - {response.text}")
-    '''
 
+# See https://developer.hotelbeds.com/documentation/hotels/booking-api/api-reference/ for api details
+# 
+def get_hotel_availability():
     # Make the POST request for hotel availability
     avail_url = "https://api.test.hotelbeds.com/hotel-api/1.0/hotels"
     params1 = {
