@@ -48,6 +48,9 @@ def get_hotel_details():
     if response.status_code == 200:
         # Print the JSON response to console
         print(response.json())
+        # see respond in json file for easier reading
+        with open("hotels.json", "w") as file:
+            json.dump(response.json(), file, indent=4)
     else:
         print(f"Error: {response.status_code} - {response.text}")
 
@@ -85,7 +88,7 @@ def get_hotel_availability():
         # Print the JSON response to console
         print(response1.json())
 
-        # Save the JSON response to a file
+        # Save the JSON response to a file to see the response better
         with open("hotels.json", "w") as file:
             json.dump(response1.json(), file, indent=4)
     else:
