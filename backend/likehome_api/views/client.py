@@ -27,8 +27,8 @@ headers = {
 # examples can be found on https://www.postman.com/simplenight-postman/hotelbeds/documentation/jbc85tu/apitude 
 def get_hotels():
     # call either hotel details or availability
-    # get_hotel_details()
-    get_hotel_availability()
+    get_hotel_details()
+    # get_hotel_availability()
 
 # See https://developer.hotelbeds.com/documentation/hotels/content-api/api-reference/ for api details
 def get_hotel_details():

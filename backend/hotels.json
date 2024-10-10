@@ -1,0 +1,31 @@
+{
+    "from": 1,
+    "to": 1,
+    "total": 986,
+    "auditData": {
+        "processTime": "13",
+        "timestamp": "2024-10-09 23:44:06.600",
+        "requestHost": "10.214.135.171",
+        "serverId": "hotel-content-api-5fb868bc9d-6mh6c",
+        "environment": "[int, awseucentral1, k8s, secret, hotel-content-api-5fb868bc9d-6mh6c]",
+        "release": ""
+    },
+    "hotels": [
+        {
+            "code": 22,
+            "name": {
+                "content": "Vista Club"
+            },
+            "description": {
+                "content": "Nestled in Santa Ponsa on the beautiful island of Mallorca, this wonderful hotel is a perfect place for a total relaxation. Guests will find themselves within ease of access to Palma de Mallorca, located less than 23 kilometres away from this charming property. In proximity of the establishment guests will find bus stop line 104 connecting Santa Ponsa with Palma. A beautiful sandy beach is only 400 metres away and the centre of Santa Ponsa is within 300 metres away from this lovely establishment. Provided its convenient location and the facilities it offers, the complex is perfect for a family vacation or a group holiday. The hotel offers tastefully decorated apartments and studios, featuring comfortable furnishings and a kitchenette. There are also 2 swimming pools and 2 bars. In the morning guests may enjoy a delicious breakfast for a fantastic start to the day. "
+            },
+            "address": {
+                "content": "Nu\u00f1o Sanz, 20",
+                "street": "Nu\u00f1o Sanz",
+                "number": "20"
+            },
+            "email": "apartamentosvistaclub@apartamentosvistaclub.es",
+            "web": "www.apartamentosvistaclub.com"
+        }
+    ]
+}
