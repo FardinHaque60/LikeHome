@@ -16,7 +16,14 @@ def get_current_user(user):
     return current_user
 
 @api_view(['GET'])
-def current_user_info(request):
-    # TODO get fields of current user
+def get_session(request):
+    global current_user
+    if current_user is None:
+        return Response({'status': 'NO_USER'}, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response({'status': 'OK'}, status=status.HTTP_200_OK)
+    return Response({
+        'username': current_user.username, 
+        'email': current_user.email, 
+        'first_name': current_user.first_name, 
+        'last_name': current_user.last_name
+    }, status=status.HTTP_200_OK)

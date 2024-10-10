@@ -7,5 +7,10 @@ urlpatterns = [
     path('login/', login),
     path('create-account/', create_account),
     path('verify-code/', verify_code),
-    path('get-user-info/', current_user_info),
+
+    # session related paths
+    path('get-session/', get_session),
+
+    # search related paths
+    path('search/', search),
 ]

@@ -6,6 +6,7 @@ from django.conf import settings
 from ..models import Profile
 from rest_framework import status
 import secrets
+from .session import set_current_user
 
 user_in_progress = None
 profile_in_progress = None
@@ -70,6 +71,7 @@ def verify_code(request):
         if (code == profile_in_progress.temp_code):
             user_in_progress.save()
             profile_in_progress.save()
+            set_current_user(user_in_progress)
             return Response({'status': 'OK'}, status=status.HTTP_201_CREATED)
 
     return Response({'status': 'INVALID'}, status=status.HTTP_400_BAD_REQUEST)

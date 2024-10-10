@@ -22,7 +22,8 @@
 				<div class="row no-gutters slider-text align-items-center justify-content-center">
 				<div class="col-md-12 text-center">
 				<div class="text mb-5 pb-3">
-					<h1 class="mb-3">Welcome To LikeHome</h1>
+					<h1 *ngIf="currentUser['first_name']" class="mb-3">Welcome To LikeHome, {{ currentUser['first_name'] }}</h1>
+					<h1 *ngIf="!currentUser['first_name']" class="mb-3">Welcome To LikeHome</h1>
 					<h2>Hotels &amp; Resorts</h2>
 				</div>
 				</div>
@@ -36,13 +37,21 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12">
-						<form action="#" class="booking-form">
+					<form [formGroup]="hotelSearch" (ngSubmit)="hotelSearchSubmit()" class="booking-form">
 						<div class="row">
 							<div class="col-md-3 d-flex">
 								<div class="form-group p-4 align-self-stretch d-flex align-items-end">
 									<div class="wrap">
+											<label for="#">Location</label>
+											<input type="text" class="form-control checkin_date" placeholder="Location" formControlName="location">
+										</div>
+									</div>
+							</div>
+							<div class="col-md-3 d-flex">
+								<div class="form-group p-4 align-self-stretch d-flex align-items-end">
+									<div class="wrap">
 											<label for="#">Check-in Date</label>
-											<input type="text" class="form-control checkin_date" placeholder="Check-in date">
+											<input type="text" class="form-control checkin_date" placeholder="Check-in date" formControlName="check_in">
 										</div>
 									</div>
 							</div>
@@ -50,7 +59,7 @@
 								<div class="form-group p-4 align-self-stretch d-flex align-items-end">
 									<div class="wrap">
 											<label for="#">Check-out Date</label>
-											<input type="text" class="form-control checkout_date" placeholder="Check-out date">
+											<input type="text" class="form-control checkout_date" placeholder="Check-out date" formControlName="check_out">
 									</div>
 									</div>
 							</div>
@@ -61,34 +70,20 @@
 										<div class="form-field">
 											<div class="select-wrap">
 									<div class="icon"><span class="ion-ios-arrow-down"></span></div>
-									<select name="" id="" class="form-control">
-										<option value="">Suite</option>
-										<option value="">Family Room</option>
-										<option value="">Deluxe Room</option>
-										<option value="">Classic Room</option>
-										<option value="">Superior Room</option>
-										<option value="">Luxury Room</option>
-									</select>
+									<input type="number" class="form-control" placeholder="#" formControlName="rooms">
 									</div>
 									</div>
-								</div>
-							</div>
-							</div>
+								</div> 
+							</div> 
+							</div> 
 							<div class="col-md d-flex">
 								<div class="form-group p-4 align-self-stretch d-flex align-items-end">
 									<div class="wrap">
-										<label for="#">Customer</label>
+										<label for="#">Adults</label>
 										<div class="form-field">
 											<div class="select-wrap">
 									<div class="icon"><span class="ion-ios-arrow-down"></span></div>
-									<select name="" id="" class="form-control">
-										<option value="">1 Adult</option>
-										<option value="">2 Adult</option>
-										<option value="">3 Adult</option>
-										<option value="">4 Adult</option>
-										<option value="">5 Adult</option>
-										<option value="">6 Adult</option>
-									</select>
+									<input type="number" class="form-control" placeholder="#" formControlName="adults">
 									</div>
 									</div>
 								</div>

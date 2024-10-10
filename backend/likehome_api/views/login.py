@@ -13,6 +13,7 @@ def login(request):
     user = authenticate(username=username, password=password)
 
     if user is not None:
+        set_current_user(user)
         return Response({'status': 'OK'}, status=status.HTTP_200_OK)
 
     return Response({'status': 'INVALID'}, status=status.HTTP_400_BAD_REQUEST)

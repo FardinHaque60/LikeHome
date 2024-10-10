@@ -4,6 +4,7 @@ import { CreateAccountComponent } from './create-account/create-account.componen
 import { HomepageComponent } from './homepage/homepage.component';
 import { VerificationComponent } from './create-account/verification/verification.component';
 import { AboutUsComponent } from './about-us/about-us.component';
+import { SearchResultsComponent } from './search-results/search-results.component';
 
 export const routes: Routes = [
     { 
@@ -14,6 +15,10 @@ export const routes: Routes = [
                 path: 'about-us',
                 component: AboutUsComponent
             },
+            {
+                path: 'search-results',
+                component: SearchResultsComponent
+            }
         ]
     },
     { path: 'login', component: LoginComponent }, // TODO: add protection, if user signed in then go to homepage
