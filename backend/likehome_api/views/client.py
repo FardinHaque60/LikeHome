@@ -4,7 +4,7 @@ import requests
 import os
 from dotenv import load_dotenv
 import json
-
+from .geoClient import get_location_coord
 load_dotenv()
 
 # Your API credentials
@@ -28,7 +28,9 @@ headers = {
 def get_hotels():
     # call either hotel details or availability
     # get_hotel_details()
-    get_hotel_availability()
+     get_hotel_availability()
+    # get_location_coord()
+    
 
 # See https://developer.hotelbeds.com/documentation/hotels/content-api/api-reference/ for api details
 def get_hotel_details():
@@ -48,8 +50,9 @@ def get_hotel_details():
     if response.status_code == 200:
         # Print the JSON response to console
         print(response.json())
-        # see respond in json file for easier reading
-        with open("hotels.json", "w") as file:
+
+        # Save the JSON response to a file
+        with open("playground/hotels.json", "w") as file:
             json.dump(response.json(), file, indent=4)
     else:
         print(f"Error: {response.status_code} - {response.text}")
@@ -58,6 +61,8 @@ def get_hotel_details():
 # 
 def get_hotel_availability():
     # Make the POST request for hotel availability
+    # also gets coordinates of location. Rn it is hardocded with germany
+    coordArray = get_location_coord()
     avail_url = "https://api.test.hotelbeds.com/hotel-api/1.0/hotels"
     params1 = {
         "stay": {
@@ -72,8 +77,8 @@ def get_hotel_availability():
             }
         ],
         "geolocation": {
-            "latitude": 37.4323,
-            "longitude": -121.8975112,
+            "latitude": coordArray[0],
+            "longitude": coordArray[1],
             "radius": 20,
             "unit": "km"
         } ,
@@ -88,8 +93,8 @@ def get_hotel_availability():
         # Print the JSON response to console
         print(response1.json())
 
-        # Save the JSON response to a file to see the response better
-        with open("hotels.json", "w") as file:
+        # Save the JSON response to a file
+        with open("playground/hotels.json", "w") as file:
             json.dump(response1.json(), file, indent=4)
     else:
         print(f"Error: {response1.status_code} - {response1.text}")

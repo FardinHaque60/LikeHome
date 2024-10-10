@@ -13,4 +13,5 @@ urlpatterns = [
 
     # search related paths
     path('search/', search),
+    
 ]
