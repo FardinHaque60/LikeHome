@@ -24,7 +24,6 @@ headers = {
     "Cache-Control": "no-cache",
 }
 
->>>>>>> 7620c81 (Added geoApi)
 def get_location_coord():
     url = "https://api.opencagedata.com/geocode/v1/json?"
     params = {
