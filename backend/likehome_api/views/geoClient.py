@@ -1,27 +1,15 @@
-<<<<<<< HEAD
 import os
 from dotenv import load_dotenv
-=======
-import hashlib
-import time
-import requests
-import os
-from dotenv import load_dotenv
-import json
->>>>>>> 7620c81 (Added geoApi)
 
 load_dotenv()
 
 # Your API credentials
 geo_api_key = os.getenv("GEOCODE_API_KEY")
 
-<<<<<<< HEAD
 # @FardinHaque60: delete everything below and look at the documentation: https://opencagedata.com/tutorials/geocode-in-python
 # its way easier than the hotelbeds api so i wouldnt reference client.py when implementing this
 # for the docs above it looks like u install pip install opencage (no need to pip3 since we are using virtual env)
 # follow the steps labelled "Lookup coordinates from address (forward geocoding)"
-=======
->>>>>>> 7620c81 (Added geoApi)
 
 # Generate the signature using the API key, secret, and current time in seconds
 timestamp = str(int(time.time()))
@@ -35,9 +23,6 @@ headers = {
     "X-Signature": signature,
     "Cache-Control": "no-cache",
 }
-
-<<<<<<< HEAD
-=======
 
 >>>>>>> 7620c81 (Added geoApi)
 def get_location_coord():
