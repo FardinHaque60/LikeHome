@@ -27,13 +27,8 @@ headers = {
 # examples can be found on https://www.postman.com/simplenight-postman/hotelbeds/documentation/jbc85tu/apitude 
 def get_hotels():
     # call either hotel details or availability
-<<<<<<< HEAD
-    get_hotel_details()
-    # get_hotel_availability()
-=======
     # get_hotel_details()
     get_hotel_availability()
->>>>>>> master
 
 # See https://developer.hotelbeds.com/documentation/hotels/content-api/api-reference/ for api details
 def get_hotel_details():
@@ -53,12 +48,6 @@ def get_hotel_details():
     if response.status_code == 200:
         # Print the JSON response to console
         print(response.json())
-<<<<<<< HEAD
-        # see respond in json file for easier reading
-        with open("hotels.json", "w") as file:
-            json.dump(response.json(), file, indent=4)
-=======
->>>>>>> master
     else:
         print(f"Error: {response.status_code} - {response.text}")
 
@@ -96,16 +85,8 @@ def get_hotel_availability():
         # Print the JSON response to console
         print(response1.json())
 
-<<<<<<< HEAD
-        # Save the JSON response to a file to see the response better
-        with open("hotels.json", "w") as file:
-            json.dump(response1.json(), file, indent=4)
-    else:
-        print(f"Error: {response1.status_code} - {response1.text}")
-=======
         # Save the JSON response to a file
         with open("hotels.json", "w") as file:
             json.dump(response1.json(), file, indent=4)
     else:
         print(f"Error: {response1.status_code} - {response1.text}")
->>>>>>> master

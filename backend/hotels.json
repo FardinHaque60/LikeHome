@@ -1,77 +1,46 @@
 {
-<<<<<<< HEAD
-    "from": 1,
-    "to": 1,
-    "total": 986,
     "auditData": {
-        "processTime": "13",
-        "timestamp": "2024-10-09 23:44:06.600",
-        "requestHost": "10.214.135.171",
-        "serverId": "hotel-content-api-5fb868bc9d-6mh6c",
-        "environment": "[int, awseucentral1, k8s, secret, hotel-content-api-5fb868bc9d-6mh6c]",
-        "release": ""
-    },
-    "hotels": [
-        {
-            "code": 22,
-            "name": {
-                "content": "Vista Club"
-            },
-            "description": {
-                "content": "Nestled in Santa Ponsa on the beautiful island of Mallorca, this wonderful hotel is a perfect place for a total relaxation. Guests will find themselves within ease of access to Palma de Mallorca, located less than 23 kilometres away from this charming property. In proximity of the establishment guests will find bus stop line 104 connecting Santa Ponsa with Palma. A beautiful sandy beach is only 400 metres away and the centre of Santa Ponsa is within 300 metres away from this lovely establishment. Provided its convenient location and the facilities it offers, the complex is perfect for a family vacation or a group holiday. The hotel offers tastefully decorated apartments and studios, featuring comfortable furnishings and a kitchenette. There are also 2 swimming pools and 2 bars. In the morning guests may enjoy a delicious breakfast for a fantastic start to the day. "
-            },
-            "address": {
-                "content": "Nu\u00f1o Sanz, 20",
-                "street": "Nu\u00f1o Sanz",
-                "number": "20"
-            },
-            "email": "apartamentosvistaclub@apartamentosvistaclub.es",
-            "web": "www.apartamentosvistaclub.com"
-        }
-    ]
-=======
-    "auditData": {
-        "processTime": "1090",
-        "timestamp": "2024-10-09 23:17:37.738",
-        "requestHost": "52.20.97.39, 70.132.60.70, 10.214.140.34, 10.214.138.88",
-        "serverId": "ip-10-214-128-110.eu-central-1.compute.internal",
-        "environment": "[awseucentral1, awseucentral1c, ip_10_214_128_110, eucentral1, secret]",
+        "processTime": "319",
+        "timestamp": "2024-10-10 01:34:08.090",
+        "requestHost": "73.93.30.225, 64.252.173.148, 10.214.140.34, 10.214.138.88",
+        "serverId": "ip-10-214-137-207.eu-central-1.compute.internal",
+        "environment": "[awseucentral1, awseucentral1b, ip_10_214_137_207, eucentral1, secret]",
         "release": "",
-        "token": "9041AAA0ABE54C1189FEF35DF7D60A6D",
-        "internal": "0|E4B918978447480172851585664805|UK|10|1|2||||||||||||1||1~1~1~0|0|0||0|c14ae01ba277f4670a4745c19609178e||||"
+        "token": "3EDD79804CB440B0A73A8339A0D3BB5B",
+        "internal": "0|BB82539C10CA444172852404777105|UK|10|1|4||||||||||||1||1~1~1~0|0|1||1|c14ae01ba277f4670a4745c19609178e||||"
     },
     "hotels": {
         "hotels": [
             {
-                "code": 116714,
-                "name": "Dinah's Garden Hotel",
+                "code": 252751,
+                "name": "Courtyard Newark Silicon Valley",
                 "categoryCode": "3EST",
                 "categoryName": "3 STARS",
-                "destinationCode": "SAJ",
-                "destinationName": "San Jose - Silicon Valley - CA",
-                "zoneCode": 5,
-                "zoneName": "Palo Alto",
-                "latitude": "37.40763154197943000000",
-                "longitude": "-122.11988702067174000000",
+                "destinationCode": "NK1",
+                "destinationName": "Newark - CA",
+                "zoneCode": 1,
+                "zoneName": "Newark",
+                "latitude": "37.55141000000000000000",
+                "longitude": "-122.05146400000000000000",
                 "rooms": [
                     {
-                        "code": "DBL.GV-1",
-                        "name": "GARDEN VIEW 1 QUEEN BED",
+                        "code": "DBL.KG",
+                        "name": "Room, 1 King Bed",
                         "rates": [
                             {
-                                "rateKey": "20241015|20241016|W|256|116714|DBL.GV-1|FIT|RO||1~1~0||N@07~~243139~-1940675010~N~~~NOR~~E4B918978447480172851585664805AAUK00010000000010243139",
+                                "rateKey": "20241015|20241016|W|256|252751|DBL.KG|ID_B2B_19|RO|RATE1|1~1~0||P@07~~2145f~-842831298~N~~~NOR~~BB82539C10CA444172852404777105AAUK000100010001102145f",
                                 "rateClass": "NOR",
-                                "rateType": "BOOKABLE",
-                                "net": "313.67",
-                                "allotment": 3,
+                                "rateType": "RECHECK",
+                                "net": "95.20",
+                                "allotment": 9,
                                 "paymentType": "AT_WEB",
-                                "packaging": false,
+                                "packaging": true,
                                 "boardCode": "RO",
                                 "boardName": "ROOM ONLY",
                                 "cancellationPolicies": [
                                     {
-                                        "amount": "313.67",
-                                        "from": "2024-10-12T23:59:00-07:00"
+                                        "amount": "95.20",
+                                        "from": "2024-10-08T21:59:00-07:00"
                                     }
                                 ],
                                 "taxes": {
@@ -79,9 +48,7 @@
                                         {
                                             "included": false,
                                             "amount": "5.99",
-                                            "currency": "USD",
-                                            "clientAmount": "5.46",
-                                            "clientCurrency": "EUR"
+                                            "currency": "USD"
                                         }
                                     ],
                                     "allIncluded": false
@@ -91,19 +58,19 @@
                                 "children": 0
                             },
                             {
-                                "rateKey": "20241015|20241016|W|256|116714|DBL.GV-1|BAR|RO||1~1~0||N@07~~23a17c~-317783570~N~~~NOR~~E4B918978447480172851585664805AAUK0001000000001023314d",
+                                "rateKey": "20241015|20241016|W|256|252751|DBL.KG|ID_B2B_19|BB|RATE1|1~1~0||P@07~~24f8e~1170544625~N~~~NOR~~BB82539C10CA444172852404777105AAUK0001000100011024f8e",
                                 "rateClass": "NOR",
-                                "rateType": "BOOKABLE",
-                                "net": "333.51",
-                                "allotment": 3,
+                                "rateType": "RECHECK",
+                                "net": "142.79",
+                                "allotment": 9,
                                 "paymentType": "AT_WEB",
-                                "packaging": false,
-                                "boardCode": "RO",
-                                "boardName": "ROOM ONLY",
+                                "packaging": true,
+                                "boardCode": "BB",
+                                "boardName": "BED AND BREAKFAST",
                                 "cancellationPolicies": [
                                     {
-                                        "amount": "333.51",
-                                        "from": "2024-10-12T23:59:00-07:00"
+                                        "amount": "142.79",
+                                        "from": "2024-10-08T21:59:00-07:00"
                                     }
                                 ],
                                 "taxes": {
@@ -111,9 +78,67 @@
                                         {
                                             "included": false,
                                             "amount": "5.99",
-                                            "currency": "USD",
-                                            "clientAmount": "5.46",
-                                            "clientCurrency": "EUR"
+                                            "currency": "USD"
+                                        }
+                                    ],
+                                    "allIncluded": false
+                                },
+                                "rooms": 1,
+                                "adults": 1,
+                                "children": 0
+                            },
+                            {
+                                "rateKey": "20241015|20241016|W|256|252751|DBL.KG|ID_B2B_19|HB|RATE1|1~1~0||P@07~~23ba6~-1698322623~N~~~NOR~~BB82539C10CA444172852404777105AAUK0001000100011023ba6",
+                                "rateClass": "NOR",
+                                "rateType": "RECHECK",
+                                "net": "166.59",
+                                "allotment": 9,
+                                "paymentType": "AT_WEB",
+                                "packaging": true,
+                                "boardCode": "HB",
+                                "boardName": "HALF BOARD",
+                                "cancellationPolicies": [
+                                    {
+                                        "amount": "166.59",
+                                        "from": "2024-10-08T21:59:00-07:00"
+                                    }
+                                ],
+                                "taxes": {
+                                    "taxes": [
+                                        {
+                                            "included": false,
+                                            "amount": "5.99",
+                                            "currency": "USD"
+                                        }
+                                    ],
+                                    "allIncluded": false
+                                },
+                                "rooms": 1,
+                                "adults": 1,
+                                "children": 0
+                            },
+                            {
+                                "rateKey": "20241015|20241016|W|256|252751|DBL.KG|ID_B2B_19|FB|RATE1|1~1~0||P@07~~228be~345623113~N~~~NOR~~BB82539C10CA444172852404777105AAUK00010001000110228be",
+                                "rateClass": "NOR",
+                                "rateType": "RECHECK",
+                                "net": "190.40",
+                                "allotment": 9,
+                                "paymentType": "AT_WEB",
+                                "packaging": true,
+                                "boardCode": "FB",
+                                "boardName": "FULL BOARD",
+                                "cancellationPolicies": [
+                                    {
+                                        "amount": "190.40",
+                                        "from": "2024-10-08T21:59:00-07:00"
+                                    }
+                                ],
+                                "taxes": {
+                                    "taxes": [
+                                        {
+                                            "included": false,
+                                            "amount": "5.99",
+                                            "currency": "USD"
                                         }
                                     ],
                                     "allIncluded": false
@@ -125,8 +150,8 @@
                         ]
                     }
                 ],
-                "minRate": "313.67",
-                "maxRate": "333.51",
+                "minRate": "95.20",
+                "maxRate": "190.40",
                 "currency": "EUR"
             }
         ],
@@ -134,5 +159,4 @@
         "total": 1,
         "checkOut": "2024-10-16"
     }
->>>>>>> master
 }
