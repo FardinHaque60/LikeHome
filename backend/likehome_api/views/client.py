@@ -50,6 +50,10 @@ def get_hotel_details():
     if response.status_code == 200:
         # Print the JSON response to console
         print(response.json())
+
+        # Save the JSON response to a file
+        with open("playground/hotels.json", "w") as file:
+            json.dump(response.json(), file, indent=4)
     else:
         print(f"Error: {response.status_code} - {response.text}")
 
@@ -90,7 +94,7 @@ def get_hotel_availability():
         print(response1.json())
 
         # Save the JSON response to a file
-        with open("hotels.json", "w") as file:
+        with open("playground/hotels.json", "w") as file:
             json.dump(response1.json(), file, indent=4)
     else:
         print(f"Error: {response1.status_code} - {response1.text}")
