@@ -1,0 +1,162 @@
+{
+    "auditData": {
+        "processTime": "319",
+        "timestamp": "2024-10-10 01:34:08.090",
+        "requestHost": "73.93.30.225, 64.252.173.148, 10.214.140.34, 10.214.138.88",
+        "serverId": "ip-10-214-137-207.eu-central-1.compute.internal",
+        "environment": "[awseucentral1, awseucentral1b, ip_10_214_137_207, eucentral1, secret]",
+        "release": "",
+        "token": "3EDD79804CB440B0A73A8339A0D3BB5B",
+        "internal": "0|BB82539C10CA444172852404777105|UK|10|1|4||||||||||||1||1~1~1~0|0|1||1|c14ae01ba277f4670a4745c19609178e||||"
+    },
+    "hotels": {
+        "hotels": [
+            {
+                "code": 252751,
+                "name": "Courtyard Newark Silicon Valley",
+                "categoryCode": "3EST",
+                "categoryName": "3 STARS",
+                "destinationCode": "NK1",
+                "destinationName": "Newark - CA",
+                "zoneCode": 1,
+                "zoneName": "Newark",
+                "latitude": "37.55141000000000000000",
+                "longitude": "-122.05146400000000000000",
+                "rooms": [
+                    {
+                        "code": "DBL.KG",
+                        "name": "Room, 1 King Bed",
+                        "rates": [
+                            {
+                                "rateKey": "20241015|20241016|W|256|252751|DBL.KG|ID_B2B_19|RO|RATE1|1~1~0||P@07~~2145f~-842831298~N~~~NOR~~BB82539C10CA444172852404777105AAUK000100010001102145f",
+                                "rateClass": "NOR",
+                                "rateType": "RECHECK",
+                                "net": "95.20",
+                                "allotment": 9,
+                                "paymentType": "AT_WEB",
+                                "packaging": true,
+                                "boardCode": "RO",
+                                "boardName": "ROOM ONLY",
+                                "cancellationPolicies": [
+                                    {
+                                        "amount": "95.20",
+                                        "from": "2024-10-08T21:59:00-07:00"
+                                    }
+                                ],
+                                "taxes": {
+                                    "taxes": [
+                                        {
+                                            "included": false,
+                                            "amount": "5.99",
+                                            "currency": "USD"
+                                        }
+                                    ],
+                                    "allIncluded": false
+                                },
+                                "rooms": 1,
+                                "adults": 1,
+                                "children": 0
+                            },
+                            {
+                                "rateKey": "20241015|20241016|W|256|252751|DBL.KG|ID_B2B_19|BB|RATE1|1~1~0||P@07~~24f8e~1170544625~N~~~NOR~~BB82539C10CA444172852404777105AAUK0001000100011024f8e",
+                                "rateClass": "NOR",
+                                "rateType": "RECHECK",
+                                "net": "142.79",
+                                "allotment": 9,
+                                "paymentType": "AT_WEB",
+                                "packaging": true,
+                                "boardCode": "BB",
+                                "boardName": "BED AND BREAKFAST",
+                                "cancellationPolicies": [
+                                    {
+                                        "amount": "142.79",
+                                        "from": "2024-10-08T21:59:00-07:00"
+                                    }
+                                ],
+                                "taxes": {
+                                    "taxes": [
+                                        {
+                                            "included": false,
+                                            "amount": "5.99",
+                                            "currency": "USD"
+                                        }
+                                    ],
+                                    "allIncluded": false
+                                },
+                                "rooms": 1,
+                                "adults": 1,
+                                "children": 0
+                            },
+                            {
+                                "rateKey": "20241015|20241016|W|256|252751|DBL.KG|ID_B2B_19|HB|RATE1|1~1~0||P@07~~23ba6~-1698322623~N~~~NOR~~BB82539C10CA444172852404777105AAUK0001000100011023ba6",
+                                "rateClass": "NOR",
+                                "rateType": "RECHECK",
+                                "net": "166.59",
+                                "allotment": 9,
+                                "paymentType": "AT_WEB",
+                                "packaging": true,
+                                "boardCode": "HB",
+                                "boardName": "HALF BOARD",
+                                "cancellationPolicies": [
+                                    {
+                                        "amount": "166.59",
+                                        "from": "2024-10-08T21:59:00-07:00"
+                                    }
+                                ],
+                                "taxes": {
+                                    "taxes": [
+                                        {
+                                            "included": false,
+                                            "amount": "5.99",
+                                            "currency": "USD"
+                                        }
+                                    ],
+                                    "allIncluded": false
+                                },
+                                "rooms": 1,
+                                "adults": 1,
+                                "children": 0
+                            },
+                            {
+                                "rateKey": "20241015|20241016|W|256|252751|DBL.KG|ID_B2B_19|FB|RATE1|1~1~0||P@07~~228be~345623113~N~~~NOR~~BB82539C10CA444172852404777105AAUK00010001000110228be",
+                                "rateClass": "NOR",
+                                "rateType": "RECHECK",
+                                "net": "190.40",
+                                "allotment": 9,
+                                "paymentType": "AT_WEB",
+                                "packaging": true,
+                                "boardCode": "FB",
+                                "boardName": "FULL BOARD",
+                                "cancellationPolicies": [
+                                    {
+                                        "amount": "190.40",
+                                        "from": "2024-10-08T21:59:00-07:00"
+                                    }
+                                ],
+                                "taxes": {
+                                    "taxes": [
+                                        {
+                                            "included": false,
+                                            "amount": "5.99",
+                                            "currency": "USD"
+                                        }
+                                    ],
+                                    "allIncluded": false
+                                },
+                                "rooms": 1,
+                                "adults": 1,
+                                "children": 0
+                            }
+                        ]
+                    }
+                ],
+                "minRate": "95.20",
+                "maxRate": "190.40",
+                "currency": "EUR"
+            }
+        ],
+        "checkIn": "2024-10-15",
+        "total": 1,
+        "checkOut": "2024-10-16"
+    }
+}
