@@ -14,6 +14,6 @@ def search(request):
 
     # print(location, check_in, check_out, rooms, adults)
     get_hotels()
-    # get_location_coord()
+    
 
     return Response({'status': 'OK'}, status=status.HTTP_200_OK)

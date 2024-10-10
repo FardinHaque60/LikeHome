@@ -1,0 +1,145 @@
+{
+    "auditData": {
+        "processTime": "141",
+        "timestamp": "2024-10-10 21:45:58.970",
+        "requestHost": "130.65.254.19, 64.252.173.101, 10.214.141.19, 10.214.128.8",
+        "serverId": "ip-10-214-137-207.eu-central-1.compute.internal",
+        "environment": "[awseucentral1, awseucentral1b, ip_10_214_137_207, eucentral1, secret]",
+        "release": "",
+        "token": "F22FE9390CC44D5CB7D99B17325CA255",
+        "internal": "0|E8EA717F10E9476172859675882805|UK|10|1|3||||||||||||1||1~1~1~0|0|0||0|c14ae01ba277f4670a4745c19609178e||||"
+    },
+    "hotels": {
+        "hotels": [
+            {
+                "code": 7290,
+                "name": "Kaiserin Augusta",
+                "categoryCode": "H3S",
+                "categoryName": "SUPERIOR 3*",
+                "destinationCode": "WEI",
+                "destinationName": "Weimar",
+                "zoneCode": 1,
+                "zoneName": "Weimar",
+                "latitude": "50.99030810949400000000",
+                "longitude": "11.32625252008440000000",
+                "rooms": [
+                    {
+                        "code": "SGL.ST",
+                        "name": "Single Classic",
+                        "rates": [
+                            {
+                                "rateKey": "20241015|20241016|W|202|7290|SGL.ST|CG-BAR|RO||1~1~0||P@07~~20a50~1654283535~N~~~NOR~~E8EA717F10E9476172859675882805AAUK0001000000001020146",
+                                "rateClass": "NOR",
+                                "rateType": "BOOKABLE",
+                                "net": "70.01",
+                                "allotment": 15,
+                                "paymentType": "AT_WEB",
+                                "packaging": true,
+                                "boardCode": "RO",
+                                "boardName": "ROOM ONLY",
+                                "cancellationPolicies": [
+                                    {
+                                        "amount": "70.01",
+                                        "from": "2024-10-15T18:00:00+01:00"
+                                    }
+                                ],
+                                "taxes": {
+                                    "taxes": [
+                                        {
+                                            "included": false,
+                                            "amount": "3.10",
+                                            "currency": "EUR",
+                                            "clientAmount": "3.10",
+                                            "clientCurrency": "EUR"
+                                        }
+                                    ],
+                                    "allIncluded": false
+                                },
+                                "rooms": 1,
+                                "adults": 1,
+                                "children": 0,
+                                "offers": [
+                                    {
+                                        "code": "9005",
+                                        "name": "Exclusive discount",
+                                        "amount": "-7.78"
+                                    }
+                                ]
+                            },
+                            {
+                                "rateKey": "20241015|20241016|W|202|7290|SGL.ST|NRF BAR|RO||1~1~0||N@07~~23c54~-14729580~N~~~NRF~~E8EA717F10E9476172859675882805AAUK0001000000001025e49",
+                                "rateClass": "NRF",
+                                "rateType": "BOOKABLE",
+                                "net": "73.94",
+                                "allotment": 15,
+                                "paymentType": "AT_WEB",
+                                "packaging": false,
+                                "boardCode": "RO",
+                                "boardName": "ROOM ONLY",
+                                "cancellationPolicies": [
+                                    {
+                                        "amount": "73.94",
+                                        "from": "2024-10-09T23:59:00+01:00"
+                                    }
+                                ],
+                                "taxes": {
+                                    "taxes": [
+                                        {
+                                            "included": false,
+                                            "amount": "3.10",
+                                            "currency": "EUR",
+                                            "clientAmount": "3.10",
+                                            "clientCurrency": "EUR"
+                                        }
+                                    ],
+                                    "allIncluded": false
+                                },
+                                "rooms": 1,
+                                "adults": 1,
+                                "children": 0
+                            },
+                            {
+                                "rateKey": "20241015|20241016|W|202|7290|SGL.ST|CG-BAR|RO||1~1~0||N@07~~20059~-1494013884~N~~~NOR~~E8EA717F10E9476172859675882805AAUK0001000000001024f4d",
+                                "rateClass": "NOR",
+                                "rateType": "BOOKABLE",
+                                "net": "77.79",
+                                "allotment": 15,
+                                "paymentType": "AT_WEB",
+                                "packaging": false,
+                                "boardCode": "RO",
+                                "boardName": "ROOM ONLY",
+                                "cancellationPolicies": [
+                                    {
+                                        "amount": "77.79",
+                                        "from": "2024-10-15T18:00:00+01:00"
+                                    }
+                                ],
+                                "taxes": {
+                                    "taxes": [
+                                        {
+                                            "included": false,
+                                            "amount": "3.10",
+                                            "currency": "EUR",
+                                            "clientAmount": "3.10",
+                                            "clientCurrency": "EUR"
+                                        }
+                                    ],
+                                    "allIncluded": false
+                                },
+                                "rooms": 1,
+                                "adults": 1,
+                                "children": 0
+                            }
+                        ]
+                    }
+                ],
+                "minRate": "70.01",
+                "maxRate": "77.79",
+                "currency": "EUR"
+            }
+        ],
+        "checkIn": "2024-10-15",
+        "total": 1,
+        "checkOut": "2024-10-16"
+    }
+}
