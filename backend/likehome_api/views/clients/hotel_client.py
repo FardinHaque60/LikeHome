@@ -11,14 +11,30 @@ import random
 
 load_dotenv()
 
-# Hotel API credentials
-api_key = os.getenv("HOTELBEDS_API_KEY")
-secret = os.getenv("HOTELBEDS_SECRET")
+keys = [os.getenv("HOTELBEDS_API_KEY"), os.getenv("HOTELBEDS_API_KEY2")]
+secrets = [os.getenv("HOTELBEDS_SECRET"), os.getenv("HOTELBEDS_SECRET2")]
+ind = 0
+
+# Rotate the API key
+def rotate_key():
+    global ind
+    print("key %d expended" % ind)
+    ind += 1
+    print("currently using key", ind)
+    return ind < len(keys)
+
+def get_api_key():
+    global ind, keys
+    return keys[ind]
+
+def get_secret():
+    global ind, secrets
+    return secrets[ind]
 
 # Generate the signature using the API key, secret, and current time in seconds
 def generate_signature():
     timestamp = str(int(time.time()))
-    signature_raw = api_key + secret + timestamp
+    signature_raw = get_api_key() + get_secret() + timestamp
     signature = hashlib.sha256(signature_raw.encode('utf-8')).hexdigest()
     return signature
 
@@ -26,7 +42,7 @@ def generate_signature():
 def get_header(signature):
     headers = {
         "Accept": "application/json",
-        "Api-key": api_key,
+        "Api-key": get_api_key(),
         "X-Signature": signature,
         "Cache-Control": "no-cache",
     }
@@ -64,11 +80,11 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms):
         "geolocation": {
             "latitude": coordArray[0],
             "longitude": coordArray[1],
-            "radius": 20,
+            "radius": 20, # TODO allow user to modify potentially
             "unit": "mi"
         } ,
         "filter": {
-            "maxHotels": 9, # LIMIT TO 9 HOTELS
+            "maxHotels": 2, # LIMIT TO 9 HOTELS, TODO set to 2 for testing
             "maxRooms": 4, # LIMIT TO 4 ROOMS
         }
     }
@@ -76,23 +92,38 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms):
     headers = get_header(generate_signature())
     response = requests.post(avail_url, headers=headers, json=params)
     if response.status_code == 200:
+        # Save the JSON response to a file
+        with open("playground/RAW_hotel_availability.json", "w") as file:
+            json.dump(response.json(), file, indent=4)
+
         hotel_objs = []
         hotels = response.json()['hotels']['hotels'] # list of hotels
 
+        hotel_overview_items = ["code", "name", "minRate", "maxRate", "currency"]
+
         # slim down response for our own use
         for hotel in hotels:
-            hotel_obj = {}
-            hotel_obj['code'] = hotel['code']
-            hotel_obj['minRate'] = hotel['minRate']
-            hotel_obj['maxRate'] = hotel['maxRate']
-            hotel_obj['currency'] = hotel['currency']
+            hotel_obj = { }
+            # add code, name, minRate, maxRate, currency to hotel object
+            for i in hotel_overview_items:
+                try:
+                    hotel_obj[i] = hotel[i]
+                except KeyError:
+                    hotel_obj[i] = "N/A"
 
+            # add hotel details to hotel object
+            # i.e. name, description, address, city, email, phone, web, images
             details = hotel_details(hotel['code'])
-            # print(details)
+            try:
+                if (details.status_code != 200):
+                    return {"status_code": 403, "message": details.json()}
+            except:
+                pass
             for i in details:
                 hotel_obj[i] = details[i]
 
             # slim down room object
+            # add list of rooms to hotel_obj, each room has name, netRate, adults, children
             rooms = hotel['rooms']
             selected_rooms = []
             for room in rooms:
@@ -109,11 +140,13 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms):
 
         with open("playground/hotel_availability.json", "w") as file:
             json.dump(hotel_objs, file, indent=4)
-        # print(hotel_objs)
 
         return hotel_objs
     else:
-        return response.json()
+        if not rotate_key():
+            print("API Request Limit Reached For the Day")
+            return response
+        hotel_availability(location, check_in, check_out, adults, children, rooms)
 
 # https://developer.hotelbeds.com/documentation/hotels/content-api/api-reference/ hotel details docs
 def hotel_details(hotel_code):
@@ -130,28 +163,39 @@ def hotel_details(hotel_code):
         "to": 1
     }
 
+    hotel_details_items = ["name", "description", "city", "address", "email", "web"]
+
     headers = get_header(generate_signature())
     response = requests.get(url, headers=headers, params=params)
+    # Save the JSON response to a file
+    # print("IN DETAILS: ", ind)
+    with open("playground/RAW_hotel_details.json", "w") as file:
+        json.dump(response.json(), file, indent=4)
     if response.status_code == 200:
-        # Save the JSON response to a file
-        with open("playground/hotel_details.json", "w") as file:
-            json.dump(response.json(), file, indent=4)
-
         data = response.json()['hotels'][0]
-        hotel_details = {}
-        hotel_details['name'] = data['name']['content']
-        hotel_details['description'] = data['description']['content']
-        hotel_details['city'] = data['city']['content']
-        hotel_details['address'] = data['address']['content']
-        # hotel_details['email'] = data['email']['content']
+        hotel_details = {}  
+        # get name, description, city, address, email, web for hotel details
+        for i in hotel_details_items:
+            try:
+                hotel_details[i] = data[i]['content']
+            except:
+                hotel_details[i] = "N/A"
+        # add hotel phone
         hotel_details['phone'] = data['phones'][0]['phoneNumber']
-        # hotel_details['web'] = data['web']['content']
 
+        # add images to hotel details
         hotel_details['images'] = []
         images = data['images']
         for i in random.sample(range(len(images)), 4):
             hotel_details['images'].append("http://photos.hotelbeds.com/giata/xxl/" + images[i]['path'])
 
+        with open("playground/hotel_details.json", "w") as file:
+            json.dump(response.json(), file, indent=4)
+
         return hotel_details
     else:
-        return response.json()
+        if not rotate_key():
+            # print("AFTER DETAILS ROTATE: ", ind)
+            print("API Request Limit Reached For the Day")
+            return response
+        hotel_details(hotel_code)

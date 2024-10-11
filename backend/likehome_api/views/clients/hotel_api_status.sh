@@ -2,8 +2,9 @@
 # run this script to get hotels api status, current usage, remaining usage, etc. 
 source ../../../../.env
 
-apiKey=$HOTELBEDS_API_KEY
-secret=$HOTELBEDS_SECRET
+# motify to use key 1 or 2
+apiKey=$HOTELBEDS_API_KEY2
+secret=$HOTELBEDS_SECRET2
 curl -i \
 -X GET \
 -H 'Accept:application/json' \
