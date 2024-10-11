@@ -17,11 +17,9 @@ def get_location_coordinates(location):
     '''
     query = location
     results = geocoder.geocode(query)
-    ''' 
-    print('%f;%f;%s;%s' % (results[0]['geometry']['lat'],
-                        results[0]['geometry']['lng'],
-                        results[0]['components']['country_code'],
-                        results[0]['annotations']['timezone']['name']))
-    '''
-                        
-    return [results[0]['geometry']['lat'], results[0]['geometry']['lng']]
+    try:
+        coordinates = [results[0]['geometry']['lat'], results[0]['geometry']['lng']]
+    except:
+        return False
+    
+    return coordinates

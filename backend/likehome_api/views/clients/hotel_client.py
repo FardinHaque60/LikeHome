@@ -59,7 +59,12 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms):
             children: int - number of children staying in hotel
             rooms: int - number of rooms to book
     '''
+    # get location coordinates for hotel availability request
     coordArray = get_location_coordinates(location)
+    if not coordArray:
+        return {"status_code": 403, "message": "Invalid Location"}
+    
+    # hotel availability request
     avail_url = "https://api.test.hotelbeds.com/hotel-api/1.0/hotels"
     paxes = []
     for i in range(children):
@@ -91,13 +96,13 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms):
 
     headers = get_header(generate_signature())
     response = requests.post(avail_url, headers=headers, json=params)
+
+    # Save the JSON response to a file
+    '''
+    with open("playground/RAW_hotel_availability.json", "w") as file:
+        json.dump(response.json(), file, indent=4)
+    '''
     if response.status_code == 200:
-        # Save the JSON response to a file
-        '''
-        with open("playground/RAW_hotel_availability.json", "w") as file:
-            json.dump(response.json(), file, indent=4)
-        '''
-            
         hotel_objs = []
         hotels = response.json()['hotels']['hotels'] # list of hotels
 
@@ -140,6 +145,7 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms):
             
             hotel_objs.append(hotel_obj)
 
+        # save final hotel objects to a file
         ''' 
         with open("playground/hotel_availability.json", "w") as file:
             json.dump(hotel_objs, file, indent=4)
@@ -172,7 +178,6 @@ def hotel_details(hotel_code):
     headers = get_header(generate_signature())
     response = requests.get(url, headers=headers, params=params)
     # Save the JSON response to a file
-    # print("IN DETAILS: ", ind)
     ''' 
     with open("playground/RAW_hotel_details.json", "w") as file:
         json.dump(response.json(), file, indent=4)
@@ -195,6 +200,7 @@ def hotel_details(hotel_code):
         for i in random.sample(range(len(images)), 4):
             hotel_features['images'].append("http://photos.hotelbeds.com/giata/xxl/" + images[i]['path'])
 
+        # save final hotel details to a file
         ''' 
         with open("playground/hotel_details.json", "w") as file:
             json.dump(response.json(), file, indent=4)
@@ -203,7 +209,6 @@ def hotel_details(hotel_code):
         return hotel_features
     else:
         if not rotate_key():
-            # print("AFTER DETAILS ROTATE: ", ind)
             print("API Request Limit Reached For the Day")
             return response
         hotel_details(hotel_code)
