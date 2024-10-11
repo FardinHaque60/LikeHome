@@ -93,9 +93,11 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms):
     response = requests.post(avail_url, headers=headers, json=params)
     if response.status_code == 200:
         # Save the JSON response to a file
+        '''
         with open("playground/RAW_hotel_availability.json", "w") as file:
             json.dump(response.json(), file, indent=4)
-
+        '''
+            
         hotel_objs = []
         hotels = response.json()['hotels']['hotels'] # list of hotels
 
@@ -138,8 +140,10 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms):
             
             hotel_objs.append(hotel_obj)
 
+        ''' 
         with open("playground/hotel_availability.json", "w") as file:
             json.dump(hotel_objs, file, indent=4)
+        '''
 
         return hotel_objs
     else:
@@ -169,8 +173,10 @@ def hotel_details(hotel_code):
     response = requests.get(url, headers=headers, params=params)
     # Save the JSON response to a file
     # print("IN DETAILS: ", ind)
+    ''' 
     with open("playground/RAW_hotel_details.json", "w") as file:
         json.dump(response.json(), file, indent=4)
+    '''
     if response.status_code == 200:
         data = response.json()['hotels'][0]
         hotel_details = {}  
@@ -189,8 +195,10 @@ def hotel_details(hotel_code):
         for i in random.sample(range(len(images)), 4):
             hotel_details['images'].append("http://photos.hotelbeds.com/giata/xxl/" + images[i]['path'])
 
+        ''' 
         with open("playground/hotel_details.json", "w") as file:
             json.dump(response.json(), file, indent=4)
+        '''
 
         return hotel_details
     else:
