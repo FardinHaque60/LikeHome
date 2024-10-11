@@ -11,7 +11,6 @@ import { ApiService } from '../service/api.service';
   styleUrl: './search-results.component.scss'
 })
 export class SearchResultsComponent implements OnInit {
-  rooms = [0,0,0,0,0,0,0];
   searchResults: Array<any> = [];
   searchParams: any;
 
@@ -22,6 +21,7 @@ export class SearchResultsComponent implements OnInit {
         .subscribe({
           next: (response) => {
             console.log("Search Success");
+            console.log(response['status']);
             console.log(response['hotels']);
             this.searchResults = response['hotels'];
           },
@@ -30,6 +30,10 @@ export class SearchResultsComponent implements OnInit {
             console.log(error);
           }
         })
+  }
+
+  replaceImage(event: any) {
+    event.target.src = 'assets/images/nexus_logo.png';
   }
 
   ngOnInit(): void {
