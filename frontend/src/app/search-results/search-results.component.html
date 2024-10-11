@@ -31,6 +31,10 @@
 	        <div class="col-lg-9">
                 <!-- TODO address any comments for to add scroll bar or not -->
                 <div class="row" style="max-height: 130vh; overflow-y: auto;">
+                    <!-- loading spinner -->
+                    <div *ngIf="loading" style="display: flex; justify-content: center; align-items: center;">
+                      <mat-spinner />
+                    </div>
                     <!-- START iterate this card for n search results-->
                     <div class="col-sm col-md-6 col-lg-4" *ngFor="let room of searchResults">
                         <!-- TODO add spinner while results loading -->
