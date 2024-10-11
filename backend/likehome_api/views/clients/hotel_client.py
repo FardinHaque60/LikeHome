@@ -179,28 +179,28 @@ def hotel_details(hotel_code):
     '''
     if response.status_code == 200:
         data = response.json()['hotels'][0]
-        hotel_details = {}  
+        hotel_features = {}  
         # get name, description, city, address, email, web for hotel details
         for i in hotel_details_items:
             try:
-                hotel_details[i] = data[i]['content']
+                hotel_features[i] = data[i]['content']
             except:
-                hotel_details[i] = "N/A"
+                hotel_features[i] = "N/A"
         # add hotel phone
-        hotel_details['phone'] = data['phones'][0]['phoneNumber']
+        hotel_features['phone'] = data['phones'][0]['phoneNumber']
 
         # add images to hotel details
-        hotel_details['images'] = []
+        hotel_features['images'] = []
         images = data['images']
         for i in random.sample(range(len(images)), 4):
-            hotel_details['images'].append("http://photos.hotelbeds.com/giata/xxl/" + images[i]['path'])
+            hotel_features['images'].append("http://photos.hotelbeds.com/giata/xxl/" + images[i]['path'])
 
         ''' 
         with open("playground/hotel_details.json", "w") as file:
             json.dump(response.json(), file, indent=4)
         '''
 
-        return hotel_details
+        return hotel_features
     else:
         if not rotate_key():
             # print("AFTER DETAILS ROTATE: ", ind)
