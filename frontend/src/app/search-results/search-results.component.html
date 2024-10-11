@@ -31,16 +31,16 @@
 	        <div class="col-lg-9">
                 <!-- TODO address any comments for to add scroll bar or not -->
                 <div class="row" style="max-height: 130vh; overflow-y: auto;">
-                    <!-- iterate this card for n search results-->
-                    <div class="col-sm col-md-6 col-lg-4" *ngFor="let room of rooms">
+                    <!-- START iterate this card for n search results-->
+                    <div class="col-sm col-md-6 col-lg-4" *ngFor="let room of searchResults">
                         <div class="room">
                             <a href="rooms-single.html" class="img d-flex justify-content-center align-items-center">
-                                <img src="https://hoteldel.com/wp-content/uploads/2021/01/hotel-del-coronado-views-suite-K1TOS1-K1TOJ1-1600x900-1.jpg" class="img-fluid">
+                                <img [src]="room['images'][0]" class="img-fluid">
                                 <div class="icon d-flex justify-content-center align-items-center"> </div>
                             </a>
                             <div class="text p-3 text-center">
-                                <h3 class="mb-3"><a href="rooms-single.html">Suite Room</a></h3>
-                                <p><span class="price mr-2">$120.00</span> <span class="per">per night</span></p>
+                                <h3 class="mb-3"><a href="rooms-single.html">{{room.name}}</a></h3>
+                                <p><span class="price mr-2">{{room.minRate}}</span> <span class="per">per night</span></p>
                                 <ul class="list">
                                     <li><span>Max:</span> 3 Persons</li>
                                     <li><span>Size:</span> 45 m2</li>
@@ -52,7 +52,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- end card -->
+                    <!-- END card -->
                 </div>
             </div>
             <!-- search filters -->

@@ -40,17 +40,6 @@ export class HomepageComponent implements OnInit {
     if (this.hotelSearch.valid) {
       console.log('Hotel search form submitted:', this.hotelSearch.value);
       this.router.navigate(['/search-results'], { queryParams: this.hotelSearch.value });
-      this.apiService.postBackendRequest('search', this.hotelSearch.value)
-        .subscribe({
-          next: (response) => {
-            console.log("Search Success");
-            console.log(response);
-          },
-          error: (error) => {
-            console.log("Search Error");
-            console.log(error);
-          }
-        })
     }
     else {
       this.hotelSearch.markAllAsTouched();
