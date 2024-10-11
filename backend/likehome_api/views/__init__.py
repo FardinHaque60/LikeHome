@@ -5,4 +5,3 @@ from .login import *
 from .create_account import *
 from .session import *
 from .hotels import *
-from .geoClient import *
