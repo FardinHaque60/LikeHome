@@ -34,15 +34,19 @@
                     <div *ngIf="loading" style="display: flex; justify-content: center; align-items: center;">
                       <mat-spinner />
                     </div>
+                    <!-- no results -->
+                    <div *ngIf="searchResults.length === 0 && !loading" style="display: flex; justify-content: center; align-items: center;">
+                      <h4>No Search Results Found</h4>
+                    </div>
                     <!-- START iterate this card for n search results-->
                     <div class="col-sm col-md-6 col-lg-4" *ngFor="let room of searchResults; let i = index">
                         <div class="room">
-                            <a href="rooms-single.html" class="img d-flex justify-content-center align-items-center">
-                                <img [src]="room['images'][0]" (error)="replaceImage($event)" class="img-fluid">
+                            <a (click)="openHotel(i)" class="img d-flex justify-content-center align-items-center" style="overflow: hidden;">
+                                <img [src]="room['images'][0]" (error)="replaceImage($event)" class="img-fluid" style="object-fit: cover;">
                                 <div class="icon d-flex justify-content-center align-items-center"> </div>
                             </a>
                             <div class="text p-3 text-center" style="height: 18rem; overflow-y: auto;">
-                                <h3 class="mb-3"><a href="rooms-single.html">{{room.name}}</a></h3>
+                                <h3 class="mb-3"><a (click)="openHotel(i)">{{room.name}}</a></h3>
                                 <p><span class="price mr-2">{{room.minRate}}</span> <span class="per">per night</span></p>
                                 <ul class="list">
                                     <li><span>Max Rate:</span> {{room.maxRate}} </li>
@@ -53,7 +57,7 @@
                                     -->
                                 </ul>
                                 <hr>
-                                <p class="pt-1"><a (click)="openHotel(i)" class="btn-custom">Book Now <!-- <span class="material-icons">arrow_right_alt</span> --></a></p>
+                                <p class="pt-1"><a (click)="openHotel(i)" class="btn-custom">See Details <!-- <span class="material-icons">arrow_right_alt</span> --></a></p>
                             </div>
                         </div>
                     </div>

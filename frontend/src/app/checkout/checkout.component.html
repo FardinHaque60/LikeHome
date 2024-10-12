@@ -64,28 +64,25 @@
                       </div>
                       <div class="flex-grow-1 ms-3">
                         <a href="#!" class="float-end"><i class="fas fa-times"></i></a>
-                        <h5 class="text-primary">Room Name</h5>
-                        <h6 style="color: #9e9e9e;">Hotel Name:</h6>
-                        <h6 style="color: #9e9e9e;">Adults:</h6>
-                        <h6 style="color: #9e9e9e;">Children: </h6>
-                        <div class="d-flex align-items-center">
-                          <p class="fw-bold mb-0 me-5 pe-3">239$</p>
-                        </div>
+                        <h5 class="text-primary">{{ details['room']}}</h5>
+                        <h6 style="color: #9e9e9e;">Hotel Name: {{details['hotel']}}</h6>
+                        <h6 style="color: #9e9e9e;">Adults: {{details['adults']}}</h6>
+                        <h6 style="color: #9e9e9e;">Children: {{details['children']}}</h6>
+                        <h6 style="color: #9e9e9e;">Check In: {{details['checkIn']}}</h6>
+                        <h6 style="color: #9e9e9e;">Check Out: {{details['checkOut']}}</h6>
+                          <p class="fw-bold mb-0 me-5 pe-3">${{details['price']}} * {{details['nights']}} nights</p>
+                          <p class="fw-bold mb-0 me-5 pe-3">Subtotal: ${{subtotal}}</p>
                       </div>
                     </div>
                     <hr class="mb-4" style="height: 2px; background-color: black; opacity: 1;">
                     <!--This is the cost section-->
                     <div class="d-flex justify-content-between px-x">
                         <p class="fw-bold">Taxes:</p>
-                        <p class="fw-bold">95$</p>
-                      </div>
-                      <div class="d-flex justify-content-between px-x">
-                        <p class="fw-bold">Fees:</p>
-                        <p class="fw-bold">95$</p>
+                        <p class="fw-bold">${{tax}}</p>
                       </div>
                     <div class="d-flex justify-content-between p-2 mb-2 bg-primary rounded">
                       <h5 class="fw-bold mb-0" style="color: white">Total:</h5>
-                      <h5 class="fw-bold mb-0" style="color: white">Free 😁</h5>
+                      <h5 class="fw-bold mb-0" style="color: white">${{total}}</h5>
                     </div>
                   </div>
               </div>

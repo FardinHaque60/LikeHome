@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../service/api.service';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FooterComponent } from '../shared/footer/footer.component';
 
@@ -12,16 +11,7 @@ import { FooterComponent } from '../shared/footer/footer.component';
   styleUrl: './about-us.component.scss'
 })
 export class AboutUsComponent implements OnInit {
-  // TODO move hotel details logic once page is made
-  details: any;
+  constructor() { }
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute) { }
-
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.details = JSON.parse(params['details']);
-      console.log(this.details['rooms'][0]);
-    });
-  }
-
+  ngOnInit(): void {}
 }

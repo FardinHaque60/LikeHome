@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../service/api.service';
-import { Router, RouterLink, NavigationEnd } from '@angular/router';
+import { Router, RouterLink, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { FooterComponent } from '../shared/footer/footer.component';
 
@@ -13,8 +13,12 @@ import { FooterComponent } from '../shared/footer/footer.component';
   styleUrl: './checkout.component.scss'
 })
 export class CheckoutComponent implements OnInit{
+  details: any = {};
+  tax: number = 0;
+  total: number = 0;
+  subtotal: number = 0;
 
-  constructor(private apiService: ApiService, private router: Router) { }
+  constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) { }
 
   paymentForm = new FormGroup({
     cardNum: new FormControl('', Validators.required),
@@ -23,9 +27,17 @@ export class CheckoutComponent implements OnInit{
     CVV: new FormControl('', Validators.required),
   });
 
-  // TO-DO: send data from form to backend
+  // TODO: send data from form to backend
   paymentSubmit(): void{
+    
+  }
 
+  calculateTax(price: number): number {
+    return +(this.subtotal * 0.09).toFixed(2);
+  }
+
+  calculateTotal(): number {
+    return +(this.tax + this.subtotal).toFixed(2);
   }
 
   ngOnInit(): void {
@@ -36,6 +48,14 @@ export class CheckoutComponent implements OnInit{
             window.scrollTo(0, 0)
         }
     });
+
+    this.route.queryParams.subscribe(params => {
+      this.details = JSON.parse(params['details']);
+    });
+
+    this.subtotal = +this.details['price']*this.details['nights'];
+    this.tax = this.calculateTax(this.details['price']);
+    this.total = this.calculateTotal();
   }
 
 }

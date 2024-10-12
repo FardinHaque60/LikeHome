@@ -14,12 +14,16 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 })
 export class SearchResultsComponent implements OnInit {
   searchResults: Array<any> = [];
-  loading: boolean = true;
+  loading: boolean = false;
   searchFilter = new FormGroup({});
 
   constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router) {}
 
   formatDate(date: Date): string {
+    // if date is invalid return empty string
+    if (isNaN(date.getTime())) {
+      return '';
+    }
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); 
     const day = String(date.getDate()).padStart(2, '0');
@@ -27,9 +31,16 @@ export class SearchResultsComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  // TODO change route to hotel details page
+  // TODO will cause problems if user enters new date but does not hit search, better solution is to change backend response
   openHotel(i: number): void {
-    this.router.navigate(['/about-us'], { queryParams: { details: JSON.stringify(this.searchResults[i]) } });
+    this.router.navigate(['/hotel-details'], { 
+      queryParams: 
+        { 
+          checkIn: this.searchFilter.get('check_in')?.value, 
+          checkOut: this.searchFilter.get('check_out')?.value, 
+          details: JSON.stringify(this.searchResults[i]) 
+        } 
+    });
   }
 
   searchFilterSubmit(): void {
@@ -39,6 +50,7 @@ export class SearchResultsComponent implements OnInit {
   }
 
   search(params: any): void {
+    this.loading = true;
     this.apiService.postBackendRequest('search', params)
         .subscribe({
           next: (response) => {
@@ -46,13 +58,13 @@ export class SearchResultsComponent implements OnInit {
             console.log(response['status']);
             console.log(response['hotels']);
             this.searchResults = response['hotels'];
-            this.loading = false;
           },
           error: (error) => {
             console.log("Search Error");
             console.log(error);
           }
         })
+    this.loading = false;
   }
 
   replaceImage(event: any) {
@@ -62,12 +74,12 @@ export class SearchResultsComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.searchFilter.addControl('radius', new FormControl('20', Validators.required));
-      this.searchFilter.addControl('location', new FormControl(params['location'], Validators.required));
+      this.searchFilter.addControl('location', new FormControl(params['location'] ?? '', Validators.required));
       this.searchFilter.addControl('check_in', new FormControl(this.formatDate(new Date(params['check_in'])), Validators.required));
       this.searchFilter.addControl('check_out', new FormControl(this.formatDate(new Date(params['check_out'])), Validators.required));
-      this.searchFilter.addControl('rooms', new FormControl(params['rooms'], Validators.required));
-      this.searchFilter.addControl('adults', new FormControl(params['adults'], Validators.required));
-      this.searchFilter.addControl('children', new FormControl(params['children'], Validators.required));
+      this.searchFilter.addControl('rooms', new FormControl(params['rooms'] ?? '', Validators.required));
+      this.searchFilter.addControl('adults', new FormControl(params['adults'] ?? '', Validators.required));
+      this.searchFilter.addControl('children', new FormControl(params['children'] ?? '', Validators.required));
 
       console.log('Initial Search Filters:', this.searchFilter.value);
     });

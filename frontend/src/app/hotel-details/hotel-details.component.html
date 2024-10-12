@@ -32,30 +32,30 @@
             <div class="col-lg-8">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>HOTEL NAME</h1>
-                        <div class="item d-flex justify-content-center">
-                            <img src="assets/images/room-1.jpg" class="img-fluid rounded">
+                    <h1>{{ details['name'] }}</h1>
+                        <div class="item d-flex justify-content-center" style="overflow: hidden;">
+                            <img [src]="randomImage()" (error)="replaceImage($event)" class="img-fluid rounded" style="object-fit: cover;">
                         </div>
                 </div>
                 <div class="col-md-12 mt-4 mb-5">
-                    <p>This is where the description for the hotel will be. blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah hotels blah blah blah blah</p>
+                    <p>{{ details['description'] }}</p>
                     <div class="d-md-flex mt-5 mb-2 room-single justify-content-center">
                         <ul class="list">
-                            <li><span>Street:</span> blah blah</li>
-                            <li><span>City:</span> blah blah</li>
-                            <li><span># of Rooms:</span> blah blah</li>
+                            <li><span>Street:</span> {{ details['address'] }}</li>
+                            <li><span>City:</span> {{ details['city'] }}</li>
+                            <li><span># of Rooms:</span> {{ rooms.length }} </li>
                         </ul>
                         <ul class="list ml-md-5">
-                            <li><span>Email:</span> Blah blah</li>
-                            <li><span>Web:</span> blah</li>
-                            <li><span>Phone:</span> blah blah</li>
+                            <li><span>Email:</span> {{ details['email'] }} </li>
+                            <li><span>Web:</span> {{ details['web'] }}</li>
+                            <li><span>Phone:</span> {{ details['phone'] }} </li>
                         </ul>
                     </div>
                     <div class="d-md-flex mb-5 room-single justify-content-center">
                         <ul class="list">
                         </ul>
                     </div>
-                    <p>Any additional detail blah blah blah</p>
+                    <!-- <p>Any additional detail blah blah blah</p> -->
                 </div>             
             </div>
             </div> 
@@ -73,13 +73,19 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <h3 class="detail-header">Min-Rate: <span class="detail-header2">some number</span></h3>
+                    <h3 class="detail-header">Check-In: <span class="detail-header2"> {{ details['checkIn']}} </span></h3>
                     <br>
                     <br>
-                    <h3 class="detail-header">Max-Rate: <span class="detail-header2">some number</span></h3>
+                    <h3 class="detail-header">Check-Out: <span class="detail-header2"> {{ details['checkOut']}} </span></h3>
                     <br>
                     <br>
-                    <h3 class="detail-header">Currency: <span class="detail-header2">USD?</span></h3>
+                    <h3 class="detail-header">Min-Rate: <span class="detail-header2"> {{ details['minRate']}} </span></h3>
+                    <br>
+                    <br>
+                    <h3 class="detail-header">Max-Rate: <span class="detail-header2"> {{details['maxRate']}} </span></h3>
+                    <br>
+                    <br>
+                    <h3 class="detail-header">Currency: <span class="detail-header2">{{details['currency']}} </span></h3>
                 </div>
             </div>
         </div>
@@ -91,24 +97,24 @@
                     <h4 class="mb-4">Rooms Available</h4>
                     <div class="row">
                         <!-- Start iterating card for room -->
-                        <div class="col-sm-6 col-md-4" *ngFor="let room of rooms">
+                        <div class="col-sm-6 col-md-4" *ngFor="let room of rooms; let i = index">
                             <div class="room">
-                                <a href="rooms.html" class="img img-2 d-flex justify-content-center align-items-center room-image">
-                                    <div class="icon d-flex justify-content-center align-items-center">
-                                        <span class="icon-search2"></span>
-                                    </div>
+                                <a (click)="checkout(i)" class="img d-flex justify-content-center align-items-center" style="overflow: hidden;">
+                                    <img [src]="randomImage()" (error)="replaceImage($event)" class="img-fluid" style="object-fit: cover;">
+                                    <div class="icon d-flex justify-content-center align-items-center"> </div>
                                 </a>
                                 <div class="text p-3 text-center">
-                                    <h3 class="mb-3"><a href="rooms.html">Hotel Name</a></h3>
-                                    <p><span class="price mr-2">Net-Rate</span><span class="per">per night</span></p>
-                                    <p><span class="price mr-2" style="font-size: 1rem">Adults:</span><span>some number</span></p>
-                                    <p><span class="price mr-2" style="font-size: 1rem">Children:</span><span>some number</span></p>
+                                    <h3 class="mb-3"><a (click)="checkout(i)">{{room['name']}}</a></h3>
+                                    <p><span class="price mr-2">{{room['netRate']}}</span><span class="per">per night</span></p>
+                                    <p><span class="price mr-2" style="font-size: 1rem">Nights:</span><span>{{ details['nights'] }}</span></p>
+                                    <p><span class="price mr-2" style="font-size: 1rem">Adults:</span><span>{{ room['adults'] }}</span></p>
+                                    <p><span class="price mr-2" style="font-size: 1rem">Children:</span><span>{{room['children']}}</span></p>
                                     <hr>
-                                    <p class="pt-1"><a routerLink="/checkout" class="btn-custom">Checkout</a></p>
+                                    <p class="pt-1"><a (click)="checkout(i)" class="btn-custom">Checkout</a></p>
                                 </div>
                             </div>
                         </div>
-                        <!-- end interating cards -->
+                        <!-- end iterating cards -->
                     </div>
                 </div>
             </div>
