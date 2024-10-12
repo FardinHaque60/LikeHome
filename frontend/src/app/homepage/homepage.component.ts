@@ -25,6 +25,7 @@ export class HomepageComponent implements OnInit {
     'email': '',
     'username': '',
   };
+  hotels: Array<any> = [];
 
   constructor(private apiService: ApiService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.router.events.subscribe(() => {
@@ -39,6 +40,9 @@ export class HomepageComponent implements OnInit {
     rooms: new FormControl('', Validators.required),
     adults: new FormControl('', Validators.required),
     children: new FormControl('', Validators.required),
+    radius: new FormControl('20', Validators.required),
+    min_rate: new FormControl('0', Validators.required),
+    max_rate: new FormControl('5000', Validators.required),
   });
 
   hotelSearchSubmit(): void {
@@ -52,7 +56,34 @@ export class HomepageComponent implements OnInit {
     }
   }
 
+  get_featured_hotels(): void {
+    this.apiService.getBackendRequest('get-featured-hotels')
+      .subscribe({
+        next: (response) => {
+          console.log(response['hotels']);
+          this.hotels = response['hotels'];
+        },
+        error: (error) => { 
+          console.log(error);
+        }
+      });
+  }
+
+  openHotel(i: number): void {
+    this.router.navigate(['/hotel-details'], { queryParams: { 
+      checkIn: "2024-10-15", 
+      checkOut: "2024-10-18", 
+      details: JSON.stringify(this.hotels[i]) 
+      } 
+    });
+  }
+
+  replaceImage(event: any) {
+    event.target.src = 'assets/images/nexus_logo.png';
+  }
+
   ngOnInit(): void {
+    this.get_featured_hotels();
     this.apiService.getBackendRequest('get-session')
       .subscribe({
         next: (response) => {

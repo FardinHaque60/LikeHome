@@ -44,9 +44,8 @@ export class SearchResultsComponent implements OnInit {
   }
 
   searchFilterSubmit(): void {
-    console.log('Search filter form submitted:', this.searchFilter.value);
-    // TODO implement searching again with new filters
-    // this.search(this.searchFilter.value);
+    console.log('Search Filter Submitted:', this.searchFilter.value);
+    this.search(this.searchFilter.value);
   }
 
   search(params: any): void {
@@ -58,13 +57,14 @@ export class SearchResultsComponent implements OnInit {
             console.log(response['status']);
             console.log(response['hotels']);
             this.searchResults = response['hotels'];
+            this.loading = false;
           },
           error: (error) => {
             console.log("Search Error");
             console.log(error);
+            this.loading = false;
           }
         })
-    this.loading = false;
   }
 
   replaceImage(event: any) {
@@ -80,8 +80,11 @@ export class SearchResultsComponent implements OnInit {
       this.searchFilter.addControl('rooms', new FormControl(params['rooms'] ?? '', Validators.required));
       this.searchFilter.addControl('adults', new FormControl(params['adults'] ?? '', Validators.required));
       this.searchFilter.addControl('children', new FormControl(params['children'] ?? '', Validators.required));
+      this.searchFilter.addControl('radius', new FormControl(params['radius'] ?? '', Validators.required));
+      this.searchFilter.addControl('min_rate', new FormControl(params['min_rate'] ?? '', Validators.required));
+      this.searchFilter.addControl('max_rate', new FormControl(params['max_rate'] ?? '', Validators.required));
 
-      console.log('Initial Search Filters:', this.searchFilter.value);
+      console.log('Search Filters:', this.searchFilter.value);
     });
 
     this.search(this.searchFilter.value);
