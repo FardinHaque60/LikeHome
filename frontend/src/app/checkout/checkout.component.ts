@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ɵnormalizeQueryParams } from '@angular/common';
 import { ApiService } from '../service/api.service';
 import { Router, RouterLink, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { FooterComponent } from '../shared/footer/footer.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-homepage',
   standalone: true,
-  imports: [RouterLink, FooterComponent, ReactiveFormsModule,CommonModule],
+  imports: [RouterLink, FooterComponent, ReactiveFormsModule, CommonModule, MatProgressSpinnerModule],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss'
 })
@@ -17,6 +18,7 @@ export class CheckoutComponent implements OnInit{
   tax: number = 0;
   total: number = 0;
   subtotal: number = 0;
+  loading: boolean = false;
 
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) { }
 
@@ -27,12 +29,37 @@ export class CheckoutComponent implements OnInit{
     CVV: new FormControl('', Validators.required),
   });
 
-  // TODO: send data from form to backend
-  paymentSubmit(): void{
-    
+  paymentSubmit(): void {
+    // TODO make better alert message
+    if (this.paymentForm.invalid) {
+      alert("invalid payment details");
+    }
+    this.loading = true;
+    this.details['totalPrice'] = this.total;
+    let reservationDetails = {
+      "paymentDetails": this.paymentForm.value,
+      "reservationDetails": this.details
+    }
+    // TODO verify payment details
+    console.log(reservationDetails);
+    this.apiService.postBackendRequest('create-reservation', reservationDetails)
+      .subscribe({
+        next: (response) => {
+          console.log("Payment Success");
+          console.log(response['status']);
+          console.log(response['message']);
+          this.loading = false;
+          this.router.navigate(['/confirmation']);
+        },
+        error: (error) => {
+          console.error("Reservation Error");
+          console.error(error);
+          this.loading = false;
+        }
+      });
   }
 
-  calculateTax(price: number): number {
+  calculateTax(): number {
     return +(this.subtotal * 0.09).toFixed(2);
   }
 
@@ -54,8 +81,8 @@ export class CheckoutComponent implements OnInit{
     });
 
     this.subtotal = +this.details['price']*this.details['nights'];
-    this.tax = this.calculateTax(this.details['price']);
+    this.subtotal = +this.subtotal.toFixed(2);
+    this.tax = this.calculateTax();
     this.total = this.calculateTotal();
   }
-
 }

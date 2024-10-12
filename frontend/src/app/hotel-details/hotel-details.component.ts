@@ -30,18 +30,31 @@ export class HotelDetailsComponent implements OnInit{
   }
 
   checkout(i: number) {
-    let room = this.rooms[i];
-    let details = {
-      'hotel': this.details['name'],
-      'room': room['name'],
-      'price': room['netRate'],
-      'adults': room['adults'],
-      'children': room['children'],
-      'checkIn': this.details['checkIn'],
-      'checkOut': this.details['checkOut'],
-      'nights': this.details['nights']
-    }
-    this.router.navigate(['/checkout'], { queryParams: { details: JSON.stringify(details) } });
+    this.apiService.getBackendRequest('get-session')
+      .subscribe({
+        next: (data: any) => {
+          console.log(data);
+          let room = this.rooms[i];
+          let details = {
+            'hotel': this.details['name'],
+            'room': room['name'],
+            'price': room['netRate'],
+            'adults': room['adults'],
+            'children': room['children'],
+            'checkIn': this.details['checkIn'],
+            'checkOut': this.details['checkOut'],
+            'nights': this.details['nights'],
+            'address': this.details['address'],
+            'city': this.details['city'],
+            'images': this.details['images'],
+          }
+          this.router.navigate(['/checkout'], { queryParams: { details: JSON.stringify(details) } });
+        },
+        error: (error: any) => {
+          console.log(error);
+          alert("Please login to book a room");
+        }
+      });
   }
 
   calculateDaysBetween(date1: string, date2: string): number {

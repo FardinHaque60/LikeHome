@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ApiService } from '../../service/api.service';
 import { CommonModule } from '@angular/common';
 
@@ -13,7 +13,21 @@ import { CommonModule } from '@angular/common';
 export class NavbarComponent implements OnInit {
   signedIn: boolean = false;
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private router: Router) { }
+
+  logout(): void {
+    this.apiService.postBackendRequest('logout', {})
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          this.signedIn = false;
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+  }
 
   ngOnInit(): void {
       this.apiService.getBackendRequest('get-session')

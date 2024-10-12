@@ -22,7 +22,7 @@
                     <div data-mdb-input-init class="form-outline mb-5">
                       <label class="form-label" for="typeText">Card Number</label>
                       <input type="text" id="typeText" class="form-control" size="17"
-                       placeholder="Enter your card number" minlength="19" maxlength="19" formControlName="cardNum"/>
+                       placeholder="Enter your card number" minlength="16" maxlength="16" formControlName="cardNum"/>
                     </div>
                     <!--name on card field-->
                     <div data-mdb-input-init class="form-outline mb-5">
@@ -35,7 +35,7 @@
                         <div data-mdb-input-init class="form-outline">
                           <label class="form-label" for="typeExp">Expiration date</label>
                           <input type="text" id="typeExp"class="form-control form-control-lg" 
-                          size="7" id="exp" minlength="7" maxlength="7" placeholder="MM/YY"  formControlName="expDate"/>
+                          size="7" id="exp" placeholder="MM/YY"  formControlName="expDate"/>
                         </div>
                       </div>
                       <!--security code (CVV) field-->
@@ -47,7 +47,10 @@
                         </div>
                       </div>
                     </div>
-                    <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">Checkout</button>
+                    <button *ngIf="!loading" type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
+                      Checkout
+                    </button>
+                    <mat-spinner *ngIf="loading" diameter="30"/>
                     <div class="fw-bold mt-4">
                       <a routerLink="/hotel-details"><i class="fas fa-angle-left"></i>Go back to Hotel Details</a>
                     </div>
@@ -59,7 +62,7 @@
                     <!-- room item/order -->
                     <div class="d-flex align-items-center mb-5">
                       <div class="flex-shrink-0">
-                        <img src="assets/images/room-1.jpg"
+                        <img [src]="details['images'][0]"
                           class="img-fluid rounded" style="width: 150px;" alt="Generic placeholder image">
                       </div>
                       <div class="flex-grow-1 ms-3">
