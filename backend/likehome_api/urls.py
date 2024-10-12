@@ -13,5 +13,5 @@ urlpatterns = [
 
     # search related paths
     path('search/', search),
-    
+    path('get-featured-hotels/', featured_hotels),
 ]
