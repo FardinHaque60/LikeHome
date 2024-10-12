@@ -20,12 +20,15 @@ export const routes: Routes = [
             {
                 path: 'search-results',
                 component: SearchResultsComponent
-            }
+            },
+            {
+                path: 'hotel-details',
+                component: HotelDetailsComponent,
+            },
         ]
     },
     { path: 'login', component: LoginComponent }, // TODO: add protection, if user signed in then go to homepage
     { path: 'create-account', component: CreateAccountComponent}, // TODO: add protection, if user signed in then go to homepage
     { path: 'create-account/verification', component: VerificationComponent}, // TODO: add protection to this route, only accessed after creating account
-    { path: 'hotel-details', component: HotelDetailsComponent},
     { path: 'checkout', component: CheckoutComponent},
 ];

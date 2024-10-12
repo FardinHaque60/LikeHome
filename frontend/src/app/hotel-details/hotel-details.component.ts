@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../service/api.service';
 import { Router, RouterLink, NavigationEnd } from '@angular/router';
-import { NavbarComponent } from '../shared/navbar/navbar.component';
-import { FooterComponent } from '../shared/footer/footer.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-hotel-details',
   standalone: true,
-  imports: [RouterLink, NavbarComponent, FooterComponent],
+  imports: [RouterLink, CommonModule],
   templateUrl: './hotel-details.component.html',
   styleUrl: './hotel-details.component.scss'
 })
 export class HotelDetailsComponent implements OnInit{
+  rooms = [0];
 
   constructor(private apiService: ApiService, private router: Router) { }
-
 
   ngOnInit(): void {
         //moves to the top of the page when finished navigating (back&forth)

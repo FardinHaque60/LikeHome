@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,10 +8,9 @@
     <link rel="stylesheet" href="../../../public/assets/css/style.css">
 
   </head>
-  <body>
 
-    <app-navbar/>
-
+  <div>
+    <!--  top banner image -->
     <div class="hero-wrap my-image">
         <div class="overlay"></div>
         <div class="container">
@@ -28,13 +25,10 @@
         </div>
     </div>
 
-
     <section class="ftco-section">
         <div class="container">
         <div class="row">
-
             <!-- Hotel Main Details, Contact Info  -->
-
             <div class="col-lg-8">
             <div class="row">
                 <div class="col-md-12">
@@ -47,23 +41,24 @@
                     <p>This is where the description for the hotel will be. blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah hotels blah blah blah blah</p>
                     <div class="d-md-flex mt-5 mb-2 room-single justify-content-center">
                         <ul class="list">
+                            <li><span>Street:</span> blah blah</li>
                             <li><span>City:</span> blah blah</li>
-                            <li><span>Address:</span> blah blah</li>
+                            <li><span># of Rooms:</span> blah blah</li>
                         </ul>
                         <ul class="list ml-md-5">
                             <li><span>Email:</span> Blah blah</li>
                             <li><span>Web:</span> blah</li>
+                            <li><span>Phone:</span> blah blah</li>
                         </ul>
                     </div>
                     <div class="d-md-flex mb-5 room-single justify-content-center">
                         <ul class="list">
-                            <li><span>Phone:</span> blah blah</li>
                         </ul>
                     </div>
                     <p>Any additional detail blah blah blah</p>
                 </div>             
             </div>
-            </div> <!-- .col-md-8 -->
+            </div> 
         
             <!-- Search Box, Min & MaxRate, Currency -->
             <div class="col-lg-4">
@@ -95,7 +90,8 @@
                 <div class="col-md-12 room-single mb-5 mt-5">
                     <h4 class="mb-4">Rooms Available</h4>
                     <div class="row">
-                        <div class="col-sm-6 col-md-4">
+                        <!-- Start iterating card for room -->
+                        <div class="col-sm-6 col-md-4" *ngFor="let room of rooms">
                             <div class="room">
                                 <a href="rooms.html" class="img img-2 d-flex justify-content-center align-items-center room-image">
                                     <div class="icon d-flex justify-content-center align-items-center">
@@ -104,7 +100,7 @@
                                 </a>
                                 <div class="text p-3 text-center">
                                     <h3 class="mb-3"><a href="rooms.html">Hotel Name</a></h3>
-                                    <p><span class="price mr-2">Net-Rate</span></p>
+                                    <p><span class="price mr-2">Net-Rate</span><span class="per">per night</span></p>
                                     <p><span class="price mr-2" style="font-size: 1rem">Adults:</span><span>some number</span></p>
                                     <p><span class="price mr-2" style="font-size: 1rem">Children:</span><span>some number</span></p>
                                     <hr>
@@ -112,49 +108,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-4">
-                            <div class="room">
-                                <a href="rooms.html" class="img img-2 d-flex justify-content-center align-items-center room-image">
-                                    <div class="icon d-flex justify-content-center align-items-center">
-                                        <span class="icon-search2"></span>
-                                    </div>
-                                </a>
-                                <div class="text p-3 text-center">
-                                    <h3 class="mb-3"><a href="rooms.html">Hotel Name</a></h3>
-                                    <p><span class="price mr-2">Net-Rate</span></p>
-                                    <p><span class="price mr-2" style="font-size: 1rem">Adults:</span><span>some number</span></p>
-                                    <p><span class="price mr-2" style="font-size: 1rem">Children:</span><span>some number</span></p>
-                                    <hr>
-                                    <p class="pt-1"><a routerLink="/checkout" class="btn-custom">Checkout</a></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4">
-                            <div class="room">
-                                <a href="rooms.html" class="img img-2 d-flex justify-content-center align-items-center room-image">
-                                    <div class="icon d-flex justify-content-center align-items-center">
-                                        <span class="icon-search2"></span>
-                                    </div>
-                                </a>
-                                <div class="text p-3 text-center">
-                                    <h3 class="mb-3"><a href="rooms.html">Hotel Name</a></h3>
-                                    <p><span class="price mr-2">Net-Rate</span></p>
-                                    <p><span class="price mr-2" style="font-size: 1rem">Adults:</span><span>some number</span></p>
-                                    <p><span class="price mr-2" style="font-size: 1rem">Children:</span><span>some number</span></p>
-                                    <hr>
-                                    <div>
-                                        <p><a routerLink="/checkout" class="btn-custom">Checkout</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- end interating cards -->
                     </div>
                 </div>
             </div>
         </div>
         </div>
-    </section> <!-- .section -->
-
-    <app-footer/>
-  </body>
-</html>
+    </section>
+</div>
