@@ -3,16 +3,18 @@ import { FormGroup, FormControl, Validators, ValidatorFn, ReactiveFormsModule, A
 import { RouterLink, Router } from '@angular/router';
 import { ApiService } from '../service/api.service';
 import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-create-account',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, CommonModule],
+  imports: [ReactiveFormsModule, RouterLink, CommonModule, MatProgressSpinnerModule],
   templateUrl: './create-account.component.html',
   styleUrl: './create-account.component.scss'
 })
 export class CreateAccountComponent {
   emailTaken: boolean = false;
+  loading: boolean = false;
 
   constructor(private apiService: ApiService, private router: Router) {}
 
@@ -36,6 +38,7 @@ export class CreateAccountComponent {
   }, { validators: this.passwordMatcher });
 
   registerSubmit(): void {
+    this.loading = true;
     console.log(this.registerForm.value);
     if (this.registerForm.valid) {
       this.apiService.postBackendRequest('create-account', this.registerForm.value)
@@ -43,6 +46,7 @@ export class CreateAccountComponent {
           next: (response) => {
             console.log(response);
             console.log("Registration Success");
+            this.loading = false;
             // TODO: update to go to confirmation code page
             this.router.navigate(['create-account/verification']);
           },

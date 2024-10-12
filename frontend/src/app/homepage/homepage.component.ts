@@ -4,14 +4,18 @@ import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/route
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FooterComponent } from '../shared/footer/footer.component';
 import { CommonModule } from '@angular/common';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-homepage',
   standalone: true,
-  imports: [RouterLink, NavbarComponent, FooterComponent, RouterOutlet, CommonModule, ReactiveFormsModule],
+  imports: [RouterLink, NavbarComponent, FooterComponent, RouterOutlet, CommonModule, ReactiveFormsModule, MatFormFieldModule, MatDatepickerModule, FormsModule],
   templateUrl: './homepage.component.html',
-  styleUrl: './homepage.component.scss'
+  styleUrl: './homepage.component.scss',
+  providers: [provideNativeDateAdapter()]
 })
 export class HomepageComponent implements OnInit {
   hasChildren: boolean = false;
@@ -30,10 +34,11 @@ export class HomepageComponent implements OnInit {
 
   hotelSearch = new FormGroup({
     location: new FormControl('', Validators.required),
-    check_in: new FormControl('', Validators.required),
-    check_out: new FormControl('', Validators.required),
+    check_in: new FormControl<Date | null>(null),
+    check_out: new FormControl<Date | null>(null),
     rooms: new FormControl('', Validators.required),
     adults: new FormControl('', Validators.required),
+    children: new FormControl('', Validators.required),
   });
 
   hotelSearchSubmit(): void {

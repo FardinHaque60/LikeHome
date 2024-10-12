@@ -43,25 +43,34 @@
 								<div class="form-group p-4 align-self-stretch d-flex align-items-end">
 									<div class="wrap">
 											<label for="#">Location</label>
-											<input type="text" class="form-control checkin_date" placeholder="Location" formControlName="location">
+											<input type="text" class="form-control" placeholder="Location" formControlName="location">
 										</div>
 									</div>
 							</div>
-							<div class="col-md-3 d-flex">
+							<div class="col-md-4 d-flex">
 								<div class="form-group p-4 align-self-stretch d-flex align-items-end">
 									<div class="wrap">
-											<label for="#">Check-in Date</label>
-											<input type="text" class="form-control checkin_date" placeholder="Check-in date" formControlName="check_in">
-										</div>
+										<label for="#">Date Range</label>
+											<div class="row"> 
+												<div class="col-md-10">
+													<mat-date-range-input class="form-control" [formGroup]="hotelSearch" [rangePicker]="picker">
+														<input matStartDate formControlName="check_in" placeholder="Start date">
+														<input matEndDate formControlName="check_out" placeholder="End date">
+													</mat-date-range-input>
+												</div>
+												<div class="col-md-1">
+													<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-date-range-picker #picker></mat-date-range-picker>
+												</div>
+											</div>
+											@if (hotelSearch.controls.check_in.hasError('matStartDateInvalid')) {
+											<mat-error>Invalid start date</mat-error>
+											}
+											@if (hotelSearch.controls.check_out.hasError('matEndDateInvalid')) {
+											<mat-error>Invalid end date</mat-error>
+											}
 									</div>
-							</div>
-							<div class="col-md-3 d-flex">
-								<div class="form-group p-4 align-self-stretch d-flex align-items-end">
-									<div class="wrap">
-											<label for="#">Check-out Date</label>
-											<input type="text" class="form-control checkout_date" placeholder="Check-out date" formControlName="check_out">
-									</div>
-									</div>
+								</div>
 							</div>
 							<div class="col-md d-flex">
 								<div class="form-group p-4 align-self-stretch d-flex align-items-end">
@@ -69,12 +78,12 @@
 										<label for="#">Room</label>
 										<div class="form-field">
 											<div class="select-wrap">
-									<div class="icon"><span class="ion-ios-arrow-down"></span></div>
-									<input type="number" class="form-control" placeholder="#" formControlName="rooms">
-									</div>
-									</div>
+												<div class="icon"><span class="ion-ios-arrow-down"></span></div>
+												<input type="number" class="form-control" placeholder="#" formControlName="rooms">
+											</div>
+										</div>
+									</div> 
 								</div> 
-							</div> 
 							</div> 
 							<div class="col-md d-flex">
 								<div class="form-group p-4 align-self-stretch d-flex align-items-end">
@@ -82,12 +91,25 @@
 										<label for="#">Adults</label>
 										<div class="form-field">
 											<div class="select-wrap">
-									<div class="icon"><span class="ion-ios-arrow-down"></span></div>
-									<input type="number" class="form-control" placeholder="#" formControlName="adults">
-									</div>
+												<div class="icon"><span class="ion-ios-arrow-down"></span></div>
+												<input type="number" class="form-control" placeholder="#" formControlName="adults">
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
+							<div class="col-md d-flex">
+								<div class="form-group p-4 align-self-stretch d-flex align-items-end">
+									<div class="wrap">
+										<label for="#">Children</label>
+										<div class="form-field">
+											<div class="select-wrap">
+												<div class="icon"><span class="ion-ios-arrow-down"></span></div>
+												<input type="number" class="form-control" placeholder="#" formControlName="children">
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 							<div class="col-md d-flex">
 								<div class="form-group d-flex align-self-stretch">
