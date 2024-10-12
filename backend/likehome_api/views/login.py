@@ -17,3 +17,8 @@ def login(request):
         return Response({'status': 'OK'}, status=status.HTTP_200_OK)
 
     return Response({'status': 'INVALID'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def logout(request):
+    set_current_user(None)
+    return Response({'status': 'OK'}, status=status.HTTP_200_OK)

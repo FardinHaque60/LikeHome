@@ -7,6 +7,7 @@ urlpatterns = [
     path('login/', login),
     path('create-account/', create_account),
     path('verify-code/', verify_code),
+    path('logout/', logout),
 
     # session related paths
     path('get-session/', get_session),
@@ -14,4 +15,7 @@ urlpatterns = [
     # search related paths
     path('search/', search),
     path('get-featured-hotels/', featured_hotels),
+
+    # reservation related paths
+    path('create-reservation/', create_reservation),
 ]

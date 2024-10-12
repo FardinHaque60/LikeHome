@@ -28,8 +28,8 @@ def search(request):
     )
     '''
     # use to mock hotels api response
-    with open("playground/hotel_availability.json", "r") as file:
-        response = json.load(file)
+    with open("likehome_api/views/clients/featured_hotels.json", "r") as file:
+            response = json.load(file)
 
     try:
         if response['status_code'] != 200:
