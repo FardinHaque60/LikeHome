@@ -1,0 +1,147 @@
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+    <link rel="stylesheet" href="../../../public/assets/css/style.css">
+</head>
+
+<section class="h-100 h-custom" style="background-color: #eee;">
+    <div class="container h-100 py-5">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col">
+          <div class="card shopping-cart" style="border-radius: 15px;">
+            <div class="card-body">
+  
+                <!--Payment details section-->
+              <div class="row">
+                <div class="col-lg-5 px-5 py-4">
+                  <h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Payment Details</h3>
+                  <form class="mb-5" [formGroup]="paymentForm" (ngSubmit)="paymentSubmit()">
+
+                    <!--Display account details of user here?-->
+                    <!--First & Last Name, email, phone num etc. -->
+                    <!-- TO-DO: validators for form -->
+  
+                    <!--card number field-->
+                    <div data-mdb-input-init class="form-outline mb-5">
+                      <label class="form-label" for="typeText">Card Number</label>
+                      <input type="text" id="typeText" class="form-control" siez="17"
+                       placeholder="Enter your card number" minlength="19" maxlength="19" formControlName="cardNum"/>
+                    </div>
+  
+                    <!--name on card field-->
+                    <div data-mdb-input-init class="form-outline mb-5">
+                      <label class="form-label" for="typeName">Name on card</label>
+                      <input type="text" id="typeName" class="form-control" placeholder="Enter name on card"  formControlName="cardName"/>
+                    </div>
+  
+                    <div class="row">
+                      <div class="col-md-6 mb-5">
+                        <!--expiration date field-->
+                        <div data-mdb-input-init class="form-outline">
+                          <label class="form-label" for="typeExp">Expiration date</label>
+                          <input type="text" id="typeExp"class="form-control form-control-lg" 
+                          size="7" id="exp" minlength="7" maxlength="7" placeholder="MM/YY"  formControlName="expDate"/>
+                        </div>
+                      </div>
+                    
+                      <!--security code (CVV) field-->
+                      <div class="col-md-6 mb-5">
+                        <div data-mdb-input-init class="form-outline">
+                        <label class="form-label" for="typeText">CVV</label>
+                        <input type="password" id="typeText" class="form-control form-control-lg"
+                        value="" size="1" minlength="3" maxlength="3" placeholder="3-digit code"  formControlName="CVV"/>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">Buy now</button>
+                    <h5 class="fw-bold mb-5" style="position: absolute; bottom: 0;">
+                      <a href="#!"><i class="fas fa-angle-left me-2"></i>Go back to Hotel Details</a>
+                    </h5>
+                  </form>
+                </div>
+
+                <!--Order Details/Room booking details-->
+
+                <div class="col-lg-7 px-5 py-4">
+                    <h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Your Room</h3>
+    
+                    <div class="d-flex align-items-center mb-5">
+                      <div class="flex-shrink-0">
+                        <img src="assets/images/room-1.jpg"
+                          class="img-fluid rounded" style="width: 150px;" alt="Generic placeholder image">
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <a href="#!" class="float-end"><i class="fas fa-times"></i></a>
+                        <h5 class="text-primary">Room Name</h5>
+                        <h6 style="color: #9e9e9e;">Hotel Name:</h6>
+                        <h6 style="color: #9e9e9e;">Adults:</h6>
+                        <h6 style="color: #9e9e9e;">Children: </h6>
+                        <div class="d-flex align-items-center">
+                          <p class="fw-bold mb-0 me-5 pe-3">239$</p>
+                        </div>
+                      </div>
+                    </div>
+    
+                    <div class="d-flex align-items-center mb-5">
+                      <div class="flex-shrink-0">
+                        <img src="assets/images/room-1.jpg"
+                          class="img-fluid rounded" style="width: 150px;" alt="Generic placeholder image">
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <a href="#!" class="float-end"><i class="fas fa-times"></i></a>
+                        <h5 class="text-primary">Room Name</h5>
+                        <h6 style="color: #9e9e9e;">Hotel Name:</h6>
+                        <h6 style="color: #9e9e9e;">Adults:</h6>
+                        <h6 style="color: #9e9e9e;">Children: </h6>
+                        <div class="d-flex align-items-center">
+                          <p class="fw-bold mb-0 me-5 pe-3">239$</p>
+                        </div>
+                      </div>
+                    </div>
+    
+                    <div class="d-flex align-items-center mb-5">
+                      <div class="flex-shrink-0">
+                        <img src="assets/images/room-1.jpg"
+                          class="img-fluid rounded" style="width: 150px;" alt="Generic placeholder image">
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <a href="#!" class="float-end"><i class="fas fa-times"></i></a>
+                        <h5 class="text-primary">Room Name</h5>
+                        <h6 style="color: #9e9e9e;">Hotel Name:</h6>
+                        <h6 style="color: #9e9e9e;">Adults:</h6>
+                        <h6 style="color: #9e9e9e;">Children: </h6>
+                        <div class="d-flex align-items-center">
+                          <p class="fw-bold mb-0 me-5 pe-3">239$</p>
+                        </div>
+                      </div>
+                    </div>
+    
+                    <hr class="mb-4" style="height: 2px; background-color: black; opacity: 1;">
+
+                    <!--This is the cost section-->
+                    <div class="d-flex justify-content-between px-x">
+                        <p class="fw-bold">Taxes:</p>
+                        <p class="fw-bold">95$</p>
+                      </div>
+                      <div class="d-flex justify-content-between px-x">
+                        <p class="fw-bold">Fees:</p>
+                        <p class="fw-bold">95$</p>
+                      </div>
+                    <div class="d-flex justify-content-between p-2 mb-2 bg-primary rounded">
+                      <h5 class="fw-bold mb-0" style="color: white">Total:</h5>
+                      <h5 class="fw-bold mb-0" style="color: white">Free 😁</h5>
+                    </div>
+    
+                  </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <app-footer/>
