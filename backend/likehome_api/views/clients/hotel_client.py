@@ -11,9 +11,18 @@ import random
 
 load_dotenv()
 
-keys = [os.getenv("HOTELBEDS_API_KEY"), os.getenv("HOTELBEDS_API_KEY2")]
-secrets = [os.getenv("HOTELBEDS_SECRET"), os.getenv("HOTELBEDS_SECRET2")]
-ind = 0
+API_PREAMBLE = "HOTELBEDS_API_KEY"
+SECRET_PREAMBLE = "HOTELBEDS_SECRET"
+TOTAL_KEYS = 2
+keys = []
+secrets = []
+
+# load all api keys and secrets into lists
+for i in range(TOTAL_KEYS):
+    keys.append(os.getenv(API_PREAMBLE + str(i + 1)))
+    secrets.append(os.getenv(SECRET_PREAMBLE + str(i + 1)))
+
+IND = 0 # global index of which key is currently being used
 
 # Rotate the API key
 def rotate_key():
@@ -24,12 +33,12 @@ def rotate_key():
     return ind < len(keys)
 
 def get_api_key():
-    global ind, keys
-    return keys[ind]
+    global IND, keys
+    return keys[IND]
 
 def get_secret():
-    global ind, secrets
-    return secrets[ind]
+    global IND, secrets
+    return secrets[IND]
 
 # Generate the signature using the API key, secret, and current time in seconds
 def generate_signature():
@@ -175,12 +184,12 @@ def hotel_details(hotel_code):
         "to": 1
     }
 
-    hotel_details_items = ["name", "description", "city", "address", "email", "web"]
+    hotel_details_items = ["name", "description", "city", "address"]
 
     headers = get_header(generate_signature())
     response = requests.get(url, headers=headers, params=params)
+    '''
     # Save the JSON response to a file
-    ''' 
     with open("playground/RAW_hotel_details.json", "w") as file:
         json.dump(response.json(), file, indent=4)
     '''
@@ -188,7 +197,13 @@ def hotel_details(hotel_code):
         data = response.json()['hotels'][0]
         hotel_features = {}  
         # get name, description, city, address, email, web for hotel details
-        for i in hotel_details_items:
+        try: # email and web are stored directly
+            hotel_features['web'] = data['web']
+            hotel_features['email'] = data['email']
+        except:
+            hotel_features['web'] = "N/A"
+            hotel_features['email'] = "N/A"
+        for i in hotel_details_items: # rest of attributes are stored in content
             try:
                 hotel_features[i] = data[i]['content']
             except:
@@ -202,10 +217,10 @@ def hotel_details(hotel_code):
         for i in random.sample(range(len(images)), 4):
             hotel_features['images'].append("http://photos.hotelbeds.com/giata/xxl/" + images[i]['path'])
 
+        '''
         # save final hotel details to a file
-        ''' 
         with open("playground/hotel_details.json", "w") as file:
-            json.dump(response.json(), file, indent=4)
+            json.dump(hotel_features, file, indent=4)
         '''
 
         return hotel_features
