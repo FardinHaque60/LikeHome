@@ -48,11 +48,11 @@ def get_search_query():
 
 # Rotate the API key
 def rotate_key():
-    global ind
-    print("key %d expended" % ind)
-    ind += 1
-    print("currently using key", ind)
-    return ind < len(keys)
+    global IND
+    print("key %d expended" % IND)
+    IND += 1
+    print("currently using key", IND)
+    return IND < len(keys)
 
 def get_api_key():
     global IND, keys
@@ -149,58 +149,58 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms, r
     response = requests.post(avail_url, headers=headers, json=params)
 
     # Save the JSON response to a file
-    '''
     with open("playground/RAW_hotel_availability.json", "w") as file:
         json.dump(response.json(), file, indent=4)
-    '''
     if response.status_code == 200:
         hotel_objs = []
-        hotels = response.json()['hotels']['hotels'] # list of hotels
+        try:
+            hotels = response.json()['hotels']['hotels'] # list of hotels
 
-        hotel_overview_items = ["code", "name", "minRate", "maxRate", "currency"]
+            hotel_overview_items = ["code", "name", "minRate", "maxRate", "currency"]
 
-        # slim down response for our own use
-        for hotel in hotels:
-            hotel_obj = { }
-            # add code, name, minRate, maxRate, currency to hotel object
-            for i in hotel_overview_items:
+            # slim down response for our own use
+            for hotel in hotels:
+                hotel_obj = { }
+                # add code, name, minRate, maxRate, currency to hotel object
+                for i in hotel_overview_items:
+                    try:
+                        hotel_obj[i] = hotel[i]
+                    except KeyError:
+                        hotel_obj[i] = "N/A"
+
+                # add hotel details to hotel object
+                # i.e. name, description, address, city, email, phone, web, images
+                details = hotel_details(hotel['code'])
                 try:
-                    hotel_obj[i] = hotel[i]
-                except KeyError:
-                    hotel_obj[i] = "N/A"
+                    if (details['status_code'] != 200):
+                        return {"status_code": 403, "message": details.json()}
+                except:
+                    pass
+                for i in details:
+                    hotel_obj[i] = details[i]
 
-            # add hotel details to hotel object
-            # i.e. name, description, address, city, email, phone, web, images
-            details = hotel_details(hotel['code'])
-            try:
-                if (details['status_code'] != 200):
-                    return {"status_code": 403, "message": details.json()}
-            except:
-                pass
-            for i in details:
-                hotel_obj[i] = details[i]
-
-            # slim down room object
-            # add list of rooms to hotel_obj, each room has name, netRate, adults, children
-            rooms = hotel['rooms']
-            selected_rooms = []
-            for room in rooms:
-                room_obj = {}
-                room_obj['name'] = room['name']
-                rate = room['rates'][0]
-                room_obj['netRate'] = rate['net']
-                room_obj['adults'] = rate['adults']
-                room_obj['children'] = rate['children']
-                selected_rooms.append(room_obj)
-            hotel_obj['rooms'] = selected_rooms
-            
-            hotel_objs.append(hotel_obj)
-
+                # slim down room object
+                # add list of rooms to hotel_obj, each room has name, netRate, adults, children
+                rooms = hotel['rooms']
+                selected_rooms = []
+                for room in rooms:
+                    room_obj = {}
+                    room_obj['name'] = room['name']
+                    rate = room['rates'][0]
+                    room_obj['netRate'] = rate['net']
+                    room_obj['adults'] = rate['adults']
+                    room_obj['children'] = rate['children']
+                    selected_rooms.append(room_obj)
+                hotel_obj['rooms'] = selected_rooms
+                
+                hotel_objs.append(hotel_obj)
+        except:
+            set_search_query(search_filter)
+            set_search_results([])
+            return {"status_code": 403, "message": "Error getting search results"}
         # save final hotel objects to a file
-        '''
         with open("playground/hotel_availability.json", "w") as file:
             json.dump(hotel_objs, file, indent=4)
-        '''
 
         set_search_query(search_filter)
         set_search_results(hotel_objs)
@@ -230,11 +230,9 @@ def hotel_details(hotel_code):
 
     headers = get_header(generate_signature())
     response = requests.get(url, headers=headers, params=params)
-    '''
     # Save the JSON response to a file
     with open("playground/RAW_hotel_details.json", "w") as file:
         json.dump(response.json(), file, indent=4)
-    '''
     if response.status_code == 200:
         data = response.json()['hotels'][0]
         hotel_features = {}  
@@ -259,11 +257,9 @@ def hotel_details(hotel_code):
         for i in random.sample(range(len(images)), 4):
             hotel_features['images'].append("http://photos.hotelbeds.com/giata/xxl/" + images[i]['path'])
 
-        '''
         # save final hotel details to a file
         with open("playground/hotel_details.json", "w") as file:
             json.dump(hotel_features, file, indent=4)
-        '''
 
         return hotel_features
     else:
