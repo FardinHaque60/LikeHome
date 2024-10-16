@@ -47,16 +47,17 @@ export class CreateAccountComponent {
             console.log(response);
             console.log("Registration Success");
             this.loading = false;
-            // TODO: update to go to confirmation code page
             this.router.navigate(['create-account/verification']);
           },
           error: (error) => {
+            this.loading = false;
             console.log(error);
             if (error.error.invalidEmail) {
               this.emailTaken = true;
             }
             console.log("Registration Error");
 
+            // remove email taken message after 5 seconds
             setTimeout(() => { 
               this.emailTaken = false;
             }, 5000);

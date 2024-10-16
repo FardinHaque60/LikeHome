@@ -8,11 +8,23 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-homepage',
   standalone: true,
-  imports: [RouterLink, NavbarComponent, FooterComponent, RouterOutlet, CommonModule, ReactiveFormsModule, MatFormFieldModule, MatDatepickerModule, FormsModule],
+  imports: [
+    RouterLink, 
+    NavbarComponent, 
+    FooterComponent, 
+    RouterOutlet, 
+    CommonModule, 
+    ReactiveFormsModule, 
+    MatFormFieldModule, 
+    MatDatepickerModule, 
+    FormsModule,
+    MatProgressSpinnerModule
+  ],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.scss',
   providers: [provideNativeDateAdapter()]
@@ -26,6 +38,7 @@ export class HomepageComponent implements OnInit {
     'username': '',
   };
   hotels: Array<any> = [];
+  loading: boolean = false;
 
   constructor(private apiService: ApiService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.router.events.subscribe(() => {
@@ -47,12 +60,25 @@ export class HomepageComponent implements OnInit {
 
   hotelSearchSubmit(): void {
     if (this.hotelSearch.valid) {
+      this.loading = true;
       console.log('Hotel search form submitted:', this.hotelSearch.value);
-      this.router.navigate(['/search-results'], { queryParams: this.hotelSearch.value });
+      this.apiService.postBackendRequest('search', this.hotelSearch.value)
+        .subscribe({
+          next: (response) => {
+            console.log(response);
+            this.loading = false;
+            this.router.navigate(['/search-results']);
+          },
+          error: (error) => {
+            console.log(error);
+            this.loading = false;
+          }
+        });
     }
     else {
       this.hotelSearch.markAllAsTouched();
       console.log("Field Error");
+      this.loading = false;
     }
   }
 

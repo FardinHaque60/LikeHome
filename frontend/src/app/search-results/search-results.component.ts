@@ -15,7 +15,17 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 export class SearchResultsComponent implements OnInit {
   searchResults: Array<any> = [];
   loading: boolean = false;
-  searchFilter = new FormGroup({});
+  searchFilter = new FormGroup({
+    location: new FormControl('', Validators.required),
+    check_in: new FormControl('', Validators.required),
+    check_out: new FormControl('', Validators.required),
+    rooms: new FormControl('', Validators.required),
+    adults: new FormControl('', Validators.required),
+    children: new FormControl('', Validators.required),
+    radius: new FormControl('', Validators.required),
+    min_rate: new FormControl('', Validators.required),
+    max_rate: new FormControl('', Validators.required)
+  });
 
   constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router) {}
 
@@ -43,21 +53,38 @@ export class SearchResultsComponent implements OnInit {
     });
   }
 
-  searchFilterSubmit(): void {
-    console.log('Search Filter Submitted:', this.searchFilter.value);
-    this.search(this.searchFilter.value);
+  getResults(): void {
+    this.apiService.getBackendRequest('get-search-result')
+      .subscribe({
+        next: (response) => {
+          console.log("Search Result Loaded Success");
+          console.log(response['query']);
+          console.log(response['hotels']);
+          // set results to be reflected in frontend
+          this.searchResults = response['hotels'];
+          this.searchFilter.patchValue(response['query']);
+          this.searchFilter.get('check_in')?.setValue(this.formatDate(new Date(response['query']['check_in'])));
+          this.searchFilter.get('check_out')?.setValue(this.formatDate(new Date(response['query']['check_out'])));
+          this.loading = false;
+        },
+        error: (error) => {
+          console.log("Search Result Error");
+          console.log(error);
+          this.loading = false;
+        }
+      })
   }
 
-  search(params: any): void {
+  // invoked when search is called from search page itself
+  searchFilterSubmit(): void {
     this.loading = true;
-    this.apiService.postBackendRequest('search', params)
+    console.log('Search Filter Submitted:', this.searchFilter.value);
+    this.apiService.postBackendRequest('search', this.searchFilter.value)
         .subscribe({
           next: (response) => {
-            console.log("Search Success");
-            console.log(response['status']);
-            console.log(response['hotels']);
-            this.searchResults = response['hotels'];
-            this.loading = false;
+            console.log("Search Request Ack Success");
+            console.log(response);
+            this.getResults();
           },
           error: (error) => {
             console.log("Search Error");
@@ -72,21 +99,7 @@ export class SearchResultsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.searchFilter.addControl('radius', new FormControl('20', Validators.required));
-      this.searchFilter.addControl('location', new FormControl(params['location'] ?? '', Validators.required));
-      this.searchFilter.addControl('check_in', new FormControl(this.formatDate(new Date(params['check_in'])), Validators.required));
-      this.searchFilter.addControl('check_out', new FormControl(this.formatDate(new Date(params['check_out'])), Validators.required));
-      this.searchFilter.addControl('rooms', new FormControl(params['rooms'] ?? '', Validators.required));
-      this.searchFilter.addControl('adults', new FormControl(params['adults'] ?? '', Validators.required));
-      this.searchFilter.addControl('children', new FormControl(params['children'] ?? '', Validators.required));
-      this.searchFilter.addControl('radius', new FormControl(params['radius'] ?? '', Validators.required));
-      this.searchFilter.addControl('min_rate', new FormControl(params['min_rate'] ?? '', Validators.required));
-      this.searchFilter.addControl('max_rate', new FormControl(params['max_rate'] ?? '', Validators.required));
-
-      console.log('Search Filters:', this.searchFilter.value);
-    });
-
-    this.search(this.searchFilter.value);
+    // init page with search results from backend cache
+    this.getResults();
   }
 }
