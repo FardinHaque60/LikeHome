@@ -24,6 +24,28 @@ for i in range(TOTAL_KEYS):
 
 IND = 0 # global index of which key is currently being used
 
+# cache search results in local backend memory, return cached results when requested
+SEARCH_RESULTS = []
+SEARCH_QUERY = {}
+
+# only accessed by client to set results
+def set_search_results(results):
+    global SEARCH_RESULTS
+    SEARCH_RESULTS = results
+
+def get_search_results():
+    global SEARCH_RESULTS
+    return SEARCH_RESULTS
+
+# this file sets search query to return to frontend so it has full state of search page
+def set_search_query(query):
+    global SEARCH_QUERY
+    SEARCH_QUERY = query
+
+def get_search_query():
+    global SEARCH_QUERY
+    return SEARCH_QUERY
+
 # Rotate the API key
 def rotate_key():
     global ind
@@ -58,7 +80,7 @@ def get_header(signature):
     return headers
 
 # https://developer.hotelbeds.com/documentation/hotels/booking-api/api-reference/ for hotel availability docs
-def hotel_availability(location, check_in, check_out, adults, children, rooms, radius, min_rate, max_rate):
+def hotel_availability(location, check_in, check_out, adults, children, rooms, radius, min_rate, max_rate, mock=False):
     ''' 
         request requirement: 
             location: string - location of hotel in address or place format "City, State", "Street, Country", etc.
@@ -68,6 +90,24 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms, r
             children: int - number of children staying in hotel
             rooms: int - number of rooms to book
     '''
+    search_filter = {
+        "location": location,
+        "check_in": check_in,
+        "check_out": check_out,
+        "adults": adults,
+        "children": children,
+        "rooms": rooms,
+        "radius": radius,
+        "min_rate": min_rate,
+        "max_rate": max_rate
+    }
+    if (mock):
+        with open("likehome_api/views/clients/featured_hotels.json", "r") as file:
+            response = json.load(file)
+        set_search_query(search_filter)
+        set_search_results(response)
+        return True
+        
     # get location coordinates for hotel availability request
     coordArray = get_location_coordinates(location)
     if not coordArray:
@@ -162,7 +202,9 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms, r
             json.dump(hotel_objs, file, indent=4)
         '''
 
-        return hotel_objs
+        set_search_query(search_filter)
+        set_search_results(hotel_objs)
+        return True
     else:
         if not rotate_key():
             print("API Request Limit Reached For the Day")

@@ -15,6 +15,7 @@ urlpatterns = [
     # search related paths
     path('search/', search),
     path('get-featured-hotels/', featured_hotels),
+    path('get-search-result/', get_search_result),
 
     # reservation related paths
     path('create-reservation/', create_reservation),
