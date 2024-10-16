@@ -72,6 +72,7 @@ export class HomepageComponent implements OnInit {
           error: (error) => {
             console.log(error);
             this.loading = false;
+            this.router.navigate(['/search-results']);
           }
         });
     }

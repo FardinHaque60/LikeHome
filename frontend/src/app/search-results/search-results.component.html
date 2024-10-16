@@ -83,16 +83,16 @@
 		                Check Out<input type="text" id="checkout_date" class="form-control checkin_date" [placeholder]="searchFilter.get('check_out')?.value" formControlName="check_out">
 		              </div>
                   <div class="form-group">
-                    Rooms<input type="number" class="form-control" [placeholder]="searchFilter.get('rooms')?.value" formControlName="rooms">
+                    Rooms<input type="number" class="form-control" [placeholder]="searchFilter.get('rooms')?.value ?? 0" formControlName="rooms">
                   </div>
                   <div class="form-group">
-                    Adults<input type="number" class="form-control" [placeholder]="searchFilter.get('adults')?.value" formControlName="adults">
+                    Adults<input type="number" class="form-control" [placeholder]="searchFilter.get('adults')?.value ?? 0" formControlName="adults">
                   </div>
                   <div class="form-group">
-                    Children<input type="number" class="form-control" [placeholder]="searchFilter.get('children')?.value" formControlName="children">
+                    Children<input type="number" class="form-control" [placeholder]="searchFilter.get('children')?.value ?? 0" formControlName="children">
                   </div>
                   <div class="form-group">
-                    Search Radius (mi)<input type="number" class="form-control" [placeholder]="searchFilter.get('radius')?.value" formControlName="radius">
+                    Search Radius (mi)<input type="number" class="form-control" [placeholder]="searchFilter.get('radius')?.value ?? 0" formControlName="radius">
                   </div>
 
                   <!-- add form control labels for min_rate and max_rate -->

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, ɵnormalizeQueryParams } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { ApiService } from '../service/api.service';
 import { Router, RouterLink, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
@@ -20,7 +20,7 @@ export class CheckoutComponent implements OnInit{
   subtotal: number = 0;
   loading: boolean = false;
 
-  constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute, private location: Location) { }
 
   paymentForm = new FormGroup({
     cardNum: new FormControl('', Validators.required),
@@ -28,6 +28,10 @@ export class CheckoutComponent implements OnInit{
     expDate: new FormControl('', Validators.required),
     CVV: new FormControl('', Validators.required),
   });
+
+  goBack(): void {
+    this.location.back();
+  }
 
   paymentSubmit(): void {
     // TODO make better alert message

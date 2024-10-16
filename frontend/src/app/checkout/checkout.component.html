@@ -52,7 +52,7 @@
                     </button>
                     <mat-spinner *ngIf="loading" diameter="30"/>
                     <div class="fw-bold mt-4">
-                      <a routerLink="/hotel-details"><i class="fas fa-angle-left"></i>Go back to Hotel Details</a>
+                      <a (click)="goBack()"><i class="fas fa-angle-left"></i>Go back to Hotel Details</a>
                     </div>
                   </form>
                 </div>
