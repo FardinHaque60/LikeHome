@@ -8,6 +8,7 @@ import { SearchResultsComponent } from './search-results/search-results.componen
 import { HotelDetailsComponent } from './hotel-details/hotel-details.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
+import { AccountDetailsComponent } from './account-details/account-details.component';
 
 export const routes: Routes = [
     { 
@@ -25,6 +26,10 @@ export const routes: Routes = [
             {
                 path: 'hotel-details',
                 component: HotelDetailsComponent,
+            },
+            {
+                path: 'account-details',
+                component: AccountDetailsComponent,
             },
         ]
     },
