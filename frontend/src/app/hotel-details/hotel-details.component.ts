@@ -30,6 +30,7 @@ export class HotelDetailsComponent implements OnInit{
   }
 
   checkout(i: number) {
+    // ensure user is logged in
     this.apiService.getBackendRequest('get-session')
       .subscribe({
         next: (data: any) => {
@@ -47,7 +48,12 @@ export class HotelDetailsComponent implements OnInit{
             'address': this.details['address'],
             'city': this.details['city'],
             'images': this.details['images'],
+            'description': this.details['description'],
+            'phone': this.details['phone'],
+            'website': this.details['web'],
+            'email': this.details['email'],
           }
+          console.log("details sent to checkout: " + details);
           this.router.navigate(['/checkout'], { queryParams: { details: JSON.stringify(details) } });
         },
         error: (error: any) => {

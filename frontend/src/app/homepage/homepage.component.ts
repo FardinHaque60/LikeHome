@@ -122,7 +122,7 @@ export class HomepageComponent implements OnInit {
         }
       });
 
-      /* TODO move to account page to query reservations under currently logged in user
+      // TODO move to account page to query reservations under currently logged in user
     this.apiService.getBackendRequest('get-reservations')
     .subscribe({
       next: (response) => {
@@ -132,6 +132,6 @@ export class HomepageComponent implements OnInit {
         console.log(error);
       }
     });
-    */
+
   }
 }
