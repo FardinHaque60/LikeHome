@@ -148,9 +148,11 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms, r
     headers = get_header(generate_signature())
     response = requests.post(avail_url, headers=headers, json=params)
 
+    '''
     # Save the JSON response to a file
     with open("playground/RAW_hotel_availability.json", "w") as file:
         json.dump(response.json(), file, indent=4)
+    '''
     if response.status_code == 200:
         hotel_objs = []
         try:
@@ -198,9 +200,11 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms, r
             set_search_query(search_filter)
             set_search_results([])
             return {"status_code": 403, "message": "Error getting search results"}
+        '''
         # save final hotel objects to a file
         with open("playground/hotel_availability.json", "w") as file:
             json.dump(hotel_objs, file, indent=4)
+        '''
 
         set_search_query(search_filter)
         set_search_results(hotel_objs)
@@ -230,9 +234,11 @@ def hotel_details(hotel_code):
 
     headers = get_header(generate_signature())
     response = requests.get(url, headers=headers, params=params)
+    '''
     # Save the JSON response to a file
     with open("playground/RAW_hotel_details.json", "w") as file:
         json.dump(response.json(), file, indent=4)
+    '''
     if response.status_code == 200:
         data = response.json()['hotels'][0]
         hotel_features = {}  
@@ -257,9 +263,11 @@ def hotel_details(hotel_code):
         for i in random.sample(range(len(images)), 4):
             hotel_features['images'].append("http://photos.hotelbeds.com/giata/xxl/" + images[i]['path'])
 
+        '''
         # save final hotel details to a file
         with open("playground/hotel_details.json", "w") as file:
             json.dump(hotel_features, file, indent=4)
+        '''
 
         return hotel_features
     else:

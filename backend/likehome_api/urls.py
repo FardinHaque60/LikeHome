@@ -11,6 +11,7 @@ urlpatterns = [
 
     # session related paths
     path('get-session/', get_session),
+    path('get-reservations/', get_reservations),
 
     # search related paths
     path('search/', search),
