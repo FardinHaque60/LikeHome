@@ -121,5 +121,17 @@ export class HomepageComponent implements OnInit {
           console.log(error);
         }
       });
+
+      /* TODO move to account page to query reservations under currently logged in user
+    this.apiService.getBackendRequest('get-reservations')
+    .subscribe({
+      next: (response) => {
+        console.log(response); // look in inspect element console to see what format data is in for parsing
+      },
+      error: (error) => { 
+        console.log(error);
+      }
+    });
+    */
   }
 }
