@@ -10,7 +10,18 @@ class Profile(models.Model):
 
 class Reservation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    # hotel related fields
     hotel_name = models.CharField(max_length=100)
+    description = models.TextField(default='N/A')
+    phone_number = models.CharField(max_length=10, default='N/A')
+    email = models.EmailField(default='N/A')
+    website = models.CharField(max_length=100, default='N/A')
+    images = models.JSONField(default=list)
+    address = models.CharField(max_length=100, default='N/A')
+    city = models.CharField(max_length=100, default='N/A')
+
+    # room/ reservation related fields
     room_name = models.CharField(max_length=100)
     nights = models.IntegerField()
     rate = models.FloatField()
@@ -19,5 +30,4 @@ class Reservation(models.Model):
     check_out = models.DateField()
     adults = models.IntegerField()
     children = models.IntegerField()
-    address = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
+    

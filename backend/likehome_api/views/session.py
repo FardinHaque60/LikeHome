@@ -34,6 +34,6 @@ def get_session(request):
 def get_reservations(request):
     global current_user
     reservations = Reservation.objects.filter(user=current_user)
-    serializer = ReservationsSerializer(reservations, many=True)
+    reservation_data = ReservationsSerializer(reservations, many=True).data
 
-    return Response({"reservations": serializer.data}, status=status.HTTP_200_OK)
+    return Response({"reservations": reservation_data}, status=status.HTTP_200_OK)

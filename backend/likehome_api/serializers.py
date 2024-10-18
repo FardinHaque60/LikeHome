@@ -11,4 +11,4 @@ class UserDataSerializer(serializers.ModelSerializer):
 class ReservationsSerializer(serializers.ModelSerializer):
     class Meta:
         model=Reservation
-        fields=('hotel_name','room_name','nights','rate','total_price','check_in','check_out','adults','children','address','city')
+        fields=('hotel_name','room_name','nights','rate','total_price','check_in','check_out','adults','children','address','city','description','phone_number','email', 'website','images')
