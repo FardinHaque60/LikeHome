@@ -16,7 +16,7 @@
           <div class="row no-gutters slider-text d-flex align-itemd-end justify-content-center">
             <div class="col-md-9 text-center d-flex align-items-end justify-content-center">
                 <div class="text">
-                  <p class="breadcrumbs mb-2"><span class="mr-2"><a href="index.html">Home</a></span> <span>Account Details</span></p>
+                  <p class="breadcrumbs mb-2"><span class="mr-2"><a href="index.html">Home</a></span> <span>Account</span></p>
                   <h1 class="mb-4 bread">Account Details</h1>
                 </div>
             </div>
@@ -24,28 +24,48 @@
         </div>
     </div>
 
+    <!-- account details box-->
     <div class="row mt-5">
         <div class="col-lg-3 col-md col-sm container">
             <div class="d-flex justify-content-center">
                 <div class="mb-5">
                     <h1 class="d-flex justify-content-center mb-4">Account Details</h1>
-                    <p class="d-flex justify-content-center mb-4">Name: FIRSTNAME LASTNAME</p>
-                    <p class="d-flex justify-content-center mb-4">Phone Number: 000-000-0000</p>
-                    <p class="d-flex justify-content-center mb-4">Email: thisisanemail&#64;emailing.com</p>
+                    <p class="d-flex justify-content-center mb-4">Username: {{currentUser['username']}}</p>
+                    <p class="d-flex justify-content-center mb-4">Full Name: {{currentUser['first_name']}} {{currentUser['last_name']}}</p>
+                    <!-- this is the line for phone number (potential item)
+                    <p class="d-flex justify-content-center mb-4">Phone Number: 000-000-0000</p>-->
+                    <!-- this is the line for reward points
+                    <p class="d-flex justify-content-center mb-4">Reward Points: </p>-->
+                    <p class="d-flex justify-content-center mb-4">Email: {{currentUser['email']}}</p>
                     <div class="d-flex justify-content-center">
                         <button class ="btn btn-primary col-lg-6 px-3 py-3"> Sign Out</button>
                     </div>
-                    
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-9">
+        <div class="col-lg-8 mr-5">
             <div class="d-flex justify-content-center">
                 <h1>MyBookings</h1>
             </div>
+            <div class="row">
+            <div class="col-sm col-md-6 col-lg-4" *ngFor="let room of bookedRooms; let i = index">
+                <div class="room">
+                    <a (click)="openHotel(i)" class="img d-flex justify-content-center align-items-center" style="overflow: hidden;">
+                        <img src="" (error)="replaceImage($event)" class="img-fluid" style="object-fit: cover;">
+                        <div class="icon d-flex justify-content-center align-items-center"> </div>
+                    </a>
+                    <div class="text p-3 text-center" style="height: 18rem; overflow-y: auto;">
+                    <h3 class="mb-3"><a (click)="openHotel(i)">{{room['room_name']}}</a></h3>
+                    <p class="p-0" style="color: black">{{room['hotel_name']}}</p>
+                    <p style="color: #8d703b">{{room['city']}}</p>
+                    <p><span class="price mr-2">{{room['nights']}}</span> <span class="per">nights</span></p>
+                    <p>Total Price <span style="font-weight: bold">${{room['total_price']}}</span></p>
+                    <p>{{room['adults']}} Adults, {{room['children']}} Children</p>
+                    <p class="pt-1"><a (click)="openHotel(i)" class="btn-custom">See Details</a></p>
+                </div>
+            </div>
+            </div>
         </div>
-
     </div>
-    <!-- results -->
 </div>
