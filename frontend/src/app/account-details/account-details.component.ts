@@ -28,7 +28,9 @@ export class AccountDetailsComponent implements OnInit {
     'username': '',
   };
 
-  bookedRooms: Array<any> = []
+  bookedRooms: Array<any> = [];
+  fromAccount: boolean = true;
+
 
   
   ngOnInit(): void {
@@ -59,9 +61,9 @@ export class AccountDetailsComponent implements OnInit {
 
   openHotel(i: number): void {
     this.router.navigate(['/hotel-details'], { queryParams: { 
-      checkIn: "2024-10-15", 
-      checkOut: "2024-10-18", 
-      details: JSON.stringify(this.bookedRooms[i]) 
+      accountDetails: JSON.stringify(this.bookedRooms[i]),
+      //sends the statement that this is from the account-details page
+      fromAccount: this.fromAccount,
       } 
     });
   }

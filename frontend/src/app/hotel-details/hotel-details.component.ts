@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
 })
 export class HotelDetailsComponent implements OnInit{
   details: any = {};
+  accountDetails: any = {};
+  isAccount: boolean = false;
   rooms: Array<any> = [];
 
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) { }
@@ -74,6 +76,10 @@ export class HotelDetailsComponent implements OnInit{
     return Math.abs(diffInDays); // Use Math.abs to handle negative values
   }
 
+  backToAccount(){
+    this.router.navigate(['/account-details']);
+  }
+
   ngOnInit(): void {
       // moves to the top of the page when finished navigating (back&forth)
       // TODO seems to not work with <-- back arrows
@@ -90,6 +96,15 @@ export class HotelDetailsComponent implements OnInit{
         this.details['checkOut'] = params['checkOut'];
         this.details['nights'] = this.calculateDaysBetween(this.details['checkIn'], this.details['checkOut']);
         this.rooms = this.details['rooms'];
+      });
+
+      // receives parameters from the account-details Page
+      this.route.queryParams.subscribe(params => {
+        this.accountDetails = JSON.parse(params['accountDetails']);
+        console.log(this.accountDetails);
+        this.isAccount = params['fromAccount'];
+        //tells us that this is from the account-details page
+        console.log(this.isAccount);
       });
   }
 }

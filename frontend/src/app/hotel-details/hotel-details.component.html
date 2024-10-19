@@ -31,25 +31,50 @@
             <!-- Hotel Main Details, Contact Info  -->
             <div class="col-lg-8">
             <div class="row">
-                <div class="col-md-12">
-                    <h1>{{ details['name'] }}</h1>
-                        <div class="item d-flex justify-content-center" style="overflow: hidden;">
-                            <img [src]="randomImage()" (error)="replaceImage($event)" class="img-fluid rounded" style="object-fit: cover;">
-                        </div>
+                <div *ngIf="!isAccount">
+                    <div class="col-md-12">
+                        <h1>{{ details['name'] }}</h1>
+                            <div class="item d-flex justify-content-center" style="overflow: hidden;">
+                                <img [src]="randomImage()" (error)="replaceImage($event)" class="img-fluid rounded" style="object-fit: cover;">
+                            </div>
+                    </div>
                 </div>
+
+                <div *ngIf="isAccount">
+                    <div class="col-md-12">
+                        <h1>{{ accountDetails['hotel_name'] }}</h1>
+                            <div class="item d-flex justify-content-center" style="overflow: hidden;">
+                                <img [src]="accountDetails['images'][0]" (error)="replaceImage($event)" class="img-fluid rounded" style="object-fit: cover;">
+                            </div>
+                    </div>
+                </div>
+
+
                 <div class="col-md-12 mt-4 mb-5">
-                    <p>{{ details['description'] }}</p>
+                    <p *ngIf="!isAccount">{{ details['description'] }}</p>
+                    <p *ngIf="isAccount">{{ accountDetails['description'] }}</p>
                     <div class="d-md-flex mt-5 mb-2 room-single justify-content-center">
-                        <ul class="list">
-                            <li><span>Street:</span> {{ details['address'] }}</li>
-                            <li><span>City:</span> {{ details['city'] }}</li>
-                            <li><span># of Rooms:</span> {{ rooms.length }} </li>
-                        </ul>
-                        <ul class="list ml-md-5">
-                            <li><span>Email:</span> {{ details['email'] }} </li>
-                            <li><span>Web:</span> {{ details['web'] }}</li>
-                            <li><span>Phone:</span> {{ details['phone'] }} </li>
-                        </ul>
+                        
+                            <ul *ngIf="!isAccount" class="list">
+                                <li><span>Street:</span> {{ details['address'] }}</li>
+                                <li><span>City:</span> {{ details['city'] }}</li>
+                                <li><span># of Rooms:</span> {{ rooms.length }} </li>
+                            </ul>
+                            <ul *ngIf="!isAccount" class="list ml-md-5">
+                                <li><span>Email:</span> {{ details['email'] }} </li>
+                                <li><span>Web:</span> {{ details['web'] }}</li>
+                                <li><span>Phone:</span> {{ details['phone'] }} </li>
+                            </ul>
+                            
+                            <ul *ngIf="isAccount"class="list">
+                                <li><span>Street:</span> {{ accountDetails['address'] }}</li>
+                                <li><span>City:</span> {{ accountDetails['city'] }}</li>
+                            </ul>
+                            <ul *ngIf="isAccount" class="list ml-md-5">
+                                <li><span>Email:</span> {{ accountDetails['email'] }} </li>
+                                <li><span>Web:</span> {{ accountDetails['website'] }}</li>
+                                <li><span>Phone:</span> {{ accountDetails['phone_number'] }} </li>
+                            </ul>
                     </div>
                     <div class="d-md-flex mb-5 room-single justify-content-center">
                         <ul class="list">
@@ -61,18 +86,12 @@
             </div> 
         
             <!-- Search Box, Min & MaxRate, Currency -->
-            <div class="col-lg-4">
-                <div class="sidebar">
-                    <div class="sidebar-box">
-                        <form action="#" class="search-form rounded">
-                        <div class="form-group">
-                            <span class="icon fa fa-search"></span>
-                            <input type="text" class="form-control" placeholder="Search A Hotel?">
-                        </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="text-center">
+            <div class="col-lg-4" style="border-left: solid; border-color: rgb(141, 112, 59); border-width: 2px;">
+
+                <div *ngIf="!isAccount" class="text-center">
+                    <br>
+                    <br>
+                    <br>
                     <h3 class="detail-header">Check-In: <span class="detail-header2"> {{ details['checkIn']}} </span></h3>
                     <br>
                     <br>
@@ -87,6 +106,35 @@
                     <br>
                     <h3 class="detail-header">Currency: <span class="detail-header2">{{details['currency']}} </span></h3>
                 </div>
+
+                <div *ngIf="isAccount" class="text-center">
+
+                    <h3 class="detail-header">Your Room:</h3>
+                    <br>
+                    <h4 class="detail-header">Check-In: <span class="detail-header2"> {{ accountDetails['check_in']}} </span></h4>
+                    <br>
+                    <h4 class="detail-header">Check-Out: <span class="detail-header2"> {{ accountDetails['check_out']}} </span></h4>
+                    <br>
+                    <button (click)="backToAccount()" class ="btn btn-primary col-lg-6 px-3 py-3"> Back to Account</button>
+                    <br>
+                    <br>
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-sm-6 col-md-4 col-lg">
+                            <div class="room">
+                                    <img [src]="accountDetails['images'][1]" (error)="replaceImage($event)" class="img-fluid" style="object-fit: cover;">
+                                    <div class="icon d-flex justify-content-center align-items-center"> </div>
+                                <div class="text p-3 text-center">
+                                    <h3 class="mb-3">{{accountDetails['room_name']}}</h3>
+                                    <p><span class="price mr-2">{{accountDetails['rate']}}</span><span class="per">per night</span></p>
+                                    <p><span class="price mr-2" style="font-size: 1rem">Nights:</span><span>{{ accountDetails['nights'] }}</span></p>
+                                    <p><span class="price mr-2" style="font-size: 1rem">Adults:</span><span>{{ accountDetails['adults'] }}</span></p>
+                                    <p><span class="price mr-2" style="font-size: 1rem">Children:</span><span>{{ accountDetails['children'] }}</span></p>
+                                    <hr>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -94,8 +142,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="col-md-12 room-single mb-5 mt-5">
-                    <h4 class="mb-4">Rooms Available</h4>
-                    <div class="row">
+                    <h4 *ngIf="!isAccount" class="mb-4">Rooms Available</h4>
+                    <div *ngIf="!isAccount" class="row">
                         <!-- Start iterating card for room -->
                         <div class="col-sm-6 col-md-4" *ngFor="let room of rooms; let i = index">
                             <div class="room">
