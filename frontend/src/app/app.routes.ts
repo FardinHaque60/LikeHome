@@ -33,9 +33,9 @@ export const routes: Routes = [
             },
         ]
     },
-    { path: 'login', component: LoginComponent }, // TODO: add protection, if user signed in then go to homepage
+    { path: 'login', component: LoginComponent }, // TODO: add protection, if user already signed in then go to homepage
     { path: 'create-account', component: CreateAccountComponent}, // TODO: add protection, if user signed in then go to homepage
     { path: 'create-account/verification', component: VerificationComponent}, // TODO: add protection to this route, only accessed after creating account
-    { path: 'checkout', component: CheckoutComponent},
-    { path: 'confirmation', component: ConfirmationComponent},
+    { path: 'checkout', component: CheckoutComponent}, // page that appears after user clicks "checkout" in hotel details page
+    { path: 'confirmation', component: ConfirmationComponent}, // page that appears when user successfully books a room
 ];
