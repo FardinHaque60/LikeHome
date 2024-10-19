@@ -103,6 +103,7 @@ export class HotelDetailsComponent implements OnInit{
         this.accountDetails = JSON.parse(params['accountDetails']);
         console.log(this.accountDetails);
         this.isAccount = params['fromAccount'];
+        // html will show both pages based on data from search-results OR account details
         //tells us that this is from the account-details page
         console.log(this.isAccount);
       });
