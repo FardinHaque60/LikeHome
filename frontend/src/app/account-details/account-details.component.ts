@@ -30,8 +30,7 @@ export class AccountDetailsComponent implements OnInit {
 
   bookedRooms: Array<any> = [];
   fromAccount: boolean = true;
-
-
+  signedIn: boolean = false;
   
   ngOnInit(): void {
     
@@ -71,4 +70,19 @@ export class AccountDetailsComponent implements OnInit {
   replaceImage(event: any) {
     event.target.src = 'assets/images/nexus_logo.png';
   }
+
+  logout(): void {
+    this.apiService.postBackendRequest('logout', {})
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          this.signedIn = false;
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+  }
+
 }
