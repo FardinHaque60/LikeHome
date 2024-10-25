@@ -28,7 +28,7 @@ def search(request):
         radius=radius,
         min_rate=min_rate,
         max_rate=max_rate,
-        mock=True # toggle if wanting to mock the hotel api request
+        # mock=True # toggle if wanting to mock the hotel api request
     )
 
     try:

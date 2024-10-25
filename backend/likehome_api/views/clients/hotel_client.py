@@ -138,7 +138,7 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms, r
             "unit": "mi"
         } ,
         "filter": {
-            "maxHotels": 2, # LIMIT TO 6 HOTELS, TODO set to 2 for testing
+            "maxHotels": 3, # LIMIT TO 6 HOTELS MAX, TODO set to 3 for testing
             "maxRooms": rooms, 
             "minRate": min_rate,
             "maxRate": max_rate,
