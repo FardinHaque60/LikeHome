@@ -1,0 +1,154 @@
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+
+	<link rel="stylesheet" href="../../../public/assets/css/style.css">
+</head>
+
+<div>
+    <!-- top banner art -->
+    <div class="hero-wrap my-image">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="row no-gutters slider-text d-flex align-itemd-end justify-content-center">
+            <div class="col-md-9 text-center d-flex align-items-end justify-content-center">
+                <div class="text">
+                  <p class="breadcrumbs mb-2"><span class="mr-2"><a href="index.html">Home</a></span> <span>Rooms</span></p>
+                  <h1 class="mb-4 bread">Rooms</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- results -->
+    <section class="ftco-section bg-light">
+    	<div class="container">
+    		<div class="row">
+	        <div class="col-lg-9">
+                <div class="row" style="max-height: 130vh; overflow-y: auto;">
+                    <!-- loading spinner -->
+                    <div *ngIf="loading" style="display: flex; justify-content: center; align-items: center;">
+                      <mat-spinner />
+                    </div>
+                    <!-- no results -->
+                    <div *ngIf="searchResults.length === 0 && !loading" style="display: flex; justify-content: center; align-items: center;">
+                      <h4>No Search Results Found</h4>
+                    </div>
+                    <!-- START iterate this card for n search results-->
+                    <ng-container *ngIf="!loading">
+                      <div class="col-sm col-md-6 col-lg-4" *ngFor="let room of searchResults; let i = index">
+                          <div class="room">
+                              <a (click)="openHotel(i)" class="img d-flex justify-content-center align-items-center" style="overflow: hidden;">
+                                  <img [src]="room['images'][0]" (error)="replaceImage($event)" class="img-fluid" style="object-fit: cover;">
+                                  <div class="icon d-flex justify-content-center align-items-center"> </div>
+                              </a>
+                              <div class="text p-3 text-center" style="height: 18rem; overflow-y: auto;">
+                                  <h3 class="mb-3"><a (click)="openHotel(i)">{{room.name}}</a></h3>
+                                  <p><span class="price mr-2">{{room.minRate}}</span> <span class="per">per night</span></p>
+                                  <ul class="list">
+                                      <li><span>Max Rate:</span> {{room.maxRate}} </li>
+                                      <!-- 
+                                      <li><span>Size:</span> 45 m2</li>
+                                      <li><span>View:</span> Sea View</li>
+                                      <li><span>Bed:</span> 1</li>
+                                      -->
+                                  </ul>
+                                  <hr>
+                                  <p class="pt-1"><a (click)="openHotel(i)" class="btn-custom">See Details <!-- <span class="material-icons">arrow_right_alt</span> --></a></p>
+                              </div>
+                          </div>
+                      </div>
+                    </ng-container> 
+                    <!-- END card -->
+                </div>
+            </div>
+            <!-- search filters -->
+            <div class="col-lg-3 sidebar">
+	      		<div class="sidebar-wrap bg-light">
+	      			<h3 class="heading mb-4">Advanced Search</h3>
+	      			<form [formGroup]="searchFilter" (ngSubmit)="searchFilterSubmit()">
+	      				<div class="fields">
+		              <div class="form-group">
+		                Location<input type="text" class="form-control" [placeholder]="searchFilter.get('location')?.value" formControlName="location">
+		              </div>
+                  <!-- TODO add calendar component here -->
+		              <div class="form-group">
+		                Check In<input type="text" id="checkin_date" class="form-control checkout_date" [placeholder]="searchFilter.get('check_in')?.value" formControlName="check_in">
+		              </div>
+                  <div class="form-group">
+		                Check Out<input type="text" id="checkout_date" class="form-control checkin_date" [placeholder]="searchFilter.get('check_out')?.value" formControlName="check_out">
+		              </div>
+                  <div class="form-group">
+                    Rooms<input type="number" class="form-control" [placeholder]="searchFilter.get('rooms')?.value ?? 0" formControlName="rooms">
+                  </div>
+                  <div class="form-group">
+                    Adults<input type="number" class="form-control" [placeholder]="searchFilter.get('adults')?.value ?? 0" formControlName="adults">
+                  </div>
+                  <div class="form-group">
+                    Children<input type="number" class="form-control" [placeholder]="searchFilter.get('children')?.value ?? 0" formControlName="children">
+                  </div>
+                  <div class="form-group">
+                    Search Radius (mi)<input type="number" class="form-control" [placeholder]="searchFilter.get('radius')?.value ?? 0" formControlName="radius">
+                  </div>
+
+                  <!-- add form control labels for min_rate and max_rate -->
+		              <div class="form-group">
+                    Price
+		              	<div class="range-slider">
+		              		<span>
+                            $<input type="number" formControlName="min_rate" min="0" max="5000"/>	-
+                            $<input type="number" formControlName="max_rate" min="0" max="5000"/>
+                      </span>
+                    </div>
+		              </div>
+
+		              <div class="form-group">
+		                <input type="submit" value="Search" class="btn btn-primary py-3 px-5">
+		              </div>
+		            </div>
+	            </form>
+	      		</div>
+	      		<div class="sidebar-wrap bg-light ftco-animate">
+	      			<h3 class="heading mb-4">Star Rating</h3>
+	      			<form method="post" class="star-rating">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label" for="exampleCheck1">
+                                <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></span></p>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                            <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-o"></i></span></p>
+                        </label>
+                        </div>
+                        <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                        <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-o"></i><i class="icon-star-o"></i></span></p>
+                        </label>
+                        </div>
+                        <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                        <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-o"></i><i class="icon-star-o"></i><i class="icon-star-o"></i></span></p>
+                        </label>
+                        </div>
+                        <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">
+                        <p class="rate"><span><i class="icon-star"></i><i class="icon-star-o"></i><i class="icon-star-o"></i><i class="icon-star-o"></i><i class="icon-star-o"></i></span></p>
+                        </label>
+                        </div>
+                    </form>
+	      		</div>
+            </div>
+        </div>
+    	</div>
+    </section>
+</div>
