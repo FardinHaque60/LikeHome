@@ -147,6 +147,7 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms, r
 
     headers = get_header(generate_signature())
     response = requests.post(avail_url, headers=headers, json=params)
+    print(response.json())
 
     '''
     # Save the JSON response to a file
@@ -213,7 +214,7 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms, r
         if not rotate_key():
             print("API Request Limit Reached For the Day")
             return {'status_code': 403, 'message': response.json()}
-        hotel_availability(location, check_in, check_out, adults, children, rooms)
+        hotel_availability(location, check_in, check_out, adults, children, rooms, radius, min_rate, max_rate)
 
 # https://developer.hotelbeds.com/documentation/hotels/content-api/api-reference/ hotel details docs
 def hotel_details(hotel_code):
