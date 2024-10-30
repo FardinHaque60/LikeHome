@@ -4,11 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../service/api.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-search-results',
   standalone: true,
-  imports: [CommonModule, MatProgressSpinnerModule, ReactiveFormsModule],
+  imports: [CommonModule, MatProgressSpinnerModule, ReactiveFormsModule, MatDatepickerModule],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.scss'
 })
