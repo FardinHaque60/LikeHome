@@ -20,4 +20,6 @@ urlpatterns = [
 
     # reservation related paths
     path('create-reservation/', create_reservation),
+    path('cancel-reservation/', cancel_reservation),
+    path('modify-reservation/', modify_reservation),
 ]

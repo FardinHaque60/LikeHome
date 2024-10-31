@@ -3,8 +3,6 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from django.contrib.auth.models import User
-from ..models import Reservation
-from ..serializers import ReservationsSerializer
 
 # JSON object
 current_user = None # init current user to no one on start up
@@ -29,11 +27,3 @@ def get_session(request):
         'first_name': current_user.first_name, 
         'last_name': current_user.last_name
     }, status=status.HTTP_200_OK)
-
-@api_view(['GET'])
-def get_reservations(request):
-    global current_user
-    reservations = Reservation.objects.filter(user=current_user)
-    reservation_data = ReservationsSerializer(reservations, many=True).data
-
-    return Response({"reservations": reservation_data}, status=status.HTTP_200_OK)
