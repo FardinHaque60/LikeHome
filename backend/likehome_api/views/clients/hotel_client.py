@@ -51,6 +51,7 @@ def rotate_key():
     global IND
     print("key %d expended" % IND)
     IND += 1
+    IND %= len(keys) # ensures it does not go out of bounds
     print("currently using key", IND)
     return IND < len(keys)
 
