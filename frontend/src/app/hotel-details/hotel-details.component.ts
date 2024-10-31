@@ -195,6 +195,51 @@ export class HotelDetailsComponent implements OnInit{
     }
   }
 
+  favoriteRoom(i: number) {
+
+    console.log("Hello test");
+
+    this.apiService.getBackendRequest('get-session')
+      .subscribe({
+        next: (data: any) => {
+          console.log(data);
+          let room = this.rooms[i];
+          let details = {
+            'hotel': this.details['name'],
+            'room': room['name'],
+            'price': room['netRate'],
+            'adults': room['adults'],
+            'children': room['children'],
+            'checkIn': this.details['checkIn'],
+            'checkOut': this.details['checkOut'],
+            'nights': this.details['nights'],
+            'address': this.details['address'],
+            'city': this.details['city'],
+            'images': this.details['images'],
+            'description': this.details['description'],
+            'phone': this.details['phone'],
+            'website': this.details['web'],
+            'email': this.details['email'],
+          }
+        console.log(details);
+        }
+      });
+
+      /*
+      this.apiService.postBackendRequest('DATABASE NAME HERE', favoriteDetails)
+      .subscribe({
+        next: (response) => {
+          console.log("Favorite Success");
+          console.log(response['status']);
+          console.log(response['message']);
+        },
+        error: (error) => {
+          console.error("Reservation Error");
+          console.error(error);
+        }
+      });*/
+  }
+
   calculateDaysBetween(date1: string, date2: string): number {
     const firstDate = new Date(date1);
     const secondDate = new Date(date2);

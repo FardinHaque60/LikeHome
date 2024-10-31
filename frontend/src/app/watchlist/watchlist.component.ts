@@ -11,7 +11,13 @@ import { FooterComponent } from '../shared/footer/footer.component';
   styleUrl: './watchlist.component.scss'
 })
 export class WatchlistComponent implements OnInit {
+
+
   constructor() { }
 
   ngOnInit(): void {}
+
+
+  
+
 }
