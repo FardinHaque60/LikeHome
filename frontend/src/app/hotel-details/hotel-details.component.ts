@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { ApiService } from '../service/api.service';
 import { Router, RouterLink, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -18,6 +18,7 @@ export class HotelDetailsComponent implements OnInit{
 
   // used when clicked from search-results
   details: any = {};
+<<<<<<< HEAD
   rooms: Array<any> = []; 
   addedToWatchlist: boolean = false;
 
@@ -32,6 +33,14 @@ export class HotelDetailsComponent implements OnInit{
     nights: new FormControl<number | null>(null),
     id: new FormControl(0, Validators.required),
   });
+=======
+  favoriteDetails: any = {};
+  rooms: Array<any> = [];
+>>>>>>> bfe54b5 (star styling added)
+
+  favoriteColor: string = "";
+  favoriteFill: number = 0;
+
 
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) { }
 
@@ -175,36 +184,46 @@ export class HotelDetailsComponent implements OnInit{
     }
   }
 
-  favoriteRoom(i: number) {
+  favoriteRoom(i: number) { 
 
-    console.log("Hello test");
+    this.favoriteColor = "#8d703b";
 
+    if(this.favoriteFill == 0){
+      this.favoriteFill = 1;
+      this.favoriteColor = "#8d703b";
+    }
+    else{
+      this.favoriteFill = 0;
+      this.favoriteColor = "black";
+    }
+    /*
     this.apiService.getBackendRequest('get-session')
+    
       .subscribe({
         next: (data: any) => {
           console.log(data);
           let room = this.rooms[i];
-          let details = {
-            'hotel': this.details['name'],
+          let favoriteDetails = {
+            'hotel': this.favoriteDetails['name'],
             'room': room['name'],
             'price': room['netRate'],
             'adults': room['adults'],
             'children': room['children'],
-            'checkIn': this.details['checkIn'],
-            'checkOut': this.details['checkOut'],
-            'nights': this.details['nights'],
-            'address': this.details['address'],
-            'city': this.details['city'],
-            'images': this.details['images'],
-            'description': this.details['description'],
-            'phone': this.details['phone'],
-            'website': this.details['web'],
-            'email': this.details['email'],
+            'checkIn': this.favoriteDetails['checkIn'],
+            'checkOut': this.favoriteDetails['checkOut'],
+            'nights': this.favoriteDetails['nights'],
+            'address': this.favoriteDetails['address'],
+            'city': this.favoriteDetails['city'],
+            'images': this.favoriteDetails['images'],
+            'description': this.favoriteDetails['description'],
+            'phone': this.favoriteDetails['phone'],
+            'website': this.favoriteDetails['web'],
+            'email': this.favoriteDetails['email'],
           }
-        console.log(details);
+        console.log(favoriteDetails);
         }
       });
-
+*/
       /*
       this.apiService.postBackendRequest('DATABASE NAME HERE', favoriteDetails)
       .subscribe({

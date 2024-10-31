@@ -1,3 +1,8 @@
+:host{
+    --favoriteFill: 0;
+    --favoriteColor: black;
+}
+
 .my-image {
     background-image: url('../../../public/assets/images/bg_1.jpg');
 }
@@ -14,6 +19,21 @@
     color: rgb(0, 0, 0);
 }
 
+<<<<<<< HEAD
 a{
     cursor:pointer;
 }
+=======
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' var(--favoriteFill),
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48;
+
+    color: var(--favoriteColor);
+}
+
+
+
+>>>>>>> bfe54b5 (star styling added)
