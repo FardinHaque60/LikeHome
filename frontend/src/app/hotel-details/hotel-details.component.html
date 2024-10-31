@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="../../../public/assets/css/style.css">
 
+    <!--styling for favorite star-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=star" />
 
 
@@ -228,8 +229,8 @@
                                 <div class="text p-3 text-center">
 
                                     <div class="d-flex justify-content-center align-items-center mb-3">
-                                        <h3 class="pr-1"><a (click)="checkout(i)">{{room['name']}}</a></h3>
-                                        <span class="material-symbols-outlined" style="color:black"><a (click)="favoriteRoom(i)" style="cursor: pointer">star</a></span>
+                                        <h3 class="pr-2" (click)="checkout(i)"><a>{{room['name']}}</a></h3>
+                                        <span class="material-symbols-outlined" [ngStyle]="{'--favoriteColor': favoriteColor, '--favoriteFill': favoriteFill}"><a (click)="favoriteRoom(i)" style="cursor: pointer">star</a></span>
                                     </div>
                                     <p><span class="price mr-2">{{room['netRate']}}</span><span class="per">per night</span></p>
                                     <p><span class="price mr-2" style="font-size: 1rem">Nights:</span><span>{{ details['nights'] }}</span></p>
