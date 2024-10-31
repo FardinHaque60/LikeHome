@@ -31,6 +31,7 @@ export class AccountDetailsComponent implements OnInit {
   bookedRooms: Array<any> = [];
   fromAccount: boolean = true;
   signedIn: boolean = false;
+  loading: boolean = false;
   
   ngOnInit(): void {
     
@@ -69,6 +70,23 @@ export class AccountDetailsComponent implements OnInit {
 
   replaceImage(event: any) {
     event.target.src = 'assets/images/nexus_logo.png';
+  }
+
+  cancelReservation(id: number): void {
+    this.loading = true;
+    this.apiService.postBackendRequest('cancel-reservation', { 'reservationId': id })
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          this.loading = false;
+          this.bookedRooms = this.bookedRooms.filter((room) => room['id'] !== id);
+          alert("Reservation Cancelled");
+        },
+        error: (error) => {
+          console.log(error);
+          this.loading = false;
+        }
+      });
   }
 
   logout(): void {

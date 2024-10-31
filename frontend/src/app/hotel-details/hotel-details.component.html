@@ -87,12 +87,16 @@
         
             <!-- Search Box, Min & MaxRate, Currency -->
             <div class="col-lg-4" style="border-left: solid; border-color: rgb(141, 112, 59); border-width: 2px;">
-
+                <!-- IF OPENING FROM SEARCH RESULTS -->
                 <div *ngIf="!isAccount" class="text-center">
                     <br>
                     <br>
                     <br>
-                    <h3 class="detail-header">Check-In: <span class="detail-header2"> {{ details['checkIn']}} </span></h3>
+                    <h3 class="detail-header">
+                        Check-In: 
+                        <span *ngIf="!modifying" class="detail-header2"> {{ details['checkIn']}} </span>
+                    </h3>
+
                     <br>
                     <br>
                     <h3 class="detail-header">Check-Out: <span class="detail-header2"> {{ details['checkOut']}} </span></h3>
@@ -107,15 +111,59 @@
                     <h3 class="detail-header">Currency: <span class="detail-header2">{{details['currency']}} </span></h3>
                 </div>
 
+                <!-- IF OPENING FROM ACCOUNT -->
+                <form [formGroup]="modifyForm">
                 <div *ngIf="isAccount" class="text-center">
+                    <div class="text-center">
+                        <div class="d-flex justify-content-center align-items-start"> 
+                            <h3 class="detail-header me-2">Your Room:</h3>
+                            <a *ngIf="!modifying" (click)="startModify(accountDetails['id'])"> <mat-icon  class="mt-2">edit</mat-icon> </a>
+                            <a *ngIf="modifying" (click)="endModify()"> <mat-icon *ngIf="modifying" style="color: green;" class="mt-2">done</mat-icon> </a>
+                            <a *ngIf="modifying" (click)="cancelModify()"> <mat-icon style="color: red;" class="mt-2">clear</mat-icon> </a>
+                        </div>
+                    </div>
 
-                    <h3 class="detail-header">Your Room:</h3>
                     <br>
-                    <h4 class="detail-header">Check-In: <span class="detail-header2"> {{ accountDetails['check_in']}} </span></h4>
+                    <h4 *ngIf="!modifying" class="detail-header">
+                        Check-In: 
+                        <span class="detail-header2 ml-2"> {{ accountDetails['check_in']}} </span>
+                    </h4>
+
+                    <div *ngIf="modifying" class="form-group d-flex align-items-center">
+                        <h4 class="detail-header"> Check-In: </h4>
+                        <input
+                            matInput
+                            [matDatepicker]="picker"
+                            type="text"
+                            id="checkin_date"
+                            class="form-control checkout_date ml-2"
+                            formControlName="checkIn"
+                            style="flex: 1;"
+                        />
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </div>
+
                     <br>
-                    <h4 class="detail-header">Check-Out: <span class="detail-header2"> {{ accountDetails['check_out']}} </span></h4>
-                    <br>
-                    <button (click)="backToAccount()" class ="btn btn-primary col-lg-6 px-3 py-3"> Back to Account</button>
+                    <h4 *ngIf="!modifying" class="detail-header">Check-Out: 
+                        <span class="detail-header2"> {{ accountDetails['check_out']}} </span>
+                    </h4>
+
+                    <div *ngIf="modifying" class="form-group d-flex align-items-center">
+                        <h4 class="detail-header"> Check-Out: </h4>
+                        <input
+                            matInput
+                            [matDatepicker]="picker1"
+                            type="text"
+                            id="checkout_date"
+                            class="form-control checkout_date ml-2"
+                            formControlName="checkOut"
+                            style="flex: 1;"
+                        />
+                        <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </div>
+
                     <br>
                     <br>
                     <div class="row d-flex justify-content-center align-items-center">
@@ -125,16 +173,39 @@
                                     <div class="icon d-flex justify-content-center align-items-center"> </div>
                                 <div class="text p-3 text-center">
                                     <h3 class="mb-3">{{accountDetails['room_name']}}</h3>
-                                    <p><span class="price mr-2">{{accountDetails['rate']}}</span><span class="per">per night</span></p>
-                                    <p><span class="price mr-2" style="font-size: 1rem">Nights:</span><span>{{ accountDetails['nights'] }}</span></p>
-                                    <p><span class="price mr-2" style="font-size: 1rem">Adults:</span><span>{{ accountDetails['adults'] }}</span></p>
-                                    <p><span class="price mr-2" style="font-size: 1rem">Children:</span><span>{{ accountDetails['children'] }}</span></p>
+                                    <p>
+                                        <span class="price mr-2">{{accountDetails['rate']}}</span>
+                                        <span class="per">per night</span>
+                                    </p>
+
+                                    <p class="d-flex justify-content-center">
+                                        <span class="price mr-2" style="font-size: 1rem">Nights:</span>
+                                        <span *ngIf="!modifying">{{ accountDetails['nights'] }}</span>
+                                        <!-- automatically change this field based on check in & out date -->
+                                        <input *ngIf="modifying" style="width: 4em;" type="number" class="form-control" formControlName="nights" readonly>
+                                    </p>
+
+                                    <p class="d-flex justify-content-center">
+                                        <span class="price mr-2" style="font-size: 1rem">Adults:</span>
+                                        <span>{{ accountDetails['adults'] }}</span>
+                                        <!-- <input *ngIf="modifying" style="width: 4em;" type="number" class="form-control" formControlName="adults"> -->
+                                    </p>
+
+                                    <p class="d-flex justify-content-center">
+                                        <span class="price mr-2" style="font-size: 1rem">Children:</span>
+                                        <span>{{ accountDetails['children'] }}</span>
+                                        <!-- <input *ngIf="modifying" style="width: 4em;" type="number" class="form-control" formControlName="children"> -->
+                                    </p>
+
                                     <hr>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <br>
+                    <button (click)="backToAccount()" class ="btn btn-primary col-lg-6 px-3 py-3"> Back to Account</button>
                 </div>
+                </form>
             </div>
         </div>
 

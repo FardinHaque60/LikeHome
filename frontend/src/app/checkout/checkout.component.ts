@@ -38,29 +38,31 @@ export class CheckoutComponent implements OnInit{
     if (this.paymentForm.invalid) {
       alert("invalid payment details");
     }
-    this.loading = true;
-    this.details['totalPrice'] = this.total;
-    let reservationDetails = {
-      "paymentDetails": this.paymentForm.value,
-      "reservationDetails": this.details
-    }
-    // TODO verify payment details
-    console.log(reservationDetails);
-    this.apiService.postBackendRequest('create-reservation', reservationDetails)
-      .subscribe({
-        next: (response) => {
-          console.log("Payment Success");
-          console.log(response['status']);
-          console.log(response['message']);
-          this.loading = false;
-          this.router.navigate(['/confirmation']);
-        },
-        error: (error) => {
-          console.error("Reservation Error");
-          console.error(error);
-          this.loading = false;
-        }
-      });
+    else {
+      this.loading = true;
+      this.details['totalPrice'] = this.total;
+      let reservationDetails = {
+        "paymentDetails": this.paymentForm.value,
+        "reservationDetails": this.details
+      }
+      // TODO verify payment details
+      console.log(reservationDetails);
+      this.apiService.postBackendRequest('create-reservation', reservationDetails)
+        .subscribe({
+          next: (response) => {
+            console.log("Payment Success");
+            console.log(response['status']);
+            console.log(response['message']);
+            this.loading = false;
+            this.router.navigate(['/confirmation']);
+          },
+          error: (error) => {
+            console.error("Reservation Error");
+            console.error(error);
+            this.loading = false;
+          }
+        });
+      }
   }
 
   calculateTax(): number {
