@@ -18,7 +18,6 @@ export class HotelDetailsComponent implements OnInit{
 
   // used when clicked from search-results
   details: any = {};
-<<<<<<< HEAD
   rooms: Array<any> = []; 
   addedToWatchlist: boolean = false;
 
@@ -33,14 +32,6 @@ export class HotelDetailsComponent implements OnInit{
     nights: new FormControl<number | null>(null),
     id: new FormControl(0, Validators.required),
   });
-=======
-  favoriteDetails: any = {};
-  rooms: Array<any> = [];
->>>>>>> bfe54b5 (star styling added)
-
-  favoriteColor: string = "";
-  favoriteFill: number = 0;
-
 
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) { }
 
@@ -182,61 +173,6 @@ export class HotelDetailsComponent implements OnInit{
     else {
       alert("Please login to book a room");
     }
-  }
-
-  favoriteRoom(i: number) { 
-
-    this.favoriteColor = "#8d703b";
-
-    if(this.favoriteFill == 0){
-      this.favoriteFill = 1;
-      this.favoriteColor = "#8d703b";
-    }
-    else{
-      this.favoriteFill = 0;
-      this.favoriteColor = "black";
-    }
-    /*
-    this.apiService.getBackendRequest('get-session')
-    
-      .subscribe({
-        next: (data: any) => {
-          console.log(data);
-          let room = this.rooms[i];
-          let favoriteDetails = {
-            'hotel': this.favoriteDetails['name'],
-            'room': room['name'],
-            'price': room['netRate'],
-            'adults': room['adults'],
-            'children': room['children'],
-            'checkIn': this.favoriteDetails['checkIn'],
-            'checkOut': this.favoriteDetails['checkOut'],
-            'nights': this.favoriteDetails['nights'],
-            'address': this.favoriteDetails['address'],
-            'city': this.favoriteDetails['city'],
-            'images': this.favoriteDetails['images'],
-            'description': this.favoriteDetails['description'],
-            'phone': this.favoriteDetails['phone'],
-            'website': this.favoriteDetails['web'],
-            'email': this.favoriteDetails['email'],
-          }
-        console.log(favoriteDetails);
-        }
-      });
-*/
-      /*
-      this.apiService.postBackendRequest('DATABASE NAME HERE', favoriteDetails)
-      .subscribe({
-        next: (response) => {
-          console.log("Favorite Success");
-          console.log(response['status']);
-          console.log(response['message']);
-        },
-        error: (error) => {
-          console.error("Reservation Error");
-          console.error(error);
-        }
-      });*/
   }
 
   calculateDaysBetween(date1: string, date2: string): number {
