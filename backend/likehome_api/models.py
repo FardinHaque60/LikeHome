@@ -30,4 +30,6 @@ class Reservation(models.Model):
     check_out = models.DateField()
     adults = models.IntegerField()
     children = models.IntegerField()
+    # TODO implement reward system
+    # points_earned = models.IntegerField(default=0)
     

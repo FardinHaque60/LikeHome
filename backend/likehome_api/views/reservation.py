@@ -5,6 +5,15 @@ from .session import get_current_user
 from ..models import Reservation
 from django.conf import settings
 from django.core.mail import send_mail
+from ..models import Reservation
+from ..serializers import ReservationsSerializer
+
+@api_view(['GET'])
+def get_reservations(request):
+    reservations = Reservation.objects.filter(user=get_current_user())
+    reservation_data = ReservationsSerializer(reservations, many=True).data
+
+    return Response({"reservations": reservation_data}, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def create_reservation(request):
@@ -55,15 +64,81 @@ def create_reservation(request):
             "Sincerely,\n"
             "Team Nexus"
         )
-        send_email(user.email, message)
+        subject = "Thanks for Booking with LikeHome! Your Booking Details."
+        send_email(user.email, subject, message)
     except Exception as e:
         return Response({'status': 'Error', 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
     return Response({'status': 'OK'}, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+def cancel_reservation(request):
+    reservation_id = request.data['reservationId']
+    try:
+        user = get_current_user()
+        reservation = Reservation.objects.get(id=reservation_id)
+        reservation.delete()
+        message = (
+f'''Hello {user.first_name} \n
+Your reservation with LikeHome has been cancelled. If you have any questions, please contact us at nexus.likehome@gmail.com.\n\n
+Booking Details:\n
+Hotel: {reservation.hotel_name}
+Room: {reservation.room_name}
+Check-In: {reservation.check_in}
+Check-Out: {reservation.check_out}
+Nights: {reservation.nights}
+Adults: {reservation.adults}
+Children: {reservation.children}
+Rate: {reservation.rate}
+Total Price Refunded: {reservation.total_price}\n
+Sincerely,
+Team Nexus'''
+        )
+        subject = "Your Reservation with LikeHome has been Cancelled."
+        send_email(user.email, subject, message)
+    except Exception as e:
+        return Response({'status': 'Error', 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({'status': 'OK'}, status=status.HTTP_200_OK)
 
-def send_email(email, message):
-    subject = "Thanks for Booking with LikeHome! Your Booking Details."
+@api_view(['POST'])
+def modify_reservation(request):
+    print("modify request received with data: ", request.data)
+    user = get_current_user()
+    payment_details = request.data['paymentDetails']
+    reservation_details = request.data['reservationDetails']
+    reservation_id = reservation_details['reservationId']
+    check_in, check_out, nights, price = reservation_details['checkIn'], reservation_details['checkOut'], reservation_details['nights'], reservation_details['totalPrice']
+    difference_paid = reservation_details['differencePaid']
+    reservation = Reservation.objects.get(id=reservation_id)
+    reservation.check_in = check_in
+    reservation.check_out = check_out
+    reservation.nights = nights
+    reservation.total_price = price
+    reservation.save()
+    message = (
+f'''Hello {user.first_name} \n
+Your reservation with LikeHome has been modified. If you have any questions, please contact us at nexus.likehome@gmail.com.\n\n
+Booking Details:\n
+Hotel: {reservation.hotel_name}
+Room: {reservation.room_name}
+Check-In: {reservation.check_in}
+Check-Out: {reservation.check_out}
+Nights: {reservation.nights}
+Adults: {reservation.adults}
+Children: {reservation.children}
+Rate: {reservation.rate}
+Total Price: {reservation.total_price}\n
+Difference Paid: {difference_paid}\n
+Sincerely,
+Team Nexus
+'''
+    )
+    subject = "Your Reservation with LikeHome has been Modified."
+    send_email(user.email, subject, message)
+
+    return Response({'status': 'OK'}, status=status.HTTP_200_OK)
+
+def send_email(email, subject, message):
     email_from = settings.EMAIL_HOST_USER
     recipient = [email]
     try:

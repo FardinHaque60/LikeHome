@@ -31,25 +31,50 @@
             <!-- Hotel Main Details, Contact Info  -->
             <div class="col-lg-8">
             <div class="row">
-                <div class="col-md-12">
-                    <h1>{{ details['name'] }}</h1>
-                        <div class="item d-flex justify-content-center" style="overflow: hidden;">
-                            <img [src]="randomImage()" (error)="replaceImage($event)" class="img-fluid rounded" style="object-fit: cover;">
-                        </div>
+                <div *ngIf="!isAccount">
+                    <div class="col-md-12">
+                        <h1>{{ details['name'] }}</h1>
+                            <div class="item d-flex justify-content-center" style="overflow: hidden;">
+                                <img [src]="randomImage()" (error)="replaceImage($event)" class="img-fluid rounded" style="object-fit: cover;">
+                            </div>
+                    </div>
                 </div>
+
+                <div *ngIf="isAccount">
+                    <div class="col-md-12">
+                        <h1>{{ accountDetails['hotel_name'] }}</h1>
+                            <div class="item d-flex justify-content-center" style="overflow: hidden;">
+                                <img [src]="accountDetails['images'][0]" (error)="replaceImage($event)" class="img-fluid rounded" style="object-fit: cover;">
+                            </div>
+                    </div>
+                </div>
+
+
                 <div class="col-md-12 mt-4 mb-5">
-                    <p>{{ details['description'] }}</p>
+                    <p *ngIf="!isAccount">{{ details['description'] }}</p>
+                    <p *ngIf="isAccount">{{ accountDetails['description'] }}</p>
                     <div class="d-md-flex mt-5 mb-2 room-single justify-content-center">
-                        <ul class="list">
-                            <li><span>Street:</span> {{ details['address'] }}</li>
-                            <li><span>City:</span> {{ details['city'] }}</li>
-                            <li><span># of Rooms:</span> {{ rooms.length }} </li>
-                        </ul>
-                        <ul class="list ml-md-5">
-                            <li><span>Email:</span> {{ details['email'] }} </li>
-                            <li><span>Web:</span> {{ details['web'] }}</li>
-                            <li><span>Phone:</span> {{ details['phone'] }} </li>
-                        </ul>
+                        
+                            <ul *ngIf="!isAccount" class="list">
+                                <li><span>Street:</span> {{ details['address'] }}</li>
+                                <li><span>City:</span> {{ details['city'] }}</li>
+                                <li><span># of Rooms:</span> {{ rooms.length }} </li>
+                            </ul>
+                            <ul *ngIf="!isAccount" class="list ml-md-5">
+                                <li><span>Email:</span> {{ details['email'] }} </li>
+                                <li><span>Web:</span> {{ details['web'] }}</li>
+                                <li><span>Phone:</span> {{ details['phone'] }} </li>
+                            </ul>
+                            
+                            <ul *ngIf="isAccount"class="list">
+                                <li><span>Street:</span> {{ accountDetails['address'] }}</li>
+                                <li><span>City:</span> {{ accountDetails['city'] }}</li>
+                            </ul>
+                            <ul *ngIf="isAccount" class="list ml-md-5">
+                                <li><span>Email:</span> {{ accountDetails['email'] }} </li>
+                                <li><span>Web:</span> {{ accountDetails['website'] }}</li>
+                                <li><span>Phone:</span> {{ accountDetails['phone_number'] }} </li>
+                            </ul>
                     </div>
                     <div class="d-md-flex mb-5 room-single justify-content-center">
                         <ul class="list">
@@ -61,19 +86,17 @@
             </div> 
         
             <!-- Search Box, Min & MaxRate, Currency -->
-            <div class="col-lg-4">
-                <div class="sidebar">
-                    <div class="sidebar-box">
-                        <form action="#" class="search-form rounded">
-                        <div class="form-group">
-                            <span class="icon fa fa-search"></span>
-                            <input type="text" class="form-control" placeholder="Search A Hotel?">
-                        </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <h3 class="detail-header">Check-In: <span class="detail-header2"> {{ details['checkIn']}} </span></h3>
+            <div class="col-lg-4" style="border-left: solid; border-color: rgb(141, 112, 59); border-width: 2px;">
+                <!-- IF OPENING FROM SEARCH RESULTS -->
+                <div *ngIf="!isAccount" class="text-center">
+                    <br>
+                    <br>
+                    <br>
+                    <h3 class="detail-header">
+                        Check-In: 
+                        <span *ngIf="!modifying" class="detail-header2"> {{ details['checkIn']}} </span>
+                    </h3>
+
                     <br>
                     <br>
                     <h3 class="detail-header">Check-Out: <span class="detail-header2"> {{ details['checkOut']}} </span></h3>
@@ -87,6 +110,102 @@
                     <br>
                     <h3 class="detail-header">Currency: <span class="detail-header2">{{details['currency']}} </span></h3>
                 </div>
+
+                <!-- IF OPENING FROM ACCOUNT -->
+                <form [formGroup]="modifyForm">
+                <div *ngIf="isAccount" class="text-center">
+                    <div class="text-center">
+                        <div class="d-flex justify-content-center align-items-start"> 
+                            <h3 class="detail-header me-2">Your Room:</h3>
+                            <a *ngIf="!modifying" (click)="startModify(accountDetails['id'])"> <mat-icon  class="mt-2">edit</mat-icon> </a>
+                            <a *ngIf="modifying" (click)="endModify()"> <mat-icon *ngIf="modifying" style="color: green;" class="mt-2">done</mat-icon> </a>
+                            <a *ngIf="modifying" (click)="cancelModify()"> <mat-icon style="color: red;" class="mt-2">clear</mat-icon> </a>
+                        </div>
+                    </div>
+
+                    <br>
+                    <h4 *ngIf="!modifying" class="detail-header">
+                        Check-In: 
+                        <span class="detail-header2 ml-2"> {{ accountDetails['check_in']}} </span>
+                    </h4>
+
+                    <div *ngIf="modifying" class="form-group d-flex align-items-center">
+                        <h4 class="detail-header"> Check-In: </h4>
+                        <input
+                            matInput
+                            [matDatepicker]="picker"
+                            type="text"
+                            id="checkin_date"
+                            class="form-control checkout_date ml-2"
+                            formControlName="checkIn"
+                            style="flex: 1;"
+                        />
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </div>
+
+                    <br>
+                    <h4 *ngIf="!modifying" class="detail-header">Check-Out: 
+                        <span class="detail-header2"> {{ accountDetails['check_out']}} </span>
+                    </h4>
+
+                    <div *ngIf="modifying" class="form-group d-flex align-items-center">
+                        <h4 class="detail-header"> Check-Out: </h4>
+                        <input
+                            matInput
+                            [matDatepicker]="picker1"
+                            type="text"
+                            id="checkout_date"
+                            class="form-control checkout_date ml-2"
+                            formControlName="checkOut"
+                            style="flex: 1;"
+                        />
+                        <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </div>
+
+                    <br>
+                    <br>
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-sm-6 col-md-4 col-lg">
+                            <div class="room">
+                                    <img [src]="accountDetails['images'][1]" (error)="replaceImage($event)" class="img-fluid" style="object-fit: cover;">
+                                    <div class="icon d-flex justify-content-center align-items-center"> </div>
+                                <div class="text p-3 text-center">
+                                    <h3 class="mb-3">{{accountDetails['room_name']}}</h3>
+                                    <p>
+                                        <span class="price mr-2">{{accountDetails['rate']}}</span>
+                                        <span class="per">per night</span>
+                                    </p>
+
+                                    <p class="d-flex justify-content-center">
+                                        <span class="price mr-2" style="font-size: 1rem">Nights:</span>
+                                        <span *ngIf="!modifying">{{ accountDetails['nights'] }}</span>
+                                        <!-- automatically change this field based on check in & out date -->
+                                        <input *ngIf="modifying" style="width: 4em;" type="number" class="form-control" formControlName="nights" readonly>
+                                    </p>
+
+                                    <p class="d-flex justify-content-center">
+                                        <span class="price mr-2" style="font-size: 1rem">Adults:</span>
+                                        <span>{{ accountDetails['adults'] }}</span>
+                                        <!-- <input *ngIf="modifying" style="width: 4em;" type="number" class="form-control" formControlName="adults"> -->
+                                    </p>
+
+                                    <p class="d-flex justify-content-center">
+                                        <span class="price mr-2" style="font-size: 1rem">Children:</span>
+                                        <span>{{ accountDetails['children'] }}</span>
+                                        <!-- <input *ngIf="modifying" style="width: 4em;" type="number" class="form-control" formControlName="children"> -->
+                                    </p>
+
+                                    <hr>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <button (click)="backToAccount()" class ="btn btn-primary col-lg-6 px-3 py-3"> Back to Account</button>
+                </div>
+                </form>
             </div>
         </div>
 
@@ -94,8 +213,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="col-md-12 room-single mb-5 mt-5">
-                    <h4 class="mb-4">Rooms Available</h4>
-                    <div class="row">
+                    <h4 *ngIf="!isAccount" class="mb-4">Rooms Available</h4>
+                    <div *ngIf="!isAccount" class="row">
                         <!-- Start iterating card for room -->
                         <div class="col-sm-6 col-md-4" *ngFor="let room of rooms; let i = index">
                             <div class="room">

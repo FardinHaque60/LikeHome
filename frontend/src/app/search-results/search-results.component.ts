@@ -4,11 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../service/api.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-search-results',
   standalone: true,
-  imports: [CommonModule, MatProgressSpinnerModule, ReactiveFormsModule],
+  imports: [CommonModule, MatProgressSpinnerModule, ReactiveFormsModule, MatDatepickerModule],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.scss'
 })
@@ -17,8 +18,8 @@ export class SearchResultsComponent implements OnInit {
   loading: boolean = false;
   searchFilter = new FormGroup({
     location: new FormControl('', Validators.required),
-    check_in: new FormControl('', Validators.required),
-    check_out: new FormControl('', Validators.required),
+    check_in: new FormControl<Date | null>(null),
+    check_out: new FormControl<Date | null>(null),
     rooms: new FormControl('', Validators.required),
     adults: new FormControl('', Validators.required),
     children: new FormControl('', Validators.required),
@@ -29,25 +30,29 @@ export class SearchResultsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router) {}
 
-  formatDate(date: Date): string {
-    // if date is invalid return empty string
-    if (isNaN(date.getTime())) {
+  formatDate(date: Date | string | null | undefined): string {
+    if (!date) return '';
+
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+  
+    if (isNaN(dateObj.getTime())) {
       return '';
     }
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); 
-    const day = String(date.getDate()).padStart(2, '0');
-
+  
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0'); 
+    const day = String(dateObj.getDate()).padStart(2, '0');
+  
     return `${year}-${month}-${day}`;
   }
 
-  // TODO will cause problems if user enters new date but does not hit search, better solution is to change backend response
+  // TODO will cause unexpected behavior if user enters new date but does not hit search, better solution is to change backend response
   openHotel(i: number): void {
     this.router.navigate(['/hotel-details'], { 
       queryParams: 
         { 
-          checkIn: this.searchFilter.get('check_in')?.value, 
-          checkOut: this.searchFilter.get('check_out')?.value, 
+          checkIn: this.formatDate(this.searchFilter.get('check_in')?.value), 
+          checkOut: this.formatDate(this.searchFilter.get('check_out')?.value), 
           details: JSON.stringify(this.searchResults[i]) 
         } 
     });
@@ -62,9 +67,7 @@ export class SearchResultsComponent implements OnInit {
           console.log(response['hotels']);
           // set results to be reflected in frontend
           this.searchResults = response['hotels'];
-          this.searchFilter.patchValue(response['query']);
-          this.searchFilter.get('check_in')?.setValue(this.formatDate(new Date(response['query']['check_in'])));
-          this.searchFilter.get('check_out')?.setValue(this.formatDate(new Date(response['query']['check_out'])));
+          this.searchFilter.patchValue(response['query']); // set search filter placeholders from search query
           this.loading = false;
         },
         error: (error) => {

@@ -76,12 +76,36 @@
 		                Location<input type="text" class="form-control" [placeholder]="searchFilter.get('location')?.value" formControlName="location">
 		              </div>
                   <!-- TODO add calendar component here -->
-		              <div class="form-group">
-		                Check In<input type="text" id="checkin_date" class="form-control checkout_date" [placeholder]="searchFilter.get('check_in')?.value" formControlName="check_in">
-		              </div>
-                  <div class="form-group">
-		                Check Out<input type="text" id="checkout_date" class="form-control checkin_date" [placeholder]="searchFilter.get('check_out')?.value" formControlName="check_out">
-		              </div>
+                  <label for="checkin_date">Check In</label>
+		              <div class="form-group d-flex align-items-center">
+                    <input
+                      matInput
+                      [matDatepicker]="picker"
+                      type="text"
+                      id="checkin_date"
+                      class="form-control checkout_date"
+                      formControlName="check_in"
+                      style="flex: 1;"
+                    />
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </div>
+
+                  <label for="checkin_date">Check Out</label>
+		              <div class="form-group d-flex align-items-center">
+                    <input
+                      matInput
+                      [matDatepicker]="picker1"
+                      type="text"
+                      id="checkout_date"
+                      class="form-control checkout_date"
+                      formControlName="check_out"
+                      style="flex: 1;"
+                    />
+                    <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </div>
+
                   <div class="form-group">
                     Rooms<input type="number" class="form-control" [placeholder]="searchFilter.get('rooms')?.value ?? 0" formControlName="rooms">
                   </div>
