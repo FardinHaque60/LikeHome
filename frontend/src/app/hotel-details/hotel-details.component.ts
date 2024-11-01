@@ -148,7 +148,7 @@ export class HotelDetailsComponent implements OnInit{
       let details = {
         'hotel': this.details['name'],
         'room': room['name'],
-        'price': room['netRate'],
+        'price': +room['netRate'],
         'adults': room['adults'],
         'children': room['children'],
         'checkIn': this.details['checkIn'],

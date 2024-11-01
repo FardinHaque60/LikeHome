@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ApiService } from '../service/api.service';
 import { Router, RouterLink, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { FormGroup, Validators, ReactiveFormsModule, FormControl, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { FooterComponent } from '../shared/footer/footer.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,20 +21,49 @@ export class CheckoutComponent implements OnInit{
   total: number = 0;
   subtotal: number = 0;
   loading: boolean = false;
+  conflict: boolean = false;
   // declare type of transaction new, modify, cancel
   transaction_type: string = "";
   // only for modify
   difference: number = 0;
   positiveDifference: boolean = false;
+  modificationFee: number = 0;
+  // only for cancel
+  cancellationFee: number = 0;
 
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute, private location: Location) { }
+
+  expDateValidator: ValidatorFn = (
+    form: AbstractControl,
+  ): ValidationErrors | null => {
+    const expDate = form.get('expDate')?.value;
+    // check format for MM/YY
+    const expDatePattern = /^(0[1-9]|1[0-2])\/\d{2}$/;
+
+    if (!expDatePattern.test(expDate)) {
+      return { expDate: 'format' };
+    }
+
+    // check format for valid date
+    const [month, year] = expDate.split('/').map(Number);
+
+    const expDateObject = new Date(2000 + year, month - 1, 1);
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); 
+
+    if (expDateObject < now) {
+      return { expDate: 'expired' }; 
+    }
+
+    return null;
+  }
 
   paymentForm = new FormGroup({
     cardNum: new FormControl('', Validators.required),
     cardName: new FormControl('', Validators.required),
     expDate: new FormControl('', Validators.required),
     CVV: new FormControl('', Validators.required),
-  });
+  }, { validators: this.expDateValidator });
 
   goBack(): void {
     this.location.back();
@@ -86,9 +115,9 @@ export class CheckoutComponent implements OnInit{
   }
 
   paymentSubmit(): void {
-    // TODO make better alert message
-    if (this.paymentForm.invalid) {
-      alert("invalid payment details");
+    if (this.paymentForm.invalid || this.conflict) {
+      this.paymentForm.markAllAsTouched();
+      console.log("Payment field Error");
     }
     else {
       this.loading = true;
@@ -126,6 +155,46 @@ export class CheckoutComponent implements OnInit{
     return +(this.tax + this.subtotal).toFixed(2);
   }
 
+  checkConflict(): void {
+    let travelWindow = {
+      "checkIn": this.details['checkIn'],
+      "checkOut": this.details['checkOut'],
+    }
+    this.apiService.postBackendRequest('check-conflict', travelWindow)
+    .subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.log(error);
+        this.conflict = true;
+      }
+    });
+  }
+
+  checkCancellationFee(): number {
+    let checkIn = this.details['checkIn'];
+    // convert check in to date obj
+    const targetDate = new Date(checkIn);
+    
+    // Get the current date
+    const currentDate = new Date();
+    
+    // Set the time to the start of the day for accurate comparison
+    currentDate.setHours(0, 0, 0, 0);
+    targetDate.setHours(0, 0, 0, 0);
+    
+    // Calculate the date one week after the target date
+    const oneWeekBefore = new Date(targetDate);
+    oneWeekBefore.setDate(targetDate.getDate() - 7);
+    
+    // Check if the current date is within one week of the target date
+    if (currentDate >= oneWeekBefore && currentDate <= targetDate) {
+      return this.total * 0.4;
+    }
+    return 0;
+  }
+
   ngOnInit(): void {
     //moves to the top of the page when finished navigating (back&forth)
     //seems to not work with <-- back arrows
@@ -139,15 +208,26 @@ export class CheckoutComponent implements OnInit{
       this.details = JSON.parse(params['details']);
       console.log("RECEIVED DETAILS" + JSON.stringify(this.details));
       this.transaction_type = params['type'];
+      console.log("TRANSACTION TYPE: " + this.transaction_type);
     });
+    // check if another booking is happening in same date window
+    if (this.transaction_type === 'new') {
+      this.checkConflict();
+    }
 
     this.subtotal = +this.details['price']*this.details['nights'];
     this.subtotal = +this.subtotal.toFixed(2);
     this.tax = this.calculateTax();
     this.total = this.calculateTotal();
-    if (this.transaction_type == "modify") {
+
+    if (this.transaction_type === "cancel") {
+      this.cancellationFee = this.checkCancellationFee();
+      this.total -= this.cancellationFee;
+    }
+
+    if (this.transaction_type === "modify") {
       this.difference = this.details['total_price'] - this.total;
-      if (this.difference < 0) {
+      if (this.difference <= 0) {
         this.positiveDifference = true;
       }
       this.difference = Math.abs(this.difference);

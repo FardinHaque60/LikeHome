@@ -56,13 +56,18 @@
                         <img [src]="room['images'][0]" (error)="replaceImage($event)" class="img-fluid" style="object-fit: cover;">
                         <div class="icon d-flex justify-content-center align-items-center"> </div>
                     </a>
-                    <div class="text p-3 text-center" style="height: 27rem; overflow-y: auto;">
+                    <div class="text p-3 text-center" style="height: 28rem; overflow-y: auto;">
                         <h3 class="mb-3"><a (click)="openHotel(i)">{{room['room_name']}}</a></h3>
                         <p class="p-0" style="color: black">{{room['hotel_name']}}</p>
                         <p style="color: #8d703b">{{room['city']}}</p>
                         <p><span class="price mr-2">{{room['nights']}}</span> <span class="per">nights</span></p>
-                        <p>Total Price <span style="font-weight: bold">${{room['total_price']}}</span></p>
+                        <p>
+                            <span style="font-weight: bold;"> {{room['check_in']}} </span> 
+                            ~ 
+                            <span style="font-weight: bold;"> {{room['check_out']}} </span>
+                        </p>
                         <p>{{room['adults']}} Adults, {{room['children']}} Children</p>
+                        <p>Total Price <span style="font-weight: bold">${{room['total_price']}}</span></p>
                         <p class="pt-1"><a (click)="openHotel(i)" class="btn-custom">See Details</a></p>
                         <div class="d-flex justify-content-center">
                             <mat-spinner *ngIf="loading" diameter="30" />

@@ -11,39 +11,57 @@
           <div class="card shopping-cart" style="border-radius: 15px;">
             <div class="card-body">
               <div class="row">
+                <div *ngIf="conflict" class="d-flex justify-content-center alert alert-danger">
+                    <span> Another hotel booked during this travel window. See</span>
+                    <a routerLink="/account-details" class="ml-1">Account</a>
+                </div>
                 <!--Payment details section-->
-                <div class="col-lg-5 px-5 mt-4">
+                <div class="col-lg-5 px-5 mt-2">
                   <h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Card Details</h3>
                   <form class="mb-5" [formGroup]="paymentForm">
                     <!--Display account details of user here?-->
                     <!--First & Last Name, email, phone num etc. -->
                     <!-- TO-DO: validators for form -->
                     <!--card number field-->
-                    <div data-mdb-input-init class="form-outline mb-5">
-                      <label class="form-label" for="typeText">Card Number</label>
+                    <div data-mdb-input-init class="form-outline mb-3">
+                      <label class="form-label" for="typeText">Card Number*</label>
                       <input type="text" id="typeText" class="form-control" size="17"
                       placeholder="Enter your card number" minlength="16" maxlength="16" formControlName="cardNum"/>
+                      <div class="alert alert-danger mt-2" *ngIf="paymentForm.get('cardNum')?.touched && paymentForm.get('cardNum')?.invalid">
+                          <span>Card Number is invalid.</span>
+                      </div>
                     </div>
                     <!--name on card field-->
-                    <div data-mdb-input-init class="form-outline mb-5">
-                      <label class="form-label" for="typeName">Name on card</label>
+                    <div data-mdb-input-init class="form-outline mb-3">
+                      <label class="form-label" for="typeName">Name on card*</label>
                       <input type="text" id="typeName" class="form-control" placeholder="Enter name on card"  formControlName="cardName"/>
+                      <div class="alert alert-danger mt-2" *ngIf="paymentForm.get('cardName')?.touched && paymentForm.get('cardName')?.invalid">
+                          <span>Name is required.</span>
+                      </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-6 mb-5">
+                      <div class="col-md-6 mb-3">
                         <!--expiration date field-->
                         <div data-mdb-input-init class="form-outline">
-                          <label class="form-label" for="typeExp">Expiration date</label>
+                          <label class="form-label" for="typeExp">Expiration date*</label>
                           <input type="text" id="typeExp"class="form-control form-control-lg" 
-                          size="7" id="exp" placeholder="MM/YY"  formControlName="expDate"/>
+                          size="6" id="exp" placeholder="MM/YY"  formControlName="expDate"/>
+                          <div class="alert alert-danger mt-2" 
+                          *ngIf="(paymentForm.get('expDate')?.touched && (paymentForm.get('expDate')?.invalid || paymentForm.get('expDate')?.dirty)) && paymentForm.errors?.['expDate']">
+                              <span *ngIf="paymentForm.errors?.['expDate'] === 'format'">Expiration Date invalid.</span>
+                              <span *ngIf="paymentForm.errors?.['expDate']=== 'expired'">Card is Expired.</span>
+                          </div>
                         </div>
                       </div>
                       <!--security code (CVV) field-->
-                      <div class="col-md-6 mb-5">
+                      <div class="col-md-6 mb-4">
                         <div data-mdb-input-init class="form-outline">
-                        <label class="form-label" for="typeText">CVV</label>
-                        <input type="password" id="typeText" class="form-control form-control-lg"
-                        value="" size="1" minlength="3" maxlength="3" placeholder="3-digit code"  formControlName="CVV"/>
+                          <label class="form-label" for="typeText">CVV*</label>
+                          <input type="password" id="typeText" class="form-control form-control-lg"
+                          value="" size="1" minlength="3" maxlength="3" placeholder="3-digit code"  formControlName="CVV"/>
+                          <div class="alert alert-danger mt-2" *ngIf="paymentForm.get('CVV')?.touched && paymentForm.get('CVV')?.invalid">
+                            <span>CVV is invalid.</span>
+                        </div>
                         </div>
                       </div>
                     </div>
@@ -65,7 +83,7 @@
                 </div>
 
                 <!--Order Details/Room booking details-->
-                <div class="col-lg-7 px-5 py-4">
+                <div class="col-lg-7 px-5 py-2">
                     <h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Your Room</h3>
                     <!-- room item/order -->
                     <div class="d-flex align-items-center mb-5">
@@ -92,6 +110,12 @@
 
                           <p *ngIf="transaction_type === 'modify'" class="fw-bold">New Subtotal:</p>
                           <p class="fw-bold">Tax:</p>
+                          <p *ngIf="transaction_type === 'cancel' && cancellationFee > 0" class="fw-bold">Cancellation Fee: 
+                            <mat-icon
+                              matTooltip="40% fee of total is charged for cancelling within 1 week of check in date.">
+                              info
+                            </mat-icon>
+                          </p>
                           <p *ngIf="transaction_type === 'modify'" class="fw-bold">New Total:</p>
                           <p *ngIf="transaction_type === 'modify'" class="fw-bold">Previously Paid:</p>
                         </div>
@@ -100,13 +124,14 @@
 
                           <p *ngIf="transaction_type === 'modify'" class="fw-bold">${{subtotal.toFixed(2)}}</p>
                           <p class="fw-bold">${{tax.toFixed(2)}}</p>
+                          <p *ngIf="cancellationFee > 0" class="fw-bold">-${{cancellationFee.toFixed(2)}}</p>
                           <p *ngIf="transaction_type === 'modify'" class="fw-bold">${{total.toFixed(2)}}</p>
                           <p *ngIf="transaction_type === 'modify'" class="fw-bold">${{details['total_price'].toFixed(2)}}</p>
                         </div>
                     </div>
                     <div class="d-flex justify-content-between p-2 mb-2 bg-primary rounded">
-                      <h5 *ngIf="transaction_type == 'new'" class="fw-bold mb-0" style="color: white">Total:</h5>
-                      <h5 *ngIf="transaction_type == 'cancel'" class="fw-bold mb-0" style="color: white">Total Refunded:</h5>
+                      <h5 *ngIf="transaction_type === 'new'" class="fw-bold mb-0" style="color: white">Total:</h5>
+                      <h5 *ngIf="transaction_type === 'cancel'" class="fw-bold mb-0" style="color: white">Total Refunded:</h5>
                       <h5 *ngIf="transaction_type !== 'modify'" class="fw-bold mb-0" style="color: white">${{total.toFixed(2)}}</h5>
 
                       <h5 *ngIf="transaction_type === 'modify'" class="fw-bold mb-0" style="color: white">
