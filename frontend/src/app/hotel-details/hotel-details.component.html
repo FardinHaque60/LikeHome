@@ -227,11 +227,7 @@
                                     <div class="icon d-flex justify-content-center align-items-center"> </div>
                                 </a>
                                 <div class="text p-3 text-center">
-
-                                    <div class="d-flex justify-content-center align-items-center mb-3">
-                                        <h3 class="pr-2" (click)="checkout(i)"><a>{{room['name']}}</a></h3>
-                                        <span class="material-symbols-outlined" [ngStyle]="{'--favoriteColor': favoriteColor, '--favoriteFill': favoriteFill}"><a (click)="favoriteRoom(i)" style="cursor: pointer">star</a></span>
-                                    </div>
+                                    <h3 class="mb-3" (click)="checkout(i)"><a>{{room['name']}}</a></h3>
                                     <p><span class="price mr-2">{{room['netRate']}}</span><span class="per">per night</span></p>
                                     <p><span class="price mr-2" style="font-size: 1rem">Nights:</span><span>{{ details['nights'] }}</span></p>
                                     <p><span class="price mr-2" style="font-size: 1rem">Adults:</span><span>{{ room['adults'] }}</span></p>
