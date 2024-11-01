@@ -5,7 +5,6 @@ from .session import get_current_user
 from ..models import Reservation
 from django.conf import settings
 from django.core.mail import send_mail
-from ..models import Reservation
 from ..serializers import ReservationsSerializer
 
 @api_view(['GET'])

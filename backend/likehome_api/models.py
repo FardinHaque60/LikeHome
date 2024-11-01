@@ -32,4 +32,22 @@ class Reservation(models.Model):
     children = models.IntegerField()
     # TODO implement reward system
     # points_earned = models.IntegerField(default=0)
-    
+
+class Watchlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    # hotel related fields
+    hotel_name = models.CharField(max_length=100)
+    description = models.TextField(default='N/A')
+    min_rate = models.FloatField()
+    max_rate = models.FloatField()
+    currency = models.CharField(max_length=3, default='N/A')
+    phone_number = models.CharField(max_length=10, default='N/A')
+    email = models.EmailField(default='N/A')
+    website = models.CharField(max_length=100, default='N/A')
+    images = models.JSONField(default=list)
+    address = models.CharField(max_length=100, default='N/A')
+    city = models.CharField(max_length=100, default='N/A')
+
+    # json fields for rooms
+    rooms = models.JSONField(default=list)

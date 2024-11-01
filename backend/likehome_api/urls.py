@@ -22,4 +22,10 @@ urlpatterns = [
     path('create-reservation/', create_reservation),
     path('cancel-reservation/', cancel_reservation),
     path('modify-reservation/', modify_reservation),
+
+    # watchlist related paths
+    path('add-to-watchlist/', add_to_watchlist),
+    path('remove-from-watchlist/', remove_from_watchlist),
+    path('is-watchlist/', is_watchlist),
+    path('get-watchlist/', get_watchlist),
 ]
