@@ -81,23 +81,12 @@ export class HotelDetailsComponent implements OnInit{
     this.accountDetails['room'] = this.accountDetails['room_name'];
     this.accountDetails['reservationId'] = this.modifyForm.value.id;
     this.modifying = false;
-    this.router.navigate(['/checkout'], { queryParams: { details: JSON.stringify(this.accountDetails) } }); // TODO send things in query params
-
-    /* TODO Move to confirmation page
-    this.apiService.postBackendRequest('modify-reservation', this.modifyForm.value)
-    .subscribe({
-      next: (data: any) => {
-        console.log(data);
-        // TODO check fields
-        // this.router.navigate(['/confirmation']);
-        this.modifying = false;
-      },
-      error: (error: any) => {
-        console.log(error);
-        alert("Error modifying booking");
-        this.modifying = false;
-      }
-    }); */
+    this.router.navigate(['/checkout'], { queryParams: 
+      { 
+        details: JSON.stringify(this.accountDetails),
+        type: 'modify',
+      } 
+    }); 
   }
 
   cancelModify() {
@@ -143,7 +132,12 @@ export class HotelDetailsComponent implements OnInit{
             'email': this.details['email'],
           }
           console.log("details sent to checkout: " + details);
-          this.router.navigate(['/checkout'], { queryParams: { details: JSON.stringify(details) } });
+          this.router.navigate(['/checkout'], { queryParams: 
+            { 
+              details: JSON.stringify(details),
+              type: 'new',
+            } 
+          });
         },
         error: (error: any) => {
           console.log(error);

@@ -72,21 +72,21 @@ export class AccountDetailsComponent implements OnInit {
     event.target.src = 'assets/images/nexus_logo.png';
   }
 
-  cancelReservation(id: number): void {
+  cancelReservation(id: number, index: number): void {
     this.loading = true;
-    this.apiService.postBackendRequest('cancel-reservation', { 'reservationId': id })
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-          this.loading = false;
-          this.bookedRooms = this.bookedRooms.filter((room) => room['id'] !== id);
-          alert("Reservation Cancelled");
-        },
-        error: (error) => {
-          console.log(error);
-          this.loading = false;
-        }
-      });
+    let details = { 
+      ...this.bookedRooms[index], 
+      "hotel": this.bookedRooms[index]['hotel_name'],
+      "checkIn": this.bookedRooms[index]['check_in'],
+      "checkOut": this.bookedRooms[index]['check_out'],
+      "price": this.bookedRooms[index]['rate'],
+    };
+    this.router.navigate(['/checkout'], { 
+      queryParams: {
+        details: JSON.stringify(details),
+        type: "cancel",
+      }
+     });
   }
 
   logout(): void {

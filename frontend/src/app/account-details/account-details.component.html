@@ -66,7 +66,7 @@
                         <p class="pt-1"><a (click)="openHotel(i)" class="btn-custom">See Details</a></p>
                         <div class="d-flex justify-content-center">
                             <mat-spinner *ngIf="loading" diameter="30" />
-                            <button *ngIf="!loading" type="button" class="btn btn-danger" (click)="cancelReservation(room['id'])">Cancel Booking</button>
+                            <button *ngIf="!loading" type="button" class="btn btn-danger" (click)="cancelReservation(room['id'], i)">Cancel Booking</button>
                         </div>
                     </div>
                 </div>

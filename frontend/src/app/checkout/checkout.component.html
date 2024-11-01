@@ -10,11 +10,11 @@
         <div class="col">
           <div class="card shopping-cart" style="border-radius: 15px;">
             <div class="card-body">
-                <!--Payment details section-->
               <div class="row">
+                <!--Payment details section-->
                 <div class="col-lg-5 px-5 mt-4">
-                  <h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Payment Details</h3>
-                  <form class="mb-5" [formGroup]="paymentForm" (ngSubmit)="paymentSubmit()">
+                  <h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Card Details</h3>
+                  <form class="mb-5" [formGroup]="paymentForm">
                     <!--Display account details of user here?-->
                     <!--First & Last Name, email, phone num etc. -->
                     <!-- TO-DO: validators for form -->
@@ -22,7 +22,7 @@
                     <div data-mdb-input-init class="form-outline mb-5">
                       <label class="form-label" for="typeText">Card Number</label>
                       <input type="text" id="typeText" class="form-control" size="17"
-                       placeholder="Enter your card number" minlength="16" maxlength="16" formControlName="cardNum"/>
+                      placeholder="Enter your card number" minlength="16" maxlength="16" formControlName="cardNum"/>
                     </div>
                     <!--name on card field-->
                     <div data-mdb-input-init class="form-outline mb-5">
@@ -47,8 +47,15 @@
                         </div>
                       </div>
                     </div>
-                    <button *ngIf="!loading" type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
+
+                    <button *ngIf="transaction_type === 'new' && !loading" (click)="paymentSubmit()" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
                       Checkout
+                    </button>
+                    <button *ngIf="transaction_type === 'modify' && !loading" (click)="modifySubmit()" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
+                      Modify
+                    </button>
+                    <button *ngIf="transaction_type === 'cancel' && !loading" (click)="cancelSubmit()" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger btn-block btn-lg">
+                      Cancel
                     </button>
                     <mat-spinner *ngIf="loading" diameter="30"/>
                     <div class="fw-bold mt-4">
@@ -56,6 +63,7 @@
                     </div>
                   </form>
                 </div>
+
                 <!--Order Details/Room booking details-->
                 <div class="col-lg-7 px-5 py-4">
                     <h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Your Room</h3>
@@ -73,19 +81,44 @@
                         <h6 style="color: #9e9e9e;">Children: {{details['children']}}</h6>
                         <h6 style="color: #9e9e9e;">Check In: {{details['checkIn']}}</h6>
                         <h6 style="color: #9e9e9e;">Check Out: {{details['checkOut']}}</h6>
-                          <p class="fw-bold mb-0 me-5 pe-3">${{details['price']}} * {{details['nights']}} nights</p>
-                          <p class="fw-bold mb-0 me-5 pe-3">Subtotal: ${{subtotal}}</p>
+                          <p class="fw-bold mb-0 me-5 pe-3">${{details['price'].toFixed(2)}} * {{details['nights']}} nights = ${{subtotal.toFixed(2)}}</p>
                       </div>
                     </div>
                     <hr class="mb-4" style="height: 2px; background-color: black; opacity: 1;">
                     <!--This is the cost section-->
                     <div class="d-flex justify-content-between px-x">
-                        <p class="fw-bold">Taxes:</p>
-                        <p class="fw-bold">${{tax}}</p>
-                      </div>
+                        <div>
+                          <p *ngIf="transaction_type !== 'modify'" class="fw-bold">Subtotal:</p>
+
+                          <p *ngIf="transaction_type === 'modify'" class="fw-bold">New Subtotal:</p>
+                          <p class="fw-bold">Tax:</p>
+                          <p *ngIf="transaction_type === 'modify'" class="fw-bold">New Total:</p>
+                          <p *ngIf="transaction_type === 'modify'" class="fw-bold">Previously Paid:</p>
+                        </div>
+                        <div>
+                          <p *ngIf="transaction_type !== 'modify'" class="fw-bold">${{subtotal.toFixed(2)}}</p>
+
+                          <p *ngIf="transaction_type === 'modify'" class="fw-bold">${{subtotal.toFixed(2)}}</p>
+                          <p class="fw-bold">${{tax.toFixed(2)}}</p>
+                          <p *ngIf="transaction_type === 'modify'" class="fw-bold">${{total.toFixed(2)}}</p>
+                          <p *ngIf="transaction_type === 'modify'" class="fw-bold">${{details['total_price'].toFixed(2)}}</p>
+                        </div>
+                    </div>
                     <div class="d-flex justify-content-between p-2 mb-2 bg-primary rounded">
-                      <h5 class="fw-bold mb-0" style="color: white">Total:</h5>
-                      <h5 class="fw-bold mb-0" style="color: white">${{total}}</h5>
+                      <h5 *ngIf="transaction_type == 'new'" class="fw-bold mb-0" style="color: white">Total:</h5>
+                      <h5 *ngIf="transaction_type == 'cancel'" class="fw-bold mb-0" style="color: white">Total Refunded:</h5>
+                      <h5 *ngIf="transaction_type !== 'modify'" class="fw-bold mb-0" style="color: white">${{total.toFixed(2)}}</h5>
+
+                      <h5 *ngIf="transaction_type === 'modify'" class="fw-bold mb-0" style="color: white">
+                        Difference Due:
+                        <mat-icon matTooltip="positive differences represent amount charged from card, negative differences are amounts refunded to card">info</mat-icon>
+                      </h5>
+                      <h5 *ngIf="transaction_type === 'modify' && positiveDifference" class="fw-bold mb-0" style="color: white">
+                        ${{difference.toFixed(2)}}
+                      </h5>
+                      <h5 *ngIf="transaction_type === 'modify' && !positiveDifference" class="fw-bold mb-0" style="color: white">
+                        -${{difference.toFixed(2)}}
+                      </h5>
                     </div>
                   </div>
               </div>
