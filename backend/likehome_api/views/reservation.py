@@ -4,6 +4,8 @@ from rest_framework import status
 from .session import get_current_user
 from ..models import Reservation
 from django.conf import settings
+from django.db.models import Q
+from datetime import datetime
 from django.core.mail import send_mail
 from ..serializers import ReservationsSerializer
 
@@ -134,6 +136,23 @@ Team Nexus
     )
     subject = "Your Reservation with LikeHome has been Modified."
     send_email(user.email, subject, message)
+
+    return Response({'status': 'OK'}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def check_conflict(request):
+    check_in, check_out = request.data['checkIn'], request.data['checkOut']
+    check_in = datetime.strptime(check_in, "%Y-%m-%d").date()
+    check_out = datetime.strptime(check_out, "%Y-%m-%d").date()
+    print(check_in, check_out)
+
+    user_reservations = Reservation.objects.filter(user=get_current_user())
+    overlapping_records = user_reservations.filter(
+        Q(check_in__lte=check_out) & Q(check_out__gte=check_in)
+    )
+
+    if (overlapping_records.count() > 0):
+        return Response({'status': 'Conflict'}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({'status': 'OK'}, status=status.HTTP_200_OK)
 
