@@ -89,9 +89,9 @@
             <div class="col-lg-4" style="border-left: solid; border-color: rgb(141, 112, 59); border-width: 2px;">
                 <!-- IF OPENING FROM SEARCH RESULTS -->
                 <div *ngIf="!isAccount" class="text-center">
-                    <br>
-                    <br>
-                    <br>
+                    <button *ngIf="!addedToWatchlist && signedIn" class="btn btn-primary" style="height: 3rem; width: 15rem;" (click)="addToWatchlist()"> Add to Watchlist </button>
+                    <button *ngIf="addedToWatchlist && signedIn" class="btn btn-danger" style="height: 3rem; width: 15rem;" (click)="removeFromWatchlist()"> Remove from Watchlist </button>
+                    <br> <br>
                     <h3 class="detail-header">
                         Check-In: 
                         <span *ngIf="!modifying" class="detail-header2"> {{ details['checkIn']}} </span>
@@ -123,7 +123,7 @@
                         </div>
                     </div>
 
-                    <br>
+                    <br> 
                     <h4 *ngIf="!modifying" class="detail-header">
                         Check-In: 
                         <span class="detail-header2 ml-2"> {{ accountDetails['check_in']}} </span>

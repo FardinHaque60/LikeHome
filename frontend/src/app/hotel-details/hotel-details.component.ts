@@ -14,9 +14,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
   styleUrl: './hotel-details.component.scss'
 })
 export class HotelDetailsComponent implements OnInit{
+  signedIn: boolean = false;
+
   // used when clicked from search-results
   details: any = {};
   rooms: Array<any> = []; 
+  addedToWatchlist: boolean = false;
 
   // used when clicked from account-details
   accountDetails: any = {};
@@ -107,43 +110,69 @@ export class HotelDetailsComponent implements OnInit{
     return this.details['images'][randomNumber];
   }
 
+  addToWatchlist() {
+    console.log("add to watchlist clicked");
+    this.addedToWatchlist = true;
+    this.apiService.postBackendRequest('add-to-watchlist', this.details) 
+    .subscribe({
+      next: (data: any) => {
+        console.log(data);
+        this.details['id'] = data['id'];
+      },
+      error: (error: any) => {
+        console.log(error);
+      }
+    });
+  }
+
+  removeFromWatchlist() {
+    console.log("remove from watchlist clicked");
+    this.apiService.postBackendRequest('remove-from-watchlist', { 'rooms': this.rooms}) 
+    .subscribe({
+      next: (data: any) => {
+        console.log(data);
+        this.addedToWatchlist = false;
+      },
+      error: (error: any) => {
+        console.log(error);
+        alert("Error removing from watchlist");
+      }
+    });
+  }
+
   checkout(i: number) {
     // ensure user is logged in
-    this.apiService.getBackendRequest('get-session')
-      .subscribe({
-        next: (data: any) => {
-          console.log(data);
-          let room = this.rooms[i];
-          let details = {
-            'hotel': this.details['name'],
-            'room': room['name'],
-            'price': room['netRate'],
-            'adults': room['adults'],
-            'children': room['children'],
-            'checkIn': this.details['checkIn'],
-            'checkOut': this.details['checkOut'],
-            'nights': this.details['nights'],
-            'address': this.details['address'],
-            'city': this.details['city'],
-            'images': this.details['images'],
-            'description': this.details['description'],
-            'phone': this.details['phone'],
-            'website': this.details['web'],
-            'email': this.details['email'],
-          }
-          console.log("details sent to checkout: " + details);
-          this.router.navigate(['/checkout'], { queryParams: 
-            { 
-              details: JSON.stringify(details),
-              type: 'new',
-            } 
-          });
-        },
-        error: (error: any) => {
-          console.log(error);
-          alert("Please login to book a room");
-        }
+    if (this.signedIn) {
+      console.log("checkout request made");
+      let room = this.rooms[i];
+      let details = {
+        'hotel': this.details['name'],
+        'room': room['name'],
+        'price': room['netRate'],
+        'adults': room['adults'],
+        'children': room['children'],
+        'checkIn': this.details['checkIn'],
+        'checkOut': this.details['checkOut'],
+        'nights': this.details['nights'],
+        'address': this.details['address'],
+        'city': this.details['city'],
+        'images': this.details['images'],
+        'description': this.details['description'],
+        'phone': this.details['phone'],
+        'website': this.details['web'],
+        'email': this.details['email'],
+      }
+      console.log("details sent to checkout: " + details);
+      this.router.navigate(['/checkout'], { queryParams: 
+        { 
+          details: JSON.stringify(details),
+          type: 'new',
+        } 
       });
+    }
+    else {
+      alert("Please login to book a room");
+    }
   }
 
   calculateDaysBetween(date1: string, date2: string): number {
@@ -183,10 +212,37 @@ export class HotelDetailsComponent implements OnInit{
     );
   }
 
+  isWatchlist() {
+    console.log("room data sent " + this.rooms);
+    this.apiService.postBackendRequest('is-watchlist', this.details['rooms'])
+    .subscribe({
+      next: (data: any) => {
+        console.log(data);
+        this.addedToWatchlist = false;
+      },
+      error: (error: any) => {
+        console.log(error);
+        this.addedToWatchlist = true;
+      }
+    });
+  }
+
   ngOnInit(): void {
       //  listen for changes in check in/ out for hotel details from myBookings to compute nights
       this.modifyForm.get('checkIn')?.valueChanges.subscribe((value) => this.updateCheckIn(value));
       this.modifyForm.get('checkOut')?.valueChanges.subscribe((value) => this.updateCheckOut(value));
+
+      this.apiService.getBackendRequest('get-session')
+      .subscribe({
+        next: (data: any) => {
+          console.log(data);
+          this.signedIn = true;
+        },
+        error: (error: any) => {
+          console.log(error);
+          this.signedIn = false;
+        }
+      });
 
       // moves to the top of the page when finished navigating (back&forth)
       // TODO seems to not work with <-- back arrows
@@ -204,6 +260,8 @@ export class HotelDetailsComponent implements OnInit{
         this.details['nights'] = this.calculateDaysBetween(this.details['checkIn'], this.details['checkOut']);
         this.rooms = this.details['rooms'];
       });
+
+      this.isWatchlist(); // check if this hotel is in watchlist
 
       // receives parameters from the account-details Page
       this.route.queryParams.subscribe(params => {
