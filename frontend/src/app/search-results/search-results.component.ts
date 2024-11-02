@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../service/api.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
@@ -16,6 +16,21 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 export class SearchResultsComponent implements OnInit {
   searchResults: Array<any> = [];
   loading: boolean = false;
+
+  dateChecker: ValidatorFn = (
+    form: AbstractControl,
+  ): ValidationErrors | null => {
+    const checkIn = form.get('check_in')?.value;
+    const checkOut = form.get('check_out')?.value;
+    const today = new Date();
+
+    const isFutureCheckIn = checkIn && checkIn > today;
+    const isFutureCheckOut = checkOut && checkOut > today;
+    const isCheckInBeforeCheckOut = checkIn && checkOut && checkIn < checkOut;
+
+    return isFutureCheckIn && isFutureCheckOut && isCheckInBeforeCheckOut ? null : { invalidDate: true };
+  }
+
   searchFilter = new FormGroup({
     location: new FormControl('', Validators.required),
     check_in: new FormControl<Date | null>(null),
@@ -23,10 +38,10 @@ export class SearchResultsComponent implements OnInit {
     rooms: new FormControl('', Validators.required),
     adults: new FormControl('', Validators.required),
     children: new FormControl('', Validators.required),
-    radius: new FormControl('', Validators.required),
-    min_rate: new FormControl('', Validators.required),
-    max_rate: new FormControl('', Validators.required)
-  });
+    radius: new FormControl(20, Validators.required),
+    min_rate: new FormControl(0, Validators.required),
+    max_rate: new FormControl(5000, Validators.required)
+  }, { validators: this.dateChecker });
 
   constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router) {}
 
@@ -80,6 +95,11 @@ export class SearchResultsComponent implements OnInit {
 
   // invoked when search is called from search page itself
   searchFilterSubmit(): void {
+    if (this.searchFilter.invalid) {
+      console.log('Search Filter Invalid');
+      alert('Invalid search filter fields');
+      return;
+    }
     this.loading = true;
     console.log('Search Filter Submitted:', this.searchFilter.value);
     this.apiService.postBackendRequest('search', this.searchFilter.value)
