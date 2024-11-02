@@ -1,9 +1,13 @@
 import hashlib
 import time
 import requests
+import os
+from dotenv import load_dotenv
 
-key = "db0584e57700cdf17ce500df1cd27a1a"
-secret = "66c1741c5f"
+load_dotenv()
+
+key = os.getenv("HOTELBEDS_API_KEY2")
+secret = os.getenv("HOTELBEDS_SECRET2")
 
 def generate_signature():
     timestamp = str(int(time.time()))

@@ -1,6 +1,6 @@
 #!/bin/bash 
-apiKey="db0584e57700cdf17ce500df1cd27a1a"
-secret="66c1741c5f"
+apiKey=$HOTELBEDS_API_KEY2
+secret=$HOTELBEDS_SECRET2
 curl -i \
 -X GET \
 -H 'Accept:application/json' \
