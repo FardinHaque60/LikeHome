@@ -21,10 +21,10 @@ def add_to_watchlist(request):
         currency=data['currency'],
         email=data['email'],
         website=data['web'],
-        images=json.dumps(data['images']),
+        images=data['images'],
         address=data['address'],
         city=data['city'],
-        rooms=json.dumps(data['rooms'])
+        rooms=data['rooms']
     )
 
     id = watchlist_item.id
@@ -34,7 +34,6 @@ def add_to_watchlist(request):
 def remove_from_watchlist(request):
     user = get_current_user()
     rooms = request.data['rooms']
-    rooms = json.dumps(rooms)
     watchlist_item = Watchlist.objects.get(user=user, rooms=rooms)
     watchlist_item.delete()
 
@@ -50,7 +49,6 @@ def get_watchlist(request):
 @api_view(['POST'])
 def is_watchlist(request):
     room_data = request.data # returns list with room data
-    room_data = json.dumps(room_data)
     user = get_current_user()
     watchlist_items = Watchlist.objects.filter(user=user, rooms=room_data)
     if (watchlist_items.count() > 0):

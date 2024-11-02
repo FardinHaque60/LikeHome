@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from django.contrib.auth.models import User
+from ..models import Profile
 
 # JSON object
 current_user = None # init current user to no one on start up
@@ -21,9 +22,12 @@ def get_session(request):
     if current_user is None:
         return Response({'status': 'NO_USER'}, status=status.HTTP_400_BAD_REQUEST)
 
+    profile = Profile.objects.get(user=current_user)
+
     return Response({
         'username': current_user.username, 
         'email': current_user.email, 
         'first_name': current_user.first_name, 
-        'last_name': current_user.last_name
+        'last_name': current_user.last_name,
+        'reward_points': profile.reward_points
     }, status=status.HTTP_200_OK)

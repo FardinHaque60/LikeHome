@@ -2,12 +2,13 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from .session import get_current_user
-from ..models import Reservation
+from ..models import Reservation, Profile
 from django.conf import settings
 from django.db.models import Q
 from datetime import datetime
 from django.core.mail import send_mail
 from ..serializers import ReservationsSerializer
+import math
 
 @api_view(['GET'])
 def get_reservations(request):
@@ -26,9 +27,17 @@ def create_reservation(request):
     description, phone_number, website, email, images = reservation_details['description'], reservation_details['phone'], reservation_details['website'], reservation_details['email'], reservation_details['images']
     # TODO look to save payment details in future
     card_number, card_name, exp_date, cvv = payment_details['cardNum'], payment_details['cardName'], payment_details['expDate'], payment_details['CVV']
+    # TODO use reward points if wanted
+    # add to reward points 
+    updated_reward_points = reservation_details['newRewards'] # overwrite old reward points in profile with this
 
     try:
+        # update reward points
         user = get_current_user()
+        user_profile = Profile.objects.get(user=user)
+        user_profile.reward_points = updated_reward_points
+        user_profile.save()
+        # save reservation to db
         reservation = Reservation.objects.create(
             user=user, 
             hotel_name=hotel_name, 
@@ -78,6 +87,12 @@ def cancel_reservation(request):
     try:
         user = get_current_user()
         reservation = Reservation.objects.get(id=reservation_id)
+        # remove reward points
+        user_profile = Profile.objects.get(user=user)
+        forfeited_points = math.ceil(reservation.rate) * reservation.nights
+        user_profile.reward_points -= forfeited_points
+        user_profile.save()
+        # delete reservation
         reservation.delete()
         message = (
 f'''Hello {user.first_name} \n
@@ -92,6 +107,7 @@ Adults: {reservation.adults}
 Children: {reservation.children}
 Rate: {reservation.rate}
 Total Price Refunded: {reservation.total_price}\n
+Forfeited Reward Points: {forfeited_points}\n
 Sincerely,
 Team Nexus'''
         )
@@ -111,6 +127,12 @@ def modify_reservation(request):
     check_in, check_out, nights, price = reservation_details['checkIn'], reservation_details['checkOut'], reservation_details['nights'], reservation_details['totalPrice']
     difference_paid = reservation_details['differencePaid']
     reservation = Reservation.objects.get(id=reservation_id)
+    # remove reward points
+    user_profile = Profile.objects.get(user=user)
+    forfeited_points = math.ceil(reservation.rate) * reservation.nights
+    user_profile.reward_points -= forfeited_points
+    user_profile.save()
+    # continue modifying reservation
     reservation.check_in = check_in
     reservation.check_out = check_out
     reservation.nights = nights
@@ -130,6 +152,7 @@ Children: {reservation.children}
 Rate: {reservation.rate}
 Total Price: {reservation.total_price}\n
 Difference Paid: {difference_paid}\n
+Forfeited Reward Points: {forfeited_points}\n
 Sincerely,
 Team Nexus
 '''
@@ -142,11 +165,14 @@ Team Nexus
 @api_view(['POST'])
 def check_conflict(request):
     check_in, check_out = request.data['checkIn'], request.data['checkOut']
+    hotel_name = request.data['hotelName']
     check_in = datetime.strptime(check_in, "%Y-%m-%d").date()
     check_out = datetime.strptime(check_out, "%Y-%m-%d").date()
     print(check_in, check_out)
 
     user_reservations = Reservation.objects.filter(user=get_current_user())
+    user_reservations = user_reservations.exclude(hotel_name=hotel_name)
+    # finds overlapping records
     overlapping_records = user_reservations.filter(
         Q(check_in__lte=check_out) & Q(check_out__gte=check_in)
     )
