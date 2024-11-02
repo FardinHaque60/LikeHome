@@ -21,10 +21,10 @@ def add_to_watchlist(request):
         currency=data['currency'],
         email=data['email'],
         website=data['web'],
-        images=json.dumps(data['images']),
+        images=data['images'],
         address=data['address'],
         city=data['city'],
-        rooms=json.dumps(data['rooms'])
+        rooms=data['rooms']
     )
 
     id = watchlist_item.id
