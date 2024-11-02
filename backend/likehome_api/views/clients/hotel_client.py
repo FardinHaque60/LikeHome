@@ -212,6 +212,7 @@ def hotel_availability(location, check_in, check_out, adults, children, rooms, r
         set_search_results(hotel_objs)
         return True
     else:
+        # print("AVAIL API QUOTE ERROR")
         if not rotate_key():
             print("API Request Limit Reached For the Day")
             return {'status_code': 403, 'message': response.json()}
@@ -273,6 +274,7 @@ def hotel_details(hotel_code):
 
         return hotel_features
     else:
+        # print("DETAILS API QUOTE ERROR")
         if not rotate_key():
             print("API Request Limit Reached For the Day")
             return {'status_code': 403, 'message': response.json()}
