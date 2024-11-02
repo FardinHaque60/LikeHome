@@ -11,6 +11,8 @@ class Profile(models.Model):
 
 class Reservation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rewards_earned = models.IntegerField(default=0)
+    rewards_applied = models.IntegerField(default=0)
 
     # hotel related fields
     hotel_name = models.CharField(max_length=100)

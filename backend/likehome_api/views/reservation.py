@@ -29,7 +29,9 @@ def create_reservation(request):
     card_number, card_name, exp_date, cvv = payment_details['cardNum'], payment_details['cardName'], payment_details['expDate'], payment_details['CVV']
     # TODO use reward points if wanted
     # add to reward points 
-    updated_reward_points = reservation_details['newRewards'] # overwrite old reward points in profile with this
+    updated_reward_points = reservation_details['newRewards'] # overwrite old reward points in profile with this, this value takes into account applied rewards asw
+    rewards_earned = reservation_details['rewardsEarned'] # reward points earned from this reservation
+    rewards_used = reservation_details['rewardsApplied'] # reward points used for this reservation
 
     try:
         # update reward points
@@ -55,7 +57,9 @@ def create_reservation(request):
             phone_number=phone_number,
             website=website,
             images=images,
-            email=email
+            email=email,
+            rewards_earned=rewards_earned,
+            rewards_applied=rewards_used
         )
 
         message = (
@@ -69,6 +73,8 @@ def create_reservation(request):
             "Adults: " + str(adults) + "\n" +
             "Children: " + str(children) + "\n" +
             "Rate: " + str(rate) + "\n" +
+            "Rewards Earned: " + str(rewards_earned) + "\n" +
+            "Rewards Used: " + str(rewards_used) + "\n" +
             "Total Price: $" + str(total_price) + "\n\n" +
             "We hope you enjoy your stay!\n\n" +
             "Sincerely,\n"
@@ -89,9 +95,8 @@ def cancel_reservation(request):
         reservation = Reservation.objects.get(id=reservation_id)
         # remove reward points
         user_profile = Profile.objects.get(user=user)
-        forfeited_points = math.ceil(reservation.rate) * reservation.nights
-        new_points = math.max(0, user_profile.reward_points - forfeited_points)
-        user_profile.reward_points = new_points
+        forfeited_points = reservation.rewards_earned # remove reward points that were previously gained from reservation
+        user_profile.reward_points -= forfeited_points
         user_profile.save()
         # delete reservation
         reservation.delete()
@@ -130,15 +135,15 @@ def modify_reservation(request):
     reservation = Reservation.objects.get(id=reservation_id)
     # remove reward points
     user_profile = Profile.objects.get(user=user)
-    forfeited_points = math.ceil(reservation.rate) * reservation.nights
-    new_points = math.max(0, user_profile.reward_points - forfeited_points)
-    user_profile.reward_points = new_points
+    forfeited_points = reservation.rewards_earned # remove reward points that were previously gained from reservation
+    user_profile.reward_points -= forfeited_points
     user_profile.save()
     # continue modifying reservation
     reservation.check_in = check_in
     reservation.check_out = check_out
     reservation.nights = nights
     reservation.total_price = price
+    reservation.rewards_earned = 0 # set rewards earned from this hotel to 0 since forfeit
     reservation.save()
     message = (
 f'''Hello {user.first_name} \n
