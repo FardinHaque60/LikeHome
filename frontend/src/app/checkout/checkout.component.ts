@@ -20,6 +20,11 @@ export class CheckoutComponent implements OnInit{
   tax: number = 0;
   total: number = 0;
   subtotal: number = 0;
+  rewardNightsOptions: Array<number> = [0];
+  rewardsApplied: number = 0; // COST discounted from rewards (rate * nights requested)
+  userRewards: number = 0; // initial user rewards
+  userAfterRewards: number = 0; // user rewards after applying
+  rewardsEarned: number = 0; // rewards earned from booking
   loading: boolean = false;
   conflict: boolean = false;
   // declare type of transaction new, modify, cancel
@@ -63,6 +68,7 @@ export class CheckoutComponent implements OnInit{
     cardName: new FormControl('', Validators.required),
     expDate: new FormControl('', Validators.required),
     CVV: new FormControl('', Validators.required),
+    rewardsNights: new FormControl(0, Validators.required),
   }, { validators: this.expDateValidator });
 
   goBack(): void {
@@ -86,8 +92,9 @@ export class CheckoutComponent implements OnInit{
   }
 
   modifySubmit(): void {
-    if (this.paymentForm.invalid) {
-      alert("invalid payment details");
+    if (this.paymentForm.invalid || this.conflict) {
+      this.paymentForm.markAllAsTouched();
+      console.log("Payment field Error");
     }
     else {
       this.loading = true;
@@ -122,6 +129,7 @@ export class CheckoutComponent implements OnInit{
     else {
       this.loading = true;
       this.details['totalPrice'] = this.total;
+      this.details['newRewards'] = this.userAfterRewards;
       let reservationDetails = {
         "paymentDetails": this.paymentForm.value,
         "reservationDetails": this.details
@@ -159,6 +167,7 @@ export class CheckoutComponent implements OnInit{
     let travelWindow = {
       "checkIn": this.details['checkIn'],
       "checkOut": this.details['checkOut'],
+      "hotelName": this.details['hotel']
     }
     this.apiService.postBackendRequest('check-conflict', travelWindow)
     .subscribe({
@@ -195,6 +204,16 @@ export class CheckoutComponent implements OnInit{
     return 0;
   }
 
+  updateRewards(): void {
+    let nights = this.paymentForm.value.rewardsNights ? this.paymentForm.value.rewardsNights : 0;
+    let rate = this.details['price'];
+    let rewardsPerNight = Math.ceil(rate) * 5; // reward points needed per night
+
+    this.rewardsApplied = rate * nights; // cost discounted by rewards (i.e. number of nights request * rate)
+    this.userAfterRewards = this.userRewards + this.rewardsEarned - (rewardsPerNight * nights);
+    this.total = this.subtotal + this.tax - this.rewardsApplied;
+  }
+
   ngOnInit(): void {
     //moves to the top of the page when finished navigating (back&forth)
     //seems to not work with <-- back arrows
@@ -210,15 +229,35 @@ export class CheckoutComponent implements OnInit{
       this.transaction_type = params['type'];
       console.log("TRANSACTION TYPE: " + this.transaction_type);
     });
-    // check if another booking is happening in same date window
-    if (this.transaction_type === 'new') {
-      this.checkConflict();
-    }
 
     this.subtotal = +this.details['price']*this.details['nights'];
     this.subtotal = +this.subtotal.toFixed(2);
     this.tax = this.calculateTax();
     this.total = this.calculateTotal();
+
+     // check if another booking is happening in same date window
+     if (this.transaction_type === 'new') {
+      this.checkConflict();
+      this.rewardsEarned = Math.ceil(this.details['price']) * this.details['nights'];
+      this.apiService.getBackendRequest('get-session')
+        .subscribe({
+          next: (data: any) => {
+            console.log(data);
+            // TODO init these fields with session
+            this.userRewards = data['reward_points'];
+            // this.userRewards = 5000;
+            this.userAfterRewards = this.userRewards + this.rewardsEarned;
+            // bottleneck the rewards night options to minimum of total nights of stay and available in reward points
+            let rewardValue: number = +((this.userRewards / 5).toFixed(2)); // number of nights user can afford
+            console.log("CHOOSING:" + this.details['nights'] + " OR " + Math.floor(this.subtotal / rewardValue));
+            let max = Math.min(this.details['nights'], Math.floor(rewardValue / this.details['price'])); // max number of nights user can afford
+            this.rewardNightsOptions = Array.from({length: max + 1}, (v, k) => k);
+          },
+          error: (error: any) => {
+            console.log(error);
+          }
+        });
+    }
 
     if (this.transaction_type === "cancel") {
       this.cancellationFee = this.checkCancellationFee();
@@ -226,6 +265,7 @@ export class CheckoutComponent implements OnInit{
     }
 
     if (this.transaction_type === "modify") {
+      this.checkConflict();
       this.difference = this.details['total_price'] - this.total;
       if (this.difference <= 0) {
         this.positiveDifference = true;

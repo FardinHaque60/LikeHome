@@ -26,6 +26,7 @@ export class AccountDetailsComponent implements OnInit {
     'last_name': '',
     'email': '',
     'username': '',
+    'reward_points': 0,
   };
 
   bookedRooms: Array<any> = [];

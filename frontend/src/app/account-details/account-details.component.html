@@ -34,8 +34,8 @@
                     <p class="d-flex justify-content-center mb-4">Full Name: {{currentUser['first_name']}} {{currentUser['last_name']}}</p>
                     <!-- this is the line for phone number (potential item)
                     <p class="d-flex justify-content-center mb-4">Phone Number: 000-000-0000</p>-->
-                    <!-- this is the line for reward points
-                    <p class="d-flex justify-content-center mb-4">Reward Points: </p>-->
+                    <!-- this is the line for reward points -->
+                    <p class="d-flex justify-content-center mb-4">Reward Points: {{currentUser['reward_points']}}</p> 
                     <p class="d-flex justify-content-center mb-4">Email: {{currentUser['email']}}</p>
                     <div class="d-flex justify-content-center">
                         <button class ="btn btn-primary col-lg-6 px-3 py-3" (click) ="logout()"> Sign Out</button>

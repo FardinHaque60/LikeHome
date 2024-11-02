@@ -60,10 +60,16 @@
                           <input type="password" id="typeText" class="form-control form-control-lg"
                           value="" size="1" minlength="3" maxlength="3" placeholder="3-digit code"  formControlName="CVV"/>
                           <div class="alert alert-danger mt-2" *ngIf="paymentForm.get('CVV')?.touched && paymentForm.get('CVV')?.invalid">
-                            <span>CVV is invalid.</span>
-                        </div>
+                              <span>CVV is invalid.</span>
+                          </div>
                         </div>
                       </div>
+                    </div>
+                    <div *ngIf="transaction_type === 'new'" data-mdb-input-init class="form-outline mb-3">
+                      <label class="form-label" for="dropdown">Number of Reward Nights</label>
+                      <select id="dropdown" class="form-select" formControlName="rewardsNights" (change)="updateRewards()">
+                        <option *ngFor="let night of rewardNightsOptions" [ngValue]="night"> {{night}} </option>
+                      </select>
                     </div>
 
                     <button *ngIf="transaction_type === 'new' && !loading" (click)="paymentSubmit()" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
@@ -99,7 +105,12 @@
                         <h6 style="color: #9e9e9e;">Children: {{details['children']}}</h6>
                         <h6 style="color: #9e9e9e;">Check In: {{details['checkIn']}}</h6>
                         <h6 style="color: #9e9e9e;">Check Out: {{details['checkOut']}}</h6>
-                          <p class="fw-bold mb-0 me-5 pe-3">${{details['price'].toFixed(2)}} * {{details['nights']}} nights = ${{subtotal.toFixed(2)}}</p>
+                        <p class="fw-bold mb-0">${{details['price'].toFixed(2)}} * {{details['nights']}} nights = ${{subtotal.toFixed(2)}}</p>
+                        <ng-container *ngIf="transaction_type === 'new'">
+                          <p class="fw-bold mb-0">Reward Points Earned: {{rewardsEarned}}</p>
+                          <p class="fw-bold mb-0">Reward Points Available: {{userRewards}} (${{(userRewards/5).toFixed(2)}})</p>
+                          <p class="fw-bold mb-0">Reward Points After Transaction: {{userAfterRewards}}</p>
+                        </ng-container>
                       </div>
                     </div>
                     <hr class="mb-4" style="height: 2px; background-color: black; opacity: 1;">
@@ -110,6 +121,12 @@
 
                           <p *ngIf="transaction_type === 'modify'" class="fw-bold">New Subtotal:</p>
                           <p class="fw-bold">Tax:</p>
+                          <p *ngIf="transaction_type === 'new'" class="fw-bold">Rewards Applied:
+                            <mat-icon
+                              matTooltip="Reward points are 5x rate of hotel. See terms & service for more info.">
+                              info
+                            </mat-icon>
+                          </p>
                           <p *ngIf="transaction_type === 'cancel' && cancellationFee > 0" class="fw-bold">Cancellation Fee: 
                             <mat-icon
                               matTooltip="40% fee of total is charged for cancelling within 1 week of check in date.">
@@ -124,6 +141,7 @@
 
                           <p *ngIf="transaction_type === 'modify'" class="fw-bold">${{subtotal.toFixed(2)}}</p>
                           <p class="fw-bold">${{tax.toFixed(2)}}</p>
+                          <p *ngIf="transaction_type === 'new'" class="fw-bold">-${{rewardsApplied.toFixed(2)}}</p>
                           <p *ngIf="cancellationFee > 0" class="fw-bold">-${{cancellationFee.toFixed(2)}}</p>
                           <p *ngIf="transaction_type === 'modify'" class="fw-bold">${{total.toFixed(2)}}</p>
                           <p *ngIf="transaction_type === 'modify'" class="fw-bold">${{details['total_price'].toFixed(2)}}</p>
