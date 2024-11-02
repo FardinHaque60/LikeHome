@@ -3,7 +3,7 @@ import { ApiService } from '../service/api.service';
 import { Router, RouterLink, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators, ValidatorFn, ValidationErrors, AbstractControl } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
@@ -20,6 +20,20 @@ export class HotelDetailsComponent implements OnInit{
   details: any = {};
   rooms: Array<any> = []; 
   addedToWatchlist: boolean = false;
+  
+  dateChecker: ValidatorFn = (
+    form: AbstractControl,
+  ): ValidationErrors | null => {
+    const checkIn = form.get('checkIn')?.value;
+    const checkOut = form.get('checkOut')?.value;
+    const today = new Date();
+
+    const isFutureCheckIn = checkIn && checkIn > today;
+    const isFutureCheckOut = checkOut && checkOut > today;
+    const isCheckInBeforeCheckOut = checkIn && checkOut && checkIn < checkOut;
+
+    return isFutureCheckIn && isFutureCheckOut && isCheckInBeforeCheckOut ? null : { invalidDate: true };
+  }
 
   // used when clicked from account-details
   accountDetails: any = {};
@@ -31,7 +45,7 @@ export class HotelDetailsComponent implements OnInit{
     checkOut: new FormControl<Date | null>(null),
     nights: new FormControl<number | null>(null),
     id: new FormControl(0, Validators.required),
-  });
+  }, { validators: this.dateChecker });
 
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) { }
 
@@ -72,10 +86,16 @@ export class HotelDetailsComponent implements OnInit{
 
   endModify() { 
     console.log("end modifying");
+    if (this.modifyForm.invalid) {
+      alert("Invalid check in or check out dates");
+      return;
+    }
     console.log(this.modifyForm.value);
     console.log(this.accountDetails);
-    // TODO check fields
+
     // send updated accountDetails object to checkout page
+    this.accountDetails['originalCheckIn'] = this.accountDetails['check_in'];
+    this.accountDetails['originalCheckOut'] = this.accountDetails['check_out'];
     this.accountDetails['checkIn'] = this.sendFormatDate(this.modifyForm.value.checkIn);
     this.accountDetails['checkOut'] = this.sendFormatDate(this.modifyForm.value.checkOut);
     this.accountDetails['price'] = this.accountDetails['rate'];

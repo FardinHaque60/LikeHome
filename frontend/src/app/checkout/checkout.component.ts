@@ -21,6 +21,7 @@ export class CheckoutComponent implements OnInit{
   total: number = 0;
   subtotal: number = 0;
   rewardNightsOptions: Array<number> = [0];
+  rewardsPointsUsed: number = 0; // POINTS used to complete transaction
   rewardsApplied: number = 0; // COST discounted from rewards (rate * nights requested)
   userRewards: number = 0; // initial user rewards
   userAfterRewards: number = 0; // user rewards after applying
@@ -31,8 +32,8 @@ export class CheckoutComponent implements OnInit{
   transaction_type: string = "";
   // only for modify
   difference: number = 0;
-  positiveDifference: boolean = false;
-  modificationFee: number = 0;
+  positiveDifference: boolean = true;
+  modificationFee: boolean = false;
   // only for cancel
   cancellationFee: number = 0;
 
@@ -128,13 +129,14 @@ export class CheckoutComponent implements OnInit{
     }
     else {
       this.loading = true;
-      this.details['totalPrice'] = this.total;
+      this.details['totalPrice'] = +(this.total.toFixed(2));
       this.details['newRewards'] = this.userAfterRewards;
+      this.details['rewardsEarned'] = this.rewardsEarned;
+      this.details['rewardsApplied'] = this.rewardsPointsUsed;
       let reservationDetails = {
         "paymentDetails": this.paymentForm.value,
         "reservationDetails": this.details
       }
-      // TODO verify payment details
       console.log(reservationDetails);
       this.apiService.postBackendRequest('create-reservation', reservationDetails)
         .subscribe({
@@ -181,6 +183,29 @@ export class CheckoutComponent implements OnInit{
     });
   }
 
+  checkModificationFee(date: string): boolean {
+    let checkIn = date;
+    // convert check in to date obj
+    const targetDate = new Date(checkIn);
+    
+    // Get the current date
+    const currentDate = new Date();
+    
+    // Set the time to the start of the day for accurate comparison
+    currentDate.setHours(0, 0, 0, 0);
+    targetDate.setHours(0, 0, 0, 0);
+    
+    // Calculate the date one week after the target date
+    const oneWeekBefore = new Date(targetDate);
+    oneWeekBefore.setDate(targetDate.getDate() - 7);
+    
+    // Check if the current date is within one week of the target date
+    if (currentDate >= oneWeekBefore && currentDate <= targetDate) {
+      return true;
+    }
+    return false;
+  }
+
   checkCancellationFee(): number {
     let checkIn = this.details['checkIn'];
     // convert check in to date obj
@@ -210,7 +235,8 @@ export class CheckoutComponent implements OnInit{
     let rewardsPerNight = Math.ceil(rate) * 5; // reward points needed per night
 
     this.rewardsApplied = rate * nights; // cost discounted by rewards (i.e. number of nights request * rate)
-    this.userAfterRewards = this.userRewards + this.rewardsEarned - (rewardsPerNight * nights);
+    this.rewardsPointsUsed = rewardsPerNight * nights; // reward points used
+    this.userAfterRewards = this.userRewards + this.rewardsEarned - this.rewardsPointsUsed; // user rewards after applying
     this.total = this.subtotal + this.tax - this.rewardsApplied;
   }
 
@@ -243,7 +269,6 @@ export class CheckoutComponent implements OnInit{
         .subscribe({
           next: (data: any) => {
             console.log(data);
-            // TODO init these fields with session
             this.userRewards = data['reward_points'];
             // this.userRewards = 5000;
             this.userAfterRewards = this.userRewards + this.rewardsEarned;
@@ -266,9 +291,18 @@ export class CheckoutComponent implements OnInit{
 
     if (this.transaction_type === "modify") {
       this.checkConflict();
-      this.difference = this.details['total_price'] - this.total;
+      this.difference = this.total - this.details['total_price']; // AFTER MOD PRICE - BEFORE MOD PRICE
+      console.log("FROM DETAILS " + this.details['total_price']);
+      console.log("FROM TOTAL " + this.total);
+      console.log("DIFFERENCE " + this.difference);
+      // if modification is within 7 days of check in, charge additional $100 to difference
+      if (this.checkModificationFee(this.details['originalCheckIn']) || this.checkModificationFee(this.details['checkIn'])) {
+        this.modificationFee = true;
+        this.difference += 100;
+      }
+      console.log("DIFFERENCE AFTER FEE" + this.difference); 
       if (this.difference <= 0) {
-        this.positiveDifference = true;
+        this.positiveDifference = false;
       }
       this.difference = Math.abs(this.difference);
     }
