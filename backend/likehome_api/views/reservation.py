@@ -90,7 +90,8 @@ def cancel_reservation(request):
         # remove reward points
         user_profile = Profile.objects.get(user=user)
         forfeited_points = math.ceil(reservation.rate) * reservation.nights
-        user_profile.reward_points -= forfeited_points
+        new_points = math.max(0, user_profile.reward_points - forfeited_points)
+        user_profile.reward_points = new_points
         user_profile.save()
         # delete reservation
         reservation.delete()
@@ -130,7 +131,8 @@ def modify_reservation(request):
     # remove reward points
     user_profile = Profile.objects.get(user=user)
     forfeited_points = math.ceil(reservation.rate) * reservation.nights
-    user_profile.reward_points -= forfeited_points
+    new_points = math.max(0, user_profile.reward_points - forfeited_points)
+    user_profile.reward_points = new_points
     user_profile.save()
     # continue modifying reservation
     reservation.check_in = check_in
