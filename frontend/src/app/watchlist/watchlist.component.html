@@ -32,29 +32,53 @@
     		<div class="row">
 	        <div class="col-lg-9">
             <div class="row" style="max-height: 130vh; overflow-y: auto;">
-              <div class="col-sm-6 col-md-4 col-lg-4">
-                  <div class="room">
-                      <a class="img d-flex justify-content-center align-items-center" style="overflow: hidden;">
-                          <img src="assets/images/nexus_logo.png" class="img-fluid" style="object-fit: cover;">
-                          <div class="icon d-flex justify-content-center align-items-center"> </div>
-                      </a>
-                      <div class="text p-3 text-center">
-                        <div class="d-flex justify-content-center align-items-center mb-3">
-                          <h3 class="pr-1" style="display: inline-block"><a>ROOM NAME</a></h3> 
-                          <span class="material-symbols-outlined" style="color:black"><a style="cursor: pointer">star</a></span>
-                        </div>
-                          <p><span class="price mr-2">NETRATE</span><span class="per">per night</span></p>
-                          <p><span class="price mr-2" style="font-size: 1rem">Nights:</span><span>NIGHTS</span></p>
-                          <p><span class="price mr-2" style="font-size: 1rem">Adults:</span><span>ADULTS</span></p>
-                          <p><span class="price mr-2" style="font-size: 1rem">Children:</span><span>CHILDREN</span></p>
-                          <hr>
-                          <p class="pt-1"><a class="btn-custom">See Details</a></p>
+              <div class="col-sm col-md-6 col-lg-4" *ngFor="let hotel of watchlistHotels; let i = index">
+                <div class="room">
+                    <a class="img d-flex justify-content-center align-items-center" style="overflow: hidden;">
+                       <img [src]="hotel['images'][0]" class="img-fluid" style="object-fit: cover;">
+                        <div class="icon d-flex justify-content-center align-items-center"> </div>
+                    </a>
+                    <div class="text p-3 text-center" style="height: 18rem; overflow-y: auto;">
+                        <h3 class="mb-3"><a>{{hotel['hotel_name']}}</a></h3>
+                        <p><span class="price mr-2">{{hotel.min_rate}}</span> <span class="per">per night</span></p>
+                        <ul class="list">
+                            <li><span>Max Rate:</span> {{hotel.max_rate}} </li>
+                        </ul>
+                        <hr>
+                        <p class="pt-1"><a class="btn-custom">See Details</a></p>
                     </div>
                 </div>
               </div>
+            </div>
           </div>
         </div>
       </div>
+
+
+</div>
+
+    <!--
+        <div class="col-sm col-md-6 col-lg-4" *ngFor="let room of watchListHotel; let i = index">
+            <div class="room">
+                <a (click)="" class="img d-flex justify-content-center align-items-center" style="overflow: hidden;">
+                    <img [src]="hotel['images'][0]" (error)="" class="img-fluid" style="object-fit: cover;">
+                    <div class="icon d-flex justify-content-center align-items-center"> </div>
+                </a>
+                <div class="text p-3 text-center" style="height: 18rem; overflow-y: auto;">
+                    <h3 class="mb-3"><a (click)="">{{hotel.hotel_name}}</a></h3>
+                    <p><span class="price mr-2">{{hotel.min_rate}}</span> <span class="per">per night</span></p>
+                    <ul class="list">
+                        <li><span>Max Rate:</span> {{hotel.max_rate}} </li>
+                        <li><span>Size:</span> 45 m2</li>
+                        <li><span>View:</span> Sea View</li>
+                        <li><span>Bed:</span> 1</li>
+                    </ul>
+                    <hr>
+                    <p class="pt-1"><a (click)="" class="btn-custom">See Details</a></p>
+                </div>
+            </div>
+        </div> -->
+
 
 
 <!--
