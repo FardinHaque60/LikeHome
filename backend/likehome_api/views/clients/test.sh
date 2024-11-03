@@ -1,3 +1,6 @@
+# script version of testing first api call to hotel api
+# run via `./test.sh` in terminal
+
 #!/bin/bash 
 apiKey=$HOTELBEDS_API_KEY2
 secret=$HOTELBEDS_SECRET2

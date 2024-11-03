@@ -1,3 +1,6 @@
+# file for testing hotel content api used in first api call of search
+# run the file to see if search call is working ok
+
 import hashlib
 import time
 import requests
