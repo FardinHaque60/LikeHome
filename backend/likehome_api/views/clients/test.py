@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-key = os.getenv("HOTELBEDS_API_KEY2")
-secret = os.getenv("HOTELBEDS_SECRET2")
+key = os.getenv("HOTELBEDS_API_KEY1")
+secret = os.getenv("HOTELBEDS_SECRET1")
 
 def generate_signature():
     timestamp = str(int(time.time()))
@@ -27,8 +27,8 @@ def get_header(signature):
 
 params = {
   "stay": {
-    "checkIn": "2020-06-15",
-    "checkOut": "2020-06-16"
+    "checkIn": "2025-06-15",
+    "checkOut": "2025-06-16"
   },
   "occupancies": [
     {
