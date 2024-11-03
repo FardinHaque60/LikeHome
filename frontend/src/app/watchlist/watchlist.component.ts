@@ -47,10 +47,9 @@ export class WatchlistComponent implements OnInit {
         console.log(data); // look in inspect element console to see what format data is in for parsing
         this.watchlistHotels = data;
         this.loading = false;
-        console.log(this.watchlistHotels[0].images);
       },
       error: (error: any) => {
-        console.log("Search Result Error");
+        console.log('Watchlist Results Error')
         console.log(error);
         this.loading = false;
       }

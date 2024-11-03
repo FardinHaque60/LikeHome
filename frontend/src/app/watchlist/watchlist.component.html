@@ -45,12 +45,16 @@
             <ng-container *ngIf="!loading">
             <div class="col-sm col-md-6 col-lg-4" *ngFor="let hotel of watchlistHotels; let i = index">
               <div class="room">
-                  <a class="img d-flex justify-content-center align-items-center" style="overflow: hidden;">
+                  <a class="img d-flex justify-content-bottom align-items-bottom" style="overflow: hidden;">
                       <img [src]="hotel['images'][0]" class="img-fluid" style="object-fit: cover;">
                       <div class="icon d-flex justify-content-center align-items-center"> </div>
                   </a>
                   <div class="text p-3 text-center" style="height: 18rem; overflow-y: auto;">
                       <h3 class="mb-3"><a>{{hotel['hotel_name']}}</a></h3>
+                      <p class="mb-0" style="color: #8d703b; font-weight: 600"><span class="mr-2">{{hotel.city}}</span></p>
+                      <ul class="list">
+                        <li>{{hotel.address}}</li>
+                      </ul>
                       <p><span class="price mr-2">{{hotel.min_rate}}</span> <span class="per">per night</span></p>
                       <ul class="list">
                           <li><span>Max Rate:</span> {{hotel.max_rate}} </li>
