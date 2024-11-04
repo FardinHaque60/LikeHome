@@ -1,6 +1,5 @@
 from datetime import date
 from openai import OpenAI
-from IPython.display import display
 from pydantic import BaseModel
 import json
 
