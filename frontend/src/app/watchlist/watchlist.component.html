@@ -32,107 +32,57 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-9">
-          <div class="row" style="max-height: 130vh; overflow-y: auto;">
+          <div class="row" style="max-height: 140vh; overflow-y: auto;">
               <!-- loading spinner -->
               <div *ngIf="loading" style="display: flex; justify-content: center; align-items: center;">
                 <mat-spinner />
               </div>
               <!-- no results -->
               <div *ngIf="watchlistHotels.length === 0 && !loading" style="display: flex; justify-content: center; align-items: center;">
-                <h4>No Hotels Found</h4>
+                <h4>No Items in Watchlist</h4>
               </div>
               <!-- START iterate this card for n search results-->
             <ng-container *ngIf="!loading">
-            <div class="col-sm col-md-6 col-lg-4" *ngFor="let hotel of watchlistHotels; let i = index">
-              <div class="room">
-                  <a class="img d-flex justify-content-bottom align-items-bottom" style="overflow: hidden;">
-                      <img [src]="hotel['images'][0]" class="img-fluid" style="object-fit: cover;">
-                      <div class="icon d-flex justify-content-center align-items-center"> </div>
-                  </a>
-                  <div class="text p-3 text-center" style="height: 18rem; overflow-y: auto;">
-                      <h3 class="mb-3"><a>{{hotel['hotel_name']}}</a></h3>
-                      <p class="mb-0" style="color: #8d703b; font-weight: 600"><span class="mr-2">{{hotel.city}}</span></p>
-                      <ul class="list">
-                        <li>{{hotel.address}}</li>
-                      </ul>
-                      <p><span class="price mr-2">{{hotel.min_rate}}</span> <span class="per">per night</span></p>
-                      <ul class="list">
-                          <li><span>Max Rate:</span> {{hotel.max_rate}} </li>
-                      </ul>
-                      <hr>
-                      <p class="pt-1"><a class="btn-custom">See Details</a></p>
-                  </div>
+              <div class="col-sm col-md-6 col-lg-4" *ngFor="let hotel of watchlistHotels; let i = index">
+                <div class="room">
+                    <a class="img d-flex justify-content-bottom align-items-bottom" style="overflow: hidden;">
+                        <img [src]="hotel['images'][0]" class="img-fluid" style="object-fit: cover;">
+                        <div class="icon d-flex justify-content-center align-items-center"> </div>
+                    </a>
+                    <div class="text p-3 text-center" style="height: 24rem; overflow-y: auto;">
+                        <h3 class="mb-3"><a>{{hotel['hotel_name']}}</a></h3>
+                        <p class="mb-0" style="color: #8d703b; font-weight: 600"><span class="mr-2">{{hotel.city}}</span></p>
+                        <ul class="list">
+                          <li>{{hotel.address}}</li>
+                        </ul>
+                        <p>
+                          <span style="font-weight: bold;"> {{hotel['check_in']}} </span> 
+                          ~ 
+                          <span style="font-weight: bold;"> {{hotel['check_out']}} </span>
+                      </p>
+                        <p><span class="price mr-2">{{hotel.min_rate}}</span> <span class="per">per night</span></p>
+                        <ul class="list">
+                            <li><span>Max Rate:</span> {{hotel.max_rate}} </li>
+                        </ul>
+                        <hr>
+                        <p class="pt-1"><a class="btn-custom" (click)="seeHotelDetails(i)">See Details</a></p>
+                    </div>
+                </div>
               </div>
-            </div>
             </ng-container>
           </div>
         </div>
                 <!-- search filters -->
         <div class="col-lg-3 sidebar">
           <div class="sidebar-wrap bg-light">
-            <h3 class="heading mb-4">Advanced Search</h3>
-            <form [formGroup]="searchFilter" (ngSubmit)="searchFilterSubmit()">
+            <h3 class="heading mb-4">Sort</h3>
+            <form [formGroup]="sortFilter" (ngSubmit)="sortFilterSubmit()">
               <div class="fields">
-                <div class="form-group">
-                  Location<input type="text" class="form-control" [placeholder]="searchFilter.get('location')?.value" formControlName="location">
-                </div>
-                <!-- TODO add calendar component here -->
-                <label for="checkin_date">Check In</label>
-                <div class="form-group d-flex align-items-center">
-                  <input
-                    matInput
-                    [matDatepicker]="picker"
-                    type="text"
-                    id="checkin_date"
-                    class="form-control checkout_date"
-                    formControlName="check_in"
-                    style="flex: 1;"
-                  />
-                  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
-                </div>
-
-                <label for="checkin_date">Check Out</label>
-                <div class="form-group d-flex align-items-center">
-                  <input
-                    matInput
-                    [matDatepicker]="picker1"
-                    type="text"
-                    id="checkout_date"
-                    class="form-control checkout_date"
-                    formControlName="check_out"
-                    style="flex: 1;"
-                  />
-                  <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-                  <mat-datepicker #picker1></mat-datepicker>
-                </div>
+                
+                <!-- add fields for sort filter -->
 
                 <div class="form-group">
-                  Rooms<input type="number" class="form-control" [placeholder]="searchFilter.get('rooms')?.value ?? 0" formControlName="rooms">
-                </div>
-                <div class="form-group">
-                  Adults<input type="number" class="form-control" [placeholder]="searchFilter.get('adults')?.value ?? 0" formControlName="adults">
-                </div>
-                <div class="form-group">
-                  Children<input type="number" class="form-control" [placeholder]="searchFilter.get('children')?.value ?? 0" formControlName="children">
-                </div>
-                <div class="form-group">
-                  Search Radius (mi)<input type="number" class="form-control" [placeholder]="searchFilter.get('radius')?.value ?? 0" formControlName="radius">
-                </div>
-
-                <!-- add form control labels for min_rate and max_rate -->
-                <div class="form-group">
-                  Price
-                  <div class="range-slider">
-                    <span>
-                          $<input type="number" formControlName="min_rate" min="0" max="5000"/>	-
-                          $<input type="number" formControlName="max_rate" min="0" max="5000"/>
-                    </span>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <input type="submit" value="Search" class="btn btn-primary py-3 px-5">
+                  <input type="submit" value="Sort" class="btn btn-primary py-3 px-5">
                 </div>
               </div>
             </form>
