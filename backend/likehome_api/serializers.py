@@ -16,4 +16,4 @@ class ReservationsSerializer(serializers.ModelSerializer):
 class WatchlistSerializer(serializers.ModelSerializer):
     class Meta:
         model=Watchlist
-        fields=('id','hotel_name','min_rate','max_rate','rooms','address','city','description','phone_number','email','website','images')
+        fields=('id','hotel_name','min_rate','max_rate','rooms','address','city','description','phone','email','web','images','check_in','check_out','currency')

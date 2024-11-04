@@ -33,6 +33,7 @@ def search(request):
 
     try:
         if response['status_code'] != 200:
+            set_search_results([])
             return Response({'status': 'Error', 'message': response}, status=status.HTTP_400_BAD_REQUEST)
     except: # if response is valid then it has no status_code, thus valid
         pass

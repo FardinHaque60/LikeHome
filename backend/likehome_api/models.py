@@ -43,12 +43,14 @@ class Watchlist(models.Model):
     min_rate = models.FloatField()
     max_rate = models.FloatField()
     currency = models.CharField(max_length=3, default='N/A')
-    phone_number = models.CharField(max_length=10, default='N/A')
+    phone = models.CharField(max_length=10, default='N/A')
     email = models.EmailField(default='N/A')
-    website = models.CharField(max_length=100, default='N/A')
+    web = models.CharField(max_length=100, default='N/A')
     images = models.JSONField(default=list)
     address = models.CharField(max_length=100, default='N/A')
     city = models.CharField(max_length=100, default='N/A')
 
     # json fields for rooms
     rooms = models.JSONField(default=list)
+    check_in = models.DateField(default='2024-11-03')
+    check_out = models.DateField(default='2024-11-03')

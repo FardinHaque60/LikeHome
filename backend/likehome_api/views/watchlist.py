@@ -17,14 +17,16 @@ def add_to_watchlist(request):
         description=data['description'],
         min_rate=data['minRate'],
         max_rate=data['maxRate'],
-        phone_number=data['phone'],
+        phone=data['phone'],
         currency=data['currency'],
         email=data['email'],
-        website=data['web'],
+        web=data['web'],
         images=data['images'],
         address=data['address'],
         city=data['city'],
-        rooms=data['rooms']
+        rooms=data['rooms'],
+        check_in=data['checkIn'],
+        check_out=data['checkOut']
     )
 
     id = watchlist_item.id
