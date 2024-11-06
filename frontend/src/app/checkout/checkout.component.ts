@@ -70,10 +70,16 @@ export class CheckoutComponent implements OnInit{
     expDate: new FormControl('', Validators.required),
     CVV: new FormControl('', Validators.required),
     rewardsNights: new FormControl(0, Validators.required),
+    earnRewards: new FormControl(false),
   }, { validators: this.expDateValidator });
 
   goBack(): void {
     this.location.back();
+  }
+
+  toggleEarnRewards(): void {
+    console.log("earn rewards toggled, value: " + this.paymentForm.value.earnRewards);
+    this.calculateRewardsEarned(this.paymentForm.value.earnRewards);
   }
 
   cancelSubmit(): void {
@@ -248,6 +254,15 @@ export class CheckoutComponent implements OnInit{
     this.total = this.subtotal + this.tax - this.rewardsApplied;
   }
 
+  calculateRewardsEarned(earningRewards: boolean | null | undefined): void {
+    if (earningRewards) {
+      this.rewardsEarned = Math.ceil(this.details['price']) * this.details['nights'];
+    } else {
+      this.rewardsEarned = 0;
+    }
+    this.userAfterRewards = this.userRewards + this.rewardsEarned - this.rewardsPointsUsed;
+  }
+
   ngOnInit(): void {
     //moves to the top of the page when finished navigating (back&forth)
     //seems to not work with <-- back arrows
@@ -272,14 +287,13 @@ export class CheckoutComponent implements OnInit{
      // check if another booking is happening in same date window
      if (this.transaction_type === 'new') {
       this.checkConflict();
-      this.rewardsEarned = Math.ceil(this.details['price']) * this.details['nights'];
       this.apiService.getBackendRequest('get-session')
         .subscribe({
           next: (data: any) => {
             console.log(data);
             this.userRewards = data['reward_points'];
-            // this.userRewards = 5000;
             this.userAfterRewards = this.userRewards + this.rewardsEarned;
+
             // bottleneck the rewards night options to minimum of total nights of stay and available in reward points
             let rewardValue: number = +((this.userRewards / 5).toFixed(2)); // number of nights user can afford
             console.log("CHOOSING:" + this.details['nights'] + " OR " + Math.floor(this.subtotal / rewardValue));

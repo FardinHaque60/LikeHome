@@ -121,7 +121,16 @@
                     <div class="text-center">
                         <div class="d-flex justify-content-center align-items-start"> 
                             <h3 class="detail-header me-2">Your Room:</h3>
-                            <a *ngIf="!modifying" (click)="startModify(accountDetails['id'])"> <mat-icon  class="mt-2">edit</mat-icon> </a>
+                            <a *ngIf="!modifying && accountDetails['rewards_earned'] === 0" (click)="startModify(accountDetails['id'])"> <mat-icon style="color: rgb(56, 167, 236);" class="mt-1">edit</mat-icon> </a>
+                            <a *ngIf="!modifying && accountDetails['rewards_earned'] !== 0"> 
+                                <mat-icon 
+                                style="color: gray" 
+                                class="mt-1"
+                                matTooltip="Cannot modify reservation when rewards applied. See Terms and Service"
+                                >
+                                    edit
+                                </mat-icon> 
+                            </a>
                             <a *ngIf="modifying" (click)="endModify()"> <mat-icon *ngIf="modifying" style="color: green;" class="mt-2">done</mat-icon> </a>
                             <a *ngIf="modifying" (click)="cancelModify()"> <mat-icon style="color: red;" class="mt-2">clear</mat-icon> </a>
                         </div>

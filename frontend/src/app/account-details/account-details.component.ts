@@ -6,12 +6,13 @@ import { FooterComponent } from '../shared/footer/footer.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ApiService } from '../service/api.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-account-details',
   standalone: true,
   imports: [RouterLink, NavbarComponent, FooterComponent, 
-            MatProgressSpinnerModule, CommonModule,],
+            MatProgressSpinnerModule, CommonModule, MatTooltipModule],
   templateUrl:'./account-details.component.html',
   styleUrl: './account-details.component.scss'
 })

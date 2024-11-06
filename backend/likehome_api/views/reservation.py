@@ -93,12 +93,6 @@ def cancel_reservation(request):
     try:
         user = get_current_user()
         reservation = Reservation.objects.get(id=reservation_id)
-        # remove reward points
-        user_profile = Profile.objects.get(user=user)
-        forfeited_points = reservation.rewards_earned # remove reward points that were previously gained from reservation
-        user_profile.reward_points -= forfeited_points
-        user_profile.reward_points = max(0, user_profile.reward_points) # ensure reward points are not negative
-        user_profile.save()
         # delete reservation
         reservation.delete()
         message = (
@@ -114,7 +108,7 @@ Adults: {reservation.adults}
 Children: {reservation.children}
 Rate: {reservation.rate}
 Total Price Refunded: {reservation.total_price}\n
-Forfeited Reward Points: {forfeited_points}\n
+Forfeited Reward Points: {reservation.rewards_applied}\n
 Sincerely,
 Team Nexus'''
         )
@@ -134,12 +128,6 @@ def modify_reservation(request):
     check_in, check_out, nights, price = reservation_details['checkIn'], reservation_details['checkOut'], reservation_details['nights'], reservation_details['totalPrice']
     difference_paid = reservation_details['differencePaid']
     reservation = Reservation.objects.get(id=reservation_id)
-    # remove reward points
-    user_profile = Profile.objects.get(user=user)
-    forfeited_points = reservation.rewards_earned # remove reward points that were previously gained from reservation
-    user_profile.reward_points -= forfeited_points
-    user_profile.reward_points = max(0, user_profile.reward_points) # ensure reward points are not negative
-    user_profile.save()
     # continue modifying reservation
     reservation.check_in = check_in
     reservation.check_out = check_out
@@ -161,7 +149,7 @@ Children: {reservation.children}
 Rate: {reservation.rate}
 Total Price: {reservation.total_price}\n
 Difference Paid: {difference_paid}\n
-Forfeited Reward Points: {forfeited_points}\n
+Forfeited Reward Points: {reservation.rewards_applied}\n
 Sincerely,
 Team Nexus
 '''

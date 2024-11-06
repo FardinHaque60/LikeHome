@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators, ValidatorFn, ValidationErrors, AbstractControl } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-hotel-details',
   standalone: true,
-  imports: [RouterLink, CommonModule, MatIconModule, ReactiveFormsModule, MatDatepickerModule],
+  imports: [RouterLink, CommonModule, MatIconModule, ReactiveFormsModule, MatDatepickerModule, MatTooltipModule],
   templateUrl: './hotel-details.component.html',
   styleUrl: './hotel-details.component.scss'
 })
