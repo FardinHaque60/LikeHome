@@ -17,6 +17,8 @@ export class SearchResultsComponent implements OnInit {
   searchResults: Array<any> = [];
   loading: boolean = false;
 
+  constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router) {}
+
   dateChecker: ValidatorFn = (
     form: AbstractControl,
   ): ValidationErrors | null => {
@@ -46,7 +48,27 @@ export class SearchResultsComponent implements OnInit {
     max_rate: new FormControl(5000, Validators.required)
   }, { validators: this.dateChecker });
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router) {}
+  options = [
+    { label: 'City', value: 'city' },
+    { label: 'Hotel Name', value: 'name' },
+    { label: 'Price', value: 'minRate' },
+  ];
+
+  sortFilter = new FormGroup({
+    selectedChoice: new FormControl('', Validators.required),
+  });
+
+  sortFilterSubmit(): void {
+    console.log('Sort Filter Submit with choice: ', this.sortFilter.value.selectedChoice);
+    let param = this.sortFilter.value.selectedChoice;
+    if (param === 'city' || param === 'name') { // sorting by a string field
+      this.searchResults.sort((a, b) => {
+        return a[param].localeCompare(b[param]);
+      });
+    } else if (param === 'minRate') { // sorting by a number field
+      this.searchResults.sort((a, b) => { return a[param] - b[param]; });
+    }
+  }
 
   formatDate(date: Date | string | null | undefined): string {
     if (!date) return '';
@@ -134,5 +156,6 @@ export class SearchResultsComponent implements OnInit {
   ngOnInit(): void {
     // init page with search results from backend cache
     this.getResults();
+    console.log(this.searchResults);
   }
 }

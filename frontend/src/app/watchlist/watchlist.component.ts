@@ -18,15 +18,18 @@ import { FooterComponent } from '../shared/footer/footer.component';
 })
 export class WatchlistComponent implements OnInit {
   watchlistHotels: Array<any> = [];
-
   loading: boolean = false;
-  // TODO modify this so it just one field and the values are in html
+
+  options = [
+    { label: 'City', value: 'city' },
+    { label: 'Hotel Name', value: 'hotel_name' },
+    { label: 'Price', value: 'min_rate' },
+    { label: 'Check In', value: 'check_in' },
+    { label: 'Check Out', value: 'check_out' },
+  ];
+
   sortFilter = new FormGroup({
-    location: new FormControl('', Validators.required),
-    price: new FormControl('', Validators.required),
-    hotelName: new FormControl('', Validators.required),
-    checkIn: new FormControl('', Validators.required),
-    checkOut: new FormControl('', Validators.required),
+    selectedChoice: new FormControl('', Validators.required),
   });
 
   constructor(private apiService: ApiService, private router: Router, private activatedroute: ActivatedRoute) {}
@@ -48,7 +51,20 @@ export class WatchlistComponent implements OnInit {
   // TODO backend request to sort hotels, maybe just do this browser side
   sortFilterSubmit(): void {
     this.loading = true;
-    console.log('Sort Filter Submitted:', this.sortFilter.value);
+    console.log('Sort Filter Submit with choice: ', this.sortFilter.value.selectedChoice);
+    console.log('Watchlist Hotels: ', this.watchlistHotels);
+    let param = this.sortFilter.value.selectedChoice;
+    if (param === 'city' || param === 'hotel_name') { // sorting by a string field
+      this.watchlistHotels.sort((a, b) => {
+        return a[param].localeCompare(b[param]);
+      });
+    } else if (param === 'min_rate') { // sorting by a number field
+      this.watchlistHotels.sort((a, b) => { return a[param] - b[param]; });
+    } else if (param === 'check_in' || param === 'check_out') { // sorting by a date field
+      this.watchlistHotels.sort((a, b) => {
+        return new Date(a[param]).getTime() - new Date(b[param]).getTime();
+      });
+    }
     this.loading = false;
   }
 
