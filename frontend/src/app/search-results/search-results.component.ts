@@ -39,7 +39,6 @@ export class SearchResultsComponent implements OnInit {
     location: new FormControl('', Validators.required),
     check_in: new FormControl<Date | null>(null),
     check_out: new FormControl<Date | null>(null),
-    rooms: new FormControl('', Validators.required),
     adults: new FormControl('', Validators.required),
     children: new FormControl('', Validators.required),
     radius: new FormControl(20, Validators.required),

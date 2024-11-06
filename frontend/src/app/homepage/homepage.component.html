@@ -51,6 +51,12 @@
 								<div class="form-group p-4 align-self-stretch d-flex align-items-end">
 									<div class="wrap">
 										<label for="#">Date Range</label>
+											@if (hotelSearch.controls.check_in.hasError('matStartDateInvalid')) {
+											<mat-error class="ml-1" style="color: red;">Invalid start date</mat-error>
+											}
+											@if (hotelSearch.controls.check_out.hasError('matEndDateInvalid')) {
+											<mat-error>Invalid end date</mat-error>
+											}
 											<div class="row"> 
 												<div class="col-md-10">
 													<mat-date-range-input class="form-control" [formGroup]="hotelSearch" [rangePicker]="picker">
@@ -63,15 +69,10 @@
 													<mat-date-range-picker #picker></mat-date-range-picker>
 												</div>
 											</div>
-											@if (hotelSearch.controls.check_in.hasError('matStartDateInvalid')) {
-											<mat-error>Invalid start date</mat-error>
-											}
-											@if (hotelSearch.controls.check_out.hasError('matEndDateInvalid')) {
-											<mat-error>Invalid end date</mat-error>
-											}
 									</div>
 								</div>
 							</div>
+							<!--
 							<div class="col-md d-flex">
 								<div class="form-group p-4 align-self-stretch d-flex align-items-end">
 									<div class="wrap">
@@ -84,7 +85,7 @@
 										</div>
 									</div> 
 								</div> 
-							</div> 
+							</div> -->
 							<div class="col-md d-flex">
 								<div class="form-group p-4 align-self-stretch d-flex align-items-end">
 									<div class="wrap">
@@ -117,7 +118,7 @@
 										Check Availability
 									</button>
 									<button *ngIf="loading" class="btn btn-primary py-3 px-4 align-self-stretch" disabled>
-										Searching...
+										Searching for Rooms...
 									</button>
 								</div>
 							</div>

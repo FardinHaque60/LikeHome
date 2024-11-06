@@ -122,13 +122,8 @@ export class HotelDetailsComponent implements OnInit{
     event.target.src = 'assets/images/nexus_logo.png';
   }
 
-  randomImage(): string {
-    let min = 0; // min index
-    let max = 3; // max index
-
-    let randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-
-    return this.details['images'][randomNumber];
+  getImage(i: number): string {
+    return this.details['images'][i];
   }
 
   addToWatchlist() {

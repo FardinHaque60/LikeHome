@@ -39,7 +39,7 @@
                     <div class="col-md-12">
                         <h1>{{ details['name'] }}</h1>
                             <div class="item d-flex justify-content-center" style="overflow: hidden;">
-                                <img [src]="randomImage()" (error)="replaceImage($event)" class="img-fluid rounded" style="object-fit: cover;">
+                                <img [src]="getImage(0)" (error)="replaceImage($event)" class="img-fluid rounded" style="object-fit: cover;">
                             </div>
                     </div>
                 </div>
@@ -232,7 +232,7 @@
                         <div class="col-sm-6 col-md-4" *ngFor="let room of rooms; let i = index">
                             <div class="room">
                                 <a (click)="checkout(i)" class="img d-flex justify-content-center align-items-center" style="overflow: hidden;">
-                                    <img [src]="randomImage()" (error)="replaceImage($event)" class="img-fluid" style="object-fit: cover;">
+                                    <img [src]="getImage(i)" (error)="replaceImage($event)" class="img-fluid" style="object-fit: cover;">
                                     <div class="icon d-flex justify-content-center align-items-center"> </div>
                                 </a>
                                 <div class="text p-3 text-center">

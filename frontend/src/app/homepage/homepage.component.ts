@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/route
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FooterComponent } from '../shared/footer/footer.component';
 import { CommonModule } from '@angular/common';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -23,7 +23,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatFormFieldModule, 
     MatDatepickerModule, 
     FormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.scss',
@@ -46,41 +46,53 @@ export class HomepageComponent implements OnInit {
     });
   }
 
+  dateChecker: ValidatorFn = (
+    form: AbstractControl,
+  ): ValidationErrors | null => {
+    const checkIn = form.get('check_in')?.value;
+    const checkOut = form.get('check_out')?.value;
+    const today = new Date();
+
+    const isFutureCheckIn = checkIn && checkIn > today;
+    const isFutureCheckOut = checkOut && checkOut > today;
+    const isCheckInBeforeCheckOut = checkIn && checkOut && checkIn < checkOut;
+
+    return isFutureCheckIn && isFutureCheckOut && isCheckInBeforeCheckOut ? null : { invalidDate: true };
+  }
+
   hotelSearch = new FormGroup({
     location: new FormControl('', Validators.required),
     check_in: new FormControl<Date | null>(null),
     check_out: new FormControl<Date | null>(null),
-    rooms: new FormControl('', Validators.required),
     adults: new FormControl('', Validators.required),
     children: new FormControl('', Validators.required),
     radius: new FormControl('20', Validators.required),
     min_rate: new FormControl('0', Validators.required),
     max_rate: new FormControl('5000', Validators.required),
-  });
+  }, { validators: this.dateChecker });
 
   hotelSearchSubmit(): void {
-    if (this.hotelSearch.valid) {
-      this.loading = true;
-      console.log('Hotel search form submitted:', this.hotelSearch.value);
-      this.apiService.postBackendRequest('search', this.hotelSearch.value)
-        .subscribe({
-          next: (response) => {
-            console.log(response);
-            this.loading = false;
-            this.router.navigate(['/search-results']);
-          },
-          error: (error) => {
-            console.log(error);
-            this.loading = false;
-            this.router.navigate(['/search-results']);
-          }
-        });
-    }
-    else {
-      this.hotelSearch.markAllAsTouched();
+    if (this.hotelSearch.invalid) {
       console.log("Field Error");
-      this.loading = false;
+      this.hotelSearch.markAllAsTouched();
+      alert("Invalid search fields.");
+      return;
     }
+    this.loading = true;
+    console.log('Hotel search form submitted:', this.hotelSearch.value);
+    this.apiService.postBackendRequest('search', this.hotelSearch.value)
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          this.loading = false;
+          this.router.navigate(['/search-results']);
+        },
+        error: (error) => {
+          console.log(error);
+          this.loading = false;
+          this.router.navigate(['/search-results']);
+        }
+      });
   }
 
   get_featured_hotels(): void {
