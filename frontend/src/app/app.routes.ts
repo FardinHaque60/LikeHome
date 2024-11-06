@@ -9,6 +9,7 @@ import { HotelDetailsComponent } from './hotel-details/hotel-details.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { AccountDetailsComponent } from './account-details/account-details.component';
+import { WatchlistComponent } from './watchlist/watchlist.component';
 
 export const routes: Routes = [
     { 
@@ -30,6 +31,10 @@ export const routes: Routes = [
             {
                 path: 'account-details',
                 component: AccountDetailsComponent,
+            },
+            {
+                path: 'watchlist',
+                component: WatchlistComponent,
             },
         ]
     },

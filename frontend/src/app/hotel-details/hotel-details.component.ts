@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { ApiService } from '../service/api.service';
 import { Router, RouterLink, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -132,12 +132,11 @@ export class HotelDetailsComponent implements OnInit{
 
   addToWatchlist() {
     console.log("add to watchlist clicked");
-    this.addedToWatchlist = true;
     this.apiService.postBackendRequest('add-to-watchlist', this.details) 
     .subscribe({
       next: (data: any) => {
         console.log(data);
-        this.details['id'] = data['id'];
+        this.addedToWatchlist = true;
       },
       error: (error: any) => {
         console.log(error);

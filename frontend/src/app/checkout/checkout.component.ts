@@ -77,6 +77,11 @@ export class CheckoutComponent implements OnInit{
   }
 
   cancelSubmit(): void {
+    if (this.paymentForm.invalid) {
+      this.paymentForm.markAllAsTouched();
+      console.log("Payment field Error");
+      return;
+    }
     this.loading = true;
     this.apiService.postBackendRequest('cancel-reservation', { 'reservationId': this.details['id'] })
       .subscribe({
@@ -101,6 +106,9 @@ export class CheckoutComponent implements OnInit{
       this.loading = true;
       this.details['totalPrice'] = this.total;
       this.details['differencePaid'] = this.difference.toFixed(2);
+      if (!this.positiveDifference) {
+        this.details['differencePaid'] = "-" + this.details['differencePaid'];
+      }
       let reservationDetails = {
         "paymentDetails": this.paymentForm.value,
         "reservationDetails": this.details
@@ -158,11 +166,11 @@ export class CheckoutComponent implements OnInit{
 
   calculateTax(): number {
     console.log("TAX IS: " + (+this.subtotal * 0.09).toFixed(2));
-    return +(+this.subtotal * 0.09).toFixed(2);
+    return +((+this.subtotal * 0.09).toFixed(2));
   }
 
   calculateTotal(): number {
-    return +(this.tax + this.subtotal).toFixed(2);
+    return +((this.tax + this.subtotal).toFixed(2));
   }
 
   checkConflict(): void {

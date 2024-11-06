@@ -7,6 +7,10 @@
 
     <link rel="stylesheet" href="../../../public/assets/css/style.css">
 
+    <!--styling for favorite star-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=star" />
+
+
   </head>
 
   <div>
@@ -223,7 +227,7 @@
                                     <div class="icon d-flex justify-content-center align-items-center"> </div>
                                 </a>
                                 <div class="text p-3 text-center">
-                                    <h3 class="mb-3"><a (click)="checkout(i)">{{room['name']}}</a></h3>
+                                    <h3 class="mb-3" (click)="checkout(i)"><a>{{room['name']}}</a></h3>
                                     <p><span class="price mr-2">{{room['netRate']}}</span><span class="per">per night</span></p>
                                     <p><span class="price mr-2" style="font-size: 1rem">Nights:</span><span>{{ details['nights'] }}</span></p>
                                     <p><span class="price mr-2" style="font-size: 1rem">Adults:</span><span>{{ room['adults'] }}</span></p>

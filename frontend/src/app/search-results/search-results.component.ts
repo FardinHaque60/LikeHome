@@ -24,9 +24,13 @@ export class SearchResultsComponent implements OnInit {
     const checkOut = form.get('check_out')?.value;
     const today = new Date();
 
-    const isFutureCheckIn = checkIn && checkIn > today;
-    const isFutureCheckOut = checkOut && checkOut > today;
-    const isCheckInBeforeCheckOut = checkIn && checkOut && checkIn < checkOut;
+    const isFutureCheckIn = checkIn && (checkIn > today);
+    const isFutureCheckOut = checkOut && (checkOut > today);
+    const isCheckInBeforeCheckOut = (checkIn && checkOut) && (checkIn < checkOut);
+
+    console.log('isFutureCheckIn:', isFutureCheckIn);
+    console.log('isFutureCheckOut:', isFutureCheckOut);
+    console.log('isCheckInBeforeCheckOut:', isCheckInBeforeCheckOut);
 
     return isFutureCheckIn && isFutureCheckOut && isCheckInBeforeCheckOut ? null : { invalidDate: true };
   }
@@ -83,6 +87,10 @@ export class SearchResultsComponent implements OnInit {
           // set results to be reflected in frontend
           this.searchResults = response['hotels'];
           this.searchFilter.patchValue(response['query']); // set search filter placeholders from search query
+          this.searchFilter.patchValue({ 
+            check_in: new Date(response['query']['check_in']),
+            check_out: new Date(response['query']['check_out'])
+          }); // set check_in date
           this.loading = false;
         },
         error: (error) => {
@@ -96,6 +104,8 @@ export class SearchResultsComponent implements OnInit {
   // invoked when search is called from search page itself
   searchFilterSubmit(): void {
     if (this.searchFilter.invalid) {
+      console.log(this.searchFilter.value);
+      console.log(this.searchFilter.errors);
       console.log('Search Filter Invalid');
       alert('Invalid search filter fields');
       return;
@@ -112,6 +122,7 @@ export class SearchResultsComponent implements OnInit {
           error: (error) => {
             console.log("Search Error");
             console.log(error);
+            this.getResults();
             this.loading = false;
           }
         })

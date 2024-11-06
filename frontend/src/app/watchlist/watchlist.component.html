@@ -1,0 +1,94 @@
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+
+	<link rel="stylesheet" href="../../../public/assets/css/style.css">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=star" />
+
+
+</head>
+
+<div>
+  <!-- top banner art -->
+  <div class="hero-wrap my-image">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text d-flex align-itemd-end justify-content-center">
+          <div class="col-md-9 text-center d-flex align-items-end justify-content-center">
+              <div class="text">
+                <p class="breadcrumbs mb-2"><span class="mr-2"><a href="index.html">Home</a></span> <span>Watchlist</span></p>
+                <h1 class="mb-4 bread">Watchlist</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <section class="ftco-section bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-9">
+          <div class="row" style="max-height: 140vh; overflow-y: auto;">
+              <!-- loading spinner -->
+              <div *ngIf="loading" style="display: flex; justify-content: center; align-items: center;">
+                <mat-spinner />
+              </div>
+              <!-- no results -->
+              <div *ngIf="watchlistHotels.length === 0 && !loading" style="display: flex; justify-content: center; align-items: center;">
+                <h4>No Items in Watchlist</h4>
+              </div>
+              <!-- START iterate this card for n search results-->
+            <ng-container *ngIf="!loading">
+              <div class="col-sm col-md-6 col-lg-4" *ngFor="let hotel of watchlistHotels; let i = index">
+                <div class="room">
+                    <a class="img d-flex justify-content-bottom align-items-bottom" style="overflow: hidden;">
+                        <img [src]="hotel['images'][0]" class="img-fluid" style="object-fit: cover;">
+                        <div class="icon d-flex justify-content-center align-items-center"> </div>
+                    </a>
+                    <div class="text p-3 text-center" style="height: 24rem; overflow-y: auto;">
+                        <h3 class="mb-3"><a>{{hotel['hotel_name']}}</a></h3>
+                        <p class="mb-0" style="color: #8d703b; font-weight: 600"><span class="mr-2">{{hotel.city}}</span></p>
+                        <ul class="list">
+                          <li>{{hotel.address}}</li>
+                        </ul>
+                        <p>
+                          <span style="font-weight: bold;"> {{hotel['check_in']}} </span> 
+                          ~ 
+                          <span style="font-weight: bold;"> {{hotel['check_out']}} </span>
+                      </p>
+                        <p><span class="price mr-2">{{hotel.min_rate}}</span> <span class="per">per night</span></p>
+                        <ul class="list">
+                            <li><span>Max Rate:</span> {{hotel.max_rate}} </li>
+                        </ul>
+                        <hr>
+                        <p class="pt-1"><a class="btn-custom" (click)="seeHotelDetails(i)">See Details</a></p>
+                    </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+                <!-- search filters -->
+        <div class="col-lg-3 sidebar">
+          <div class="sidebar-wrap bg-light">
+            <h3 class="heading mb-4">Sort</h3>
+            <form [formGroup]="sortFilter" (ngSubmit)="sortFilterSubmit()">
+              <div class="fields">
+                
+                <!-- add fields for sort filter -->
+
+                <div class="form-group">
+                  <input type="submit" value="Sort" class="btn btn-primary py-3 px-5">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
