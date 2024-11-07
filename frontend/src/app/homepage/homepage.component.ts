@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ChatbotComponent } from '../shared/chatbot/chatbot.component';
 
 @Component({
   selector: 'app-homepage',
@@ -24,6 +25,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatDatepickerModule, 
     FormsModule,
     MatProgressSpinnerModule,
+    ChatbotComponent
   ],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.scss',

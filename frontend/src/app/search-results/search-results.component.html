@@ -52,14 +52,9 @@
                                   <p><span class="price mr-2">{{room.minRate}}</span> <span class="per">per night</span></p>
                                   <ul class="list">
                                       <li><span>Max Rate:</span> {{room.maxRate}} </li>
-                                      <!-- 
-                                      <li><span>Size:</span> 45 m2</li>
-                                      <li><span>View:</span> Sea View</li>
-                                      <li><span>Bed:</span> 1</li>
-                                      -->
                                   </ul>
                                   <hr>
-                                  <p class="pt-1"><a (click)="openHotel(i)" class="btn-custom">See Details <!-- <span class="material-icons">arrow_right_alt</span> --></a></p>
+                                  <p class="pt-1"><a (click)="openHotel(i)" class="btn-custom" style="cursor: pointer;">See Details</a></p>
                               </div>
                           </div>
                       </div>
@@ -76,7 +71,6 @@
 		              <div class="form-group">
 		                Location<input type="text" class="form-control" [placeholder]="searchFilter.get('location')?.value" formControlName="location">
 		              </div>
-                  <!-- TODO add calendar component here -->
                   <label for="checkin_date">Check In</label>
 		              <div class="form-group d-flex align-items-center">
                     <input
@@ -107,9 +101,6 @@
                     <mat-datepicker #picker1></mat-datepicker>
                   </div>
 
-                  <!-- <div class="form-group">
-                    Rooms<input type="number" class="form-control" [placeholder]="searchFilter.get('rooms')?.value ?? 0" formControlName="rooms">
-                  </div> -->
                   <div class="form-group">
                     Adults<input type="number" class="form-control" [placeholder]="searchFilter.get('adults')?.value ?? 0" formControlName="adults">
                   </div>

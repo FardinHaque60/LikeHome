@@ -12,6 +12,9 @@
 	<!-- nar bar -->
 	<app-navbar />
 
+	<!-- chatbot on all pages that inherit homepage -->
+	<app-chatbot />
+
 	<!-- default homepage when no children -->
 	<div *ngIf="!hasChildren">
 		<!-- background image -->
@@ -72,20 +75,6 @@
 									</div>
 								</div>
 							</div>
-							<!--
-							<div class="col-md d-flex">
-								<div class="form-group p-4 align-self-stretch d-flex align-items-end">
-									<div class="wrap">
-										<label for="#">Room</label>
-										<div class="form-field">
-											<div class="select-wrap">
-												<div class="icon"><span class="ion-ios-arrow-down"></span></div>
-												<input type="number" class="form-control" placeholder="#" formControlName="rooms">
-											</div>
-										</div>
-									</div> 
-								</div> 
-							</div> -->
 							<div class="col-md d-flex">
 								<div class="form-group p-4 align-self-stretch d-flex align-items-end">
 									<div class="wrap">
