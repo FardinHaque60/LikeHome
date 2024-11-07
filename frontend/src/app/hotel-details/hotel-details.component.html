@@ -84,7 +84,6 @@
                         <ul class="list">
                         </ul>
                     </div>
-                    <!-- <p>Any additional detail blah blah blah</p> -->
                 </div>             
             </div>
             </div> 
@@ -106,13 +105,25 @@
                     <h3 class="detail-header">Check-Out: <span class="detail-header2"> {{ details['checkOut']}} </span></h3>
                     <br>
                     <br>
-                    <h3 class="detail-header">Min-Rate: <span class="detail-header2"> ${{ details['minRate']}} </span></h3>
+                    <h3 class="detail-header">Min-Rate: <span class="detail-header2"> ${{details['minRate']}} </span></h3>
                     <br>
                     <br>
                     <h3 class="detail-header">Max-Rate: <span class="detail-header2"> ${{details['maxRate']}} </span></h3>
                     <br>
                     <br>
-                    <h3 class="detail-header">Currency: <span class="detail-header2">{{details['currency']}} </span></h3>
+                    <h3 class="detail-header d-flex align-items-center justify-content-center">Currency
+                        <mat-icon 
+                            matTooltip="Currency conversion is for reference only. Final payment will be in EUR."
+                            >
+                            info
+                        </mat-icon>
+                        :
+                        <form [formGroup]="currencyForm" class="ml-3">
+                                <select formControlName="currency" class="form-select" (change)="convertCurrency()" style="width: 6rem;">
+                                    <option *ngFor="let currency of currencyOptions" [value]="currency">{{ currency }}</option>
+                                </select>
+                        </form>
+                    </h3>
                 </div>
 
                 <!-- IF OPENING FROM ACCOUNT -->

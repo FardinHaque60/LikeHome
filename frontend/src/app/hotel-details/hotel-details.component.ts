@@ -21,6 +21,16 @@ export class HotelDetailsComponent implements OnInit{
   details: any = {};
   rooms: Array<any> = []; 
   addedToWatchlist: boolean = false;
+  currencyOptions: Array<string> = []
+  originalRates: any = {
+    'currency': 0,
+    'minRate': 0,
+    'maxRate': 0,
+    'rooms': [],
+  }; // initialized in the initCurrencyOptions function
+  currencyForm = new FormGroup({
+    currency: new FormControl('', Validators.required),
+  });
   
   dateChecker: ValidatorFn = (
     form: AbstractControl,
@@ -163,7 +173,7 @@ export class HotelDetailsComponent implements OnInit{
       let details = {
         'hotel': this.details['name'],
         'room': room['name'],
-        'price': +room['netRate'],
+        'price': +this.originalRates['rooms'][i], // pass original price to checkout
         'adults': room['adults'],
         'children': room['children'],
         'checkIn': this.details['checkIn'],
@@ -242,6 +252,66 @@ export class HotelDetailsComponent implements OnInit{
     });
   }
 
+  convertCurrency() {
+    let currency_code = this.currencyForm.value.currency?.substring(0, 3) ? this.currencyForm.value.currency.substring(0, 3) : '';
+    let currencyOptions = {
+      'fromCurrency': this.originalRates['currency'],
+      'toCurrency': currency_code,
+    }
+    // returns the rate for fromCurrency to toCurrency
+    this.apiService.postBackendRequest('currency-convert', currencyOptions)
+      .subscribe({
+        next: (data: any) => {
+          // use the rate to reassign each room value netRate (for each room), minRate, maxRate
+          console.log(data);
+          // convert each rooms netRate
+          let i = 0;
+          for (const room of this.rooms) {
+            room['netRate'] = +(this.originalRates['rooms'][i] * data['rate']).toFixed(2);
+            i++;
+          }
+          // convert the minRate and maxRate on details panel
+          this.details['minRate'] = +(this.originalRates['minRate'] * data['rate']).toFixed(2);
+          this.details['maxRate'] = +(this.originalRates['maxRate'] * data['rate']).toFixed(2);
+        },
+        error: (error: any) => {
+          console.log(error);
+        }
+      });
+  }
+
+  initCurrencyOptions() {
+    let currency = this.details['currency'].toLowerCase();
+    this.apiService.getBackendRequest('get-currency-list')
+      .subscribe({
+        next: (data: any) => {
+          console.log(data);
+          this.currencyOptions = data;
+          // check for what currency the hotel api sent and default the dropdown to that
+          for (const option of this.currencyOptions) {
+            if (option.substring(0, 3) === currency) {
+              this.currencyForm.setValue({ currency: option });
+              break;
+            }
+          }
+        },
+        error: (error: any) => {
+          console.log(error);
+        }
+      });
+    // store the original rates for conversion
+    let originalRoomRates = [];
+    for (const room of this.rooms) {
+      originalRoomRates.push(room['netRate']);
+    }
+    this.originalRates = {
+      'currency': currency,
+      'minRate': this.details['minRate'],
+      'maxRate': this.details['maxRate'],
+      'rooms': originalRoomRates,
+    }
+  }
+
   ngOnInit(): void {
       //  listen for changes in check in/ out for hotel details from myBookings to compute nights
       this.modifyForm.get('checkIn')?.valueChanges.subscribe((value) => this.updateCheckIn(value));
@@ -274,6 +344,7 @@ export class HotelDetailsComponent implements OnInit{
         this.details['checkOut'] = params['checkOut'];
         this.details['nights'] = this.calculateDaysBetween(this.details['checkIn'], this.details['checkOut']);
         this.rooms = this.details['rooms'];
+        this.initCurrencyOptions(); // init list of currency options and set default from dropdown
       });
 
       this.isWatchlist(); // check if this hotel is in watchlist
