@@ -33,4 +33,9 @@ urlpatterns = [
     # currency related paths
     path('get-currency-list/', get_currency_list),
     path('currency-convert/', currency_convert),
+
+    # chatbot related paths
+    path('send-message/', generate_response),
+    path('get-messages/', get_messages),
+    path('clear-chat/', clear_chat),
 ]

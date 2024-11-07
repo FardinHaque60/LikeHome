@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Reservation, Watchlist
+from .models import Reservation, Watchlist, Message
 from django.contrib.auth.models import User
 
 # Currently not using serializers, but may use it in the future
@@ -7,6 +7,11 @@ class UserDataSerializer(serializers.ModelSerializer):
     class Meta:
         model=User
         fields=('username','password','first_name','last_name','email')
+
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Message
+        fields=('id','user','role','content','timestamp')
 
 class ReservationsSerializer(serializers.ModelSerializer):
     class Meta:

@@ -54,3 +54,9 @@ class Watchlist(models.Model):
     rooms = models.JSONField(default=list)
     check_in = models.DateField(default='2024-11-03')
     check_out = models.DateField(default='2024-11-03')
+
+class Message(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    role = models.CharField(max_length=10)
+    content = models.CharField(max_length=500, default='N/A')
+    timestamp = models.DateTimeField(auto_now_add=True)

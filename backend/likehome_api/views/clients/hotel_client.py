@@ -97,7 +97,6 @@ def hotel_availability(location, check_in, check_out, adults, children, radius, 
         "check_out": check_out,
         "adults": adults,
         "children": children,
-        "rooms": rooms,
         "radius": radius,
         "min_rate": min_rate,
         "max_rate": max_rate

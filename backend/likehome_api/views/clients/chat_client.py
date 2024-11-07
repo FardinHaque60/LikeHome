@@ -2,13 +2,13 @@ from datetime import date
 from openai import OpenAI
 from pydantic import BaseModel
 import json
+from ..session import get_user_info
 
-current_date = date.today()
+def get_persona():
+    user_info = json.dumps(get_user_info())
+    current_date = date.today()
 
-# TODO initialize from db
-user_info = { }
-
-PERSONA: str = f'''Your name is Nexus and you are a chatbot for a hotel reservation website called LikeHome.
+    persona = f'''Your name is Nexus and you are a chatbot for a hotel reservation website called LikeHome.
 The date today is {current_date} for reference.
 
 Respond to users if they ask about hotels or their account. Parse their queries to extract field details. 
@@ -19,6 +19,8 @@ MAKE SURE to reset user confirmation and hotel fields once you have received con
 If they ask an unrelated question, politely respond shortly but remind them to confirm hotel search. 
 
 Here is all the information on the users account if they ask about it: {user_info}'''
+    
+    return persona
 
 client = OpenAI()
 
@@ -44,7 +46,5 @@ def hotel_chat(messages: list) -> dict:
         response_format=SearchFilter,
         temperature=0.2,
     )
-    # TODO look into writing messages to db and having caller in views read from db everytime, maybe cache in some list
-    # messages.append({"role": "assistant", "content": completion.choices[0].message.content})
 
     return json.loads(completion.choices[0].message.content)

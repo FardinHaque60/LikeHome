@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate
 from rest_framework import status
 from .session import set_current_user
-# import Django default user model
+from .chatbot import reset_messages
 
 #TODO: accept username login info in request and return success/fail messages
 @api_view(['POST'])
@@ -21,4 +21,5 @@ def login(request):
 @api_view(['POST'])
 def logout(request):
     set_current_user(None)
+    reset_messages()
     return Response({'status': 'OK'}, status=status.HTTP_200_OK)
