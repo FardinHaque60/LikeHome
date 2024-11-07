@@ -7,3 +7,4 @@ from .session import *
 from .hotels import *
 from .reservation import *
 from .watchlist import *
+from .currency import *

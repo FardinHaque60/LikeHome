@@ -29,4 +29,8 @@ urlpatterns = [
     path('remove-from-watchlist/', remove_from_watchlist),
     path('is-watchlist/', is_watchlist),
     path('get-watchlist/', get_watchlist),
+
+    # currency related paths
+    path('get-currency-list/', get_currency_list),
+    path('currency-convert/', currency_convert),
 ]
