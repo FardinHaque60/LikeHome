@@ -1,10 +1,21 @@
-import os
 import requests
-from dotenv import load_dotenv
-import json
 
-# Load environment variables
-load_dotenv()
+def currency_list() -> list:
+    try:
+        url = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json"
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception if the response is not 200
+        response = response.json()
+        list_form = []
+        for i in response:
+            # only return currencies with 3 letter codes
+            if len(i) == 3:
+                list_form.append(f"{i} ({response[i]})")
+        return list_form
+    except requests.exceptions.HTTPError as errh:
+        print(f"HTTP error occurred: {errh}")
+    except Exception as err:
+        print(f"An error occurred: {err}")
 
 def get_currency_exchange_rate(from_currency, to_currency):
     try:
@@ -27,24 +38,11 @@ def get_currency_exchange_rate(from_currency, to_currency):
     except Exception as err:
         print(f"An error occurred: {err}")
 
-# Define a function to convert currency
-def convert_currency(amount, from_currency, to_currency):
-    rate = get_currency_exchange_rate(from_currency, to_currency)
+# Define a function to convert currency and return the exchange rate
+def convert_currency(from_currency, to_currency):
+    rate = get_currency_exchange_rate(from_currency.lower(), to_currency.lower())
     if rate:
-        return amount * rate
+        return rate
     else:
         print("Could not retrieve exchange rate.")
         return None
-
-# if __name__ == "__main__":
-#     print("Welcome to the Currency Exchange Tool!")
-    
-#     # Get user input for amount and currency codes
-#     amount = float(input("Enter the amount to convert: "))
-#     from_currency = input("Enter the currency code you are converting from (e.g., 'usd'): ").lower()
-#     to_currency = input("Enter the currency code you are converting to (e.g., 'eur'): ").lower()
-    
-#     # Perform conversion
-#     converted_amount = convert_currency(amount, from_currency, to_currency)
-#     if converted_amount:
-#         print(f"{amount} {from_currency.upper()} is equal to {converted_amount:.2f} {to_currency.upper()}.")
