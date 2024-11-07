@@ -13,7 +13,7 @@
 	<app-navbar />
 
 	<!-- chatbot on all pages that inherit homepage -->
-	<app-chatbot />
+	<app-chatbot *ngIf="currentUser['email'] !== ''" />
 
 	<!-- default homepage when no children -->
 	<div *ngIf="!hasChildren">
