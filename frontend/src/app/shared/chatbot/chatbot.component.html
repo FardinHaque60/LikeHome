@@ -1,0 +1,70 @@
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+
+	<link rel="stylesheet" href="../../../../public/assets/css/style.css">
+</head>
+
+<section class="chatbot-container">
+    <div class="container py-5">
+        <div class="row d-flex justify-content-end">
+        <div class="col-md-8 col-lg-6 col-xl-4">
+            <div class="card">
+            <!-- chat messages header -->
+            <div class="card-header d-flex justify-content-between p-3"
+                style="border-top: 4px solid #268edd;">
+                    <p class="mb-0">Nexus Assistant</p>
+                <mat-icon *ngIf="chatOpen" (click)="toggleChat()">close_fullscreen</mat-icon>
+                <mat-icon *ngIf="!chatOpen" (click)="toggleChat()">open_in_full</mat-icon>
+            </div>
+            <ng-container *ngIf="chatOpen">
+            <!-- messages -->
+            <div class="card-body" style="position: relative; height: 400px; overflow: auto;">
+                <div class="d-flex justify-content-center align-items-center" style="position: sticky; z-index: 1; top: 0">
+                    <button (click)="clearChat()" class="btn btn-danger btn-sm w-100" style="margin-top: -1rem; margin-bottom: 0.5rem;">Clear Chat</button>
+                </div>
+                <!-- assistant message start -->
+                <div class="d-flex justify-content-between">
+                    <p class="small mb-1">Timona Siera</p>
+                    <p class="small mb-1 text-muted">23 Jan 2:00 pm</p>
+                </div>
+                <div class="d-flex flex-row justify-content-start">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
+                        alt="avatar 1" style="width: 45px; height: 100%;">
+                    <div>
+                        <p class="small p-2 ms-3 mb-3 rounded-3 bg-body-tertiary">For what reason would it be advisable for me to think about business content?</p>
+                    </div>
+                </div>
+                <!-- assistant message end -->
+                <!-- user message start -->
+                <div class="d-flex justify-content-between">
+                    <p class="small mb-1 text-muted">23 Jan 2:05 pm</p>
+                    <p class="small mb-1">Johny Bullock</p>
+                </div>
+                <div class="d-flex flex-row justify-content-end mb-4 pt-1">
+                    <div>
+                        <p class="small p-2 me-3 mb-3 text-white rounded-3 bg-primary">Thank you for your believe in our supports</p>
+                    </div>
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
+                        alt="avatar 1" style="width: 45px; height: 100%;">
+                </div>
+                <!-- user message end -->
+            </div>
+            <!-- input field and send container -->
+            <div class="card-footer d-flex justify-content-start align-items-center p-3">
+                <div class="input-group mb-0">
+                <textarea class="form-control" rows="1" placeholder="Type message"></textarea>
+                <button (click)="sendMessage()" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary" type="button" style="padding-top: .55rem;">
+                    Send
+                </button>
+                </div>
+            </div>
+            </ng-container>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
