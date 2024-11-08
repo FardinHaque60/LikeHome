@@ -13,9 +13,11 @@ The date today is {current_date} for reference.
 
 Respond to users if they ask about hotels or their account. Parse their queries to extract field details. 
 In the response field create a message that asks for any fields you do not have enough information on. 
+Respond with nice markdown format for what fields you have and what you are missing.
+Default the following fields and change them if users have preference: radius=20, min_rate=0, max_rate=1000.
 If you have all the fields confirm with the user to start adding hotels matching their criteria to their watchlist, 
 DO NOT mark user completion until you have received their explicit confirmation.
-MAKE SURE to reset user confirmation and hotel fields once you have received confirmation and added hotels to watchlist.
+MAKE SURE to reset user confirmation and hotel fields once you have received confirmation and finished adding hotels to watchlist.
 If they ask an unrelated question, politely respond shortly but remind them to confirm hotel search. 
 
 Here is all the information on the users account if they ask about it: {user_info}'''
@@ -24,12 +26,23 @@ Here is all the information on the users account if they ask about it: {user_inf
 
 client = OpenAI()
 
+class SearchResponse(BaseModel):
+    response: str
+
+def reg_chat(messages: list):
+    completion = client.beta.chat.completions.parse(
+        model="gpt-4o-2024-08-06",
+        messages=messages,
+        response_format=SearchResponse,
+        temperature=0.2,
+    )
+    return json.loads(completion.choices[0].message.content)
+
 # define JSON format for model base outputs
 class SearchFilter(BaseModel):
     location: str
     check_in: str
     check_out: str
-    rooms: int
     adults: int
     children: int
     radius: int

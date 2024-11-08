@@ -81,7 +81,7 @@ def get_header(signature):
     return headers
 
 # https://developer.hotelbeds.com/documentation/hotels/booking-api/api-reference/ for hotel availability docs
-def hotel_availability(location, check_in, check_out, adults, children, radius, min_rate, max_rate, mock=False, rooms=4):
+def hotel_availability(location, check_in, check_out, adults, children, radius, min_rate, max_rate, mock=False, rooms=4, max_hotels=6):
     ''' 
         request requirement: 
             location: string - location of hotel in address or place format "City, State", "Street, Country", etc.
@@ -138,7 +138,7 @@ def hotel_availability(location, check_in, check_out, adults, children, radius, 
             "unit": "mi"
         } ,
         "filter": {
-            "maxHotels": 3, # LIMIT TO 6 HOTELS MAX, TODO set to 3 for testing
+            "maxHotels": max_hotels, # LIMIT TO 6 HOTELS MAX, TODO set to 3 for testing
             "maxRooms": rooms, 
             "minRate": min_rate,
             "maxRate": max_rate,

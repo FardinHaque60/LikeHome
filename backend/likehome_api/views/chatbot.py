@@ -4,7 +4,8 @@ from rest_framework import status
 from ..models import Message
 from .session import get_current_user
 from ..serializers import MessageSerializer
-from .clients.chat_client import hotel_chat, get_persona
+from .clients import *
+from .watchlist import create_watchist_item
 import json
 
 MESSAGES = []
@@ -13,6 +14,48 @@ MESSAGES = []
 def reset_messages():
     global MESSAGES
     MESSAGES = []
+
+def add_hotel_to_watchlist(search_obj):
+    # search for hotels
+    response = hotel_availability(
+        location=search_obj['location'], 
+        check_in=search_obj['check_in'], 
+        check_out=search_obj['check_out'], 
+        adults=search_obj['adults'], 
+        children=search_obj['children'], 
+        radius=search_obj['radius'],
+        min_rate=search_obj['min_price'],
+        max_rate=search_obj['max_price'],
+        max_hotels=3,
+        # mock=True
+    )
+
+    ''' TODO See if we need this guard handling, search results should be set to empty if invalid result
+    try:
+        if response['status_code'] != 200:
+            search_results = [] # empty list signifies no hotels found
+    except: # if response is valid then it has no status_code, thus valid
+        pass
+    '''
+
+    # generate response with gpt
+    search_results = get_search_results()
+    search_results_prompt = f'''hotel results in json list format: {search_results}.
+Tell the user how many hotels we were able to find and a brief description of each one. If it is an empty list, tell the user you were 
+unable to add any hotels to their watchlist and they can try booking again with you or modify it themselves in the search tab.'''
+    search_response = { "role": "system", "content": search_results_prompt}
+    MESSAGES.append(search_response)
+    Message.objects.create(user=get_current_user(), content=search_response, role="system")
+    json_response = reg_chat(MESSAGES)
+    response = json_response['response']
+    # save response to db handled in caller
+
+    for result in search_results:
+        result['checkIn'] = search_obj['check_in']
+        result['checkOut'] = search_obj['check_out']
+        create_watchist_item(result)
+
+    return response
 
 # generates a response when user enters prompt
 @api_view (['POST'])
@@ -27,21 +70,24 @@ def generate_response(request):
     MESSAGES.append(user_prompt)
 
     # save response to db
-    response = Message.objects.create(user=get_current_user(), content=json.dumps(hotel_chat(MESSAGES)), role="assistant")
-    response = json.loads(json.dumps(MessageSerializer(response).data))
-    MESSAGES.append(response)
+    response = hotel_chat(MESSAGES)
+    print("Response: ")
+    print(response)
 
-    hotel_info = json.loads(response['content'])
+    hotel_info = response
+    print("SEARCH CONFIRMATION: ")
+    print(hotel_info['user_search_confirmation'])
     if (hotel_info['user_search_confirmation']):
-        # TODO add call for searching then adding to watchlist
-        hotel_info = json.loads(response['content'])
-        location, check_in, check_out, adults, children = hotel_info['location'], hotel_info['check_in'], hotel_info['check_out'], hotel_info['adults'], hotel_info['children']
-        # based on how many search results found, make another gpt call telling them how many hotels added to watchlist 
+        print("ENTERED")
+        # overwrite response with response based on search results
+        response['response'] = add_hotel_to_watchlist(hotel_info)
 
-    print("Response content: ")
-    print(json.loads(response['content']))
+    # response in message for db and msg cache
+    message_response = Message.objects.create(user=get_current_user(), content=json.dumps(response), role="assistant")
+    message_response = json.loads(json.dumps(MessageSerializer(message_response).data))
+    MESSAGES.append(message_response)
 
-    return Response(response, status=status.HTTP_200_OK)
+    return Response(message_response, status=status.HTTP_200_OK)
 
 # removes and erases db messages from this user
 @api_view (['GET'])

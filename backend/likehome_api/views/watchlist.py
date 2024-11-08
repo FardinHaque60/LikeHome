@@ -4,30 +4,39 @@ from rest_framework import status
 from .session import get_current_user
 from ..models import Watchlist
 from ..serializers import WatchlistSerializer
-import json
+
+def create_watchist_item(data):
+    try:
+        # assuming this query always returns a single item
+        watchlist_item = Watchlist.objects.filter(user=get_current_user(), rooms=data['rooms'])
+        if (not watchlist_item):
+            watchlist_item = Watchlist.objects.create(
+                user=get_current_user(), 
+                hotel_name=data['name'], 
+                description=data['description'],
+                min_rate=data['minRate'],
+                max_rate=data['maxRate'],
+                phone=data['phone'],
+                currency=data['currency'],
+                email=data['email'],
+                web=data['web'],
+                images=data['images'],
+                address=data['address'],
+                city=data['city'],
+                rooms=data['rooms'],
+                check_in=data['checkIn'],
+                check_out=data['checkOut']
+            )
+        return watchlist_item
+    except Exception as e:
+        print("Error creating watchlist item: ")
+        print(e)
 
 @api_view(['POST'])
 def add_to_watchlist(request):
     data = request.data
-    user = get_current_user()
 
-    watchlist_item = Watchlist.objects.create(
-        user=user, 
-        hotel_name=data['name'], 
-        description=data['description'],
-        min_rate=data['minRate'],
-        max_rate=data['maxRate'],
-        phone=data['phone'],
-        currency=data['currency'],
-        email=data['email'],
-        web=data['web'],
-        images=data['images'],
-        address=data['address'],
-        city=data['city'],
-        rooms=data['rooms'],
-        check_in=data['checkIn'],
-        check_out=data['checkOut']
-    )
+    watchlist_item = create_watchist_item(data)
 
     id = watchlist_item.id
     return Response({"message": "OK", "id": id}, status=status.HTTP_200_OK)
