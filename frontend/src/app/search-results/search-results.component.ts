@@ -98,6 +98,13 @@ export class SearchResultsComponent implements OnInit {
     });
   }
 
+  // used for formatting when modifying the date
+  selectionFormatDate(dateString: string): Date {
+    const [year, month, day] = dateString.split('-').map(Number);
+    // create a date in UTC, then get the local equivalent
+    return new Date(Date.UTC(year, month-1, day+1));
+  }
+
   getResults(): void {
     this.apiService.getBackendRequest('get-search-result')
       .subscribe({
@@ -109,8 +116,8 @@ export class SearchResultsComponent implements OnInit {
           this.searchResults = response['hotels'];
           this.searchFilter.patchValue(response['query']); // set search filter placeholders from search query
           this.searchFilter.patchValue({ 
-            check_in: new Date(response['query']['check_in']),
-            check_out: new Date(response['query']['check_out'])
+            check_in: this.selectionFormatDate(response['query']['check_in'].substring(0, 10)),
+            check_out: this.selectionFormatDate(response['query']['check_out'].substring(0, 10))
           }); // set check_in date
           this.loading = false;
         },

@@ -27,25 +27,30 @@
                     <button (click)="clearChat()" class="btn btn-danger btn-sm w-100" style="margin-top: -1rem; margin-bottom: 0.5rem;">Clear Chat</button>
                 </div>
                 <!-- iterating over all messages -->
+                <div *ngIf="(messages.length === 1 || messages.length === 0) && !messagesIn" class="d-flex justify-content-center align-items-center text-center" style="height: 80%;">
+                    <p class="text-muted">Message Nexus for information on your account or to search for hotels to add to your watchlist</p>
+                </div>  
                 <ng-container *ngFor="let message of messages">
                     <!-- assistant message -->
                     <ng-container *ngIf="message['role'] === 'assistant'">
                         <div class="d-flex justify-content-between">
                             <p class="small mb-1">Nexus</p>
-                            <p class="small mb-1 text-muted">{{message['timestamp']}}</p>
+                            <p class="small mb-1 text-muted">{{ message['timestamp'] | date: 'yyyy-MM-dd hh:mm a' }}</p>
                         </div>
                         <div class="d-flex flex-row justify-content-start">
                             <img src="assets/images/nexus_logo.png" class="img-fluid rounded-circle"
                                 alt="avatar 1" style="width: 45px; height: 100%;">
                             <div>
-                                <p class="small p-2 ms-3 mb-3 rounded-3 bg-body-tertiary">{{message['content']['response']}}</p>
+                                <p class="small p-2 ms-3 mb-3 rounded-3 bg-body-tertiary">
+                                    <markdown> {{message['content']['response']}} </markdown>
+                                </p>
                             </div>
                         </div>
                     </ng-container>
                     <!-- user message -->
                     <ng-container *ngIf="message['role'] === 'user'">
                         <div class="d-flex justify-content-between">
-                            <p class="small mb-1 text-muted">{{message['timestamp']}}</p>
+                            <p class="small mb-1 text-muted">{{ message['timestamp'] | date: 'yyyy-MM-dd hh:mm a' }}</p>
                             <p class="small mb-1">{{currentUser}}</p>
                         </div>
                         <div class="d-flex flex-row justify-content-end mb-4 pt-1">

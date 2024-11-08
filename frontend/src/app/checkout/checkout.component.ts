@@ -263,6 +263,10 @@ export class CheckoutComponent implements OnInit{
     this.userAfterRewards = this.userRewards + this.rewardsEarned - this.rewardsPointsUsed;
   }
 
+  replaceImage(event: any) {
+    event.target.src = 'assets/images/nexus_logo.png';
+  }
+
   ngOnInit(): void {
     //moves to the top of the page when finished navigating (back&forth)
     //seems to not work with <-- back arrows

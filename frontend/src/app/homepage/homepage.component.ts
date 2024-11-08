@@ -112,8 +112,8 @@ export class HomepageComponent implements OnInit {
 
   openHotel(i: number): void {
     this.router.navigate(['/hotel-details'], { queryParams: { 
-      checkIn: "2024-10-15", 
-      checkOut: "2024-10-18", 
+      checkIn: "2024-12-03", 
+      checkOut: "2024-12-05", 
       details: JSON.stringify(this.hotels[i]) 
       } 
     });

@@ -48,7 +48,6 @@ export class WatchlistComponent implements OnInit {
     });
   }
 
-  // TODO backend request to sort hotels, maybe just do this browser side
   sortFilterSubmit(): void {
     this.loading = true;
     console.log('Sort Filter Submit with choice: ', this.sortFilter.value.selectedChoice);
@@ -80,6 +79,24 @@ export class WatchlistComponent implements OnInit {
           checkOut: selectedHotel['check_out'], 
           details: JSON.stringify(selectedHotel) 
         } 
+    });
+  }
+
+  removeFromWatchlist(index: number): void {
+    this.loading = true;
+    let selectedHotel = this.watchlistHotels[index];
+    this.apiService.postBackendRequest('remove-from-watchlist', { "rooms": selectedHotel['rooms']})
+    .subscribe({
+      next: (data: any) => {
+        console.log(data);
+        this.watchlistHotels.splice(index, 1);
+        this.loading = false;
+      },
+      error: (error: any) => {
+        console.log('Error removing from watchlist');
+        console.log(error);
+        this.loading = false;
+      }
     });
   }
 

@@ -1,36 +1,33 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SecurityContext } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ApiService } from '../../service/api.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MarkdownModule, MarkdownService, SECURITY_CONTEXT } from 'ngx-markdown';
 
 @Component({
   selector: 'app-chatbot',
   standalone: true,
-  imports: [MatIconModule, CommonModule, ReactiveFormsModule, MatProgressSpinnerModule],
+  imports: [MatIconModule, CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, MarkdownModule],
   templateUrl: './chatbot.component.html',
-  styleUrl: './chatbot.component.scss'
+  styleUrl: './chatbot.component.scss',
+  providers: [MarkdownService,
+    { provide: SECURITY_CONTEXT, useValue: SecurityContext.HTML }
+  ]
 })
 export class ChatbotComponent implements OnInit {
-  chatOpen: boolean = true; // TODO init to false in prod
+  chatOpen: boolean = false;
   messages: Array<any> = [];
   currentUser: string = '';
   loading: boolean = false;
+  messagesIn: boolean = false;
 
   chatForm = new FormGroup({
     userPrompt: new FormControl('', Validators.required),
   });
 
   constructor(private apiService: ApiService) {}
-
-  formatDate(currentDate: Date) {
-    const year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
-    const day = currentDate.getDate().toString().padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-  }
 
   toggleChat(): void {
     this.chatOpen = !this.chatOpen;
@@ -40,10 +37,11 @@ export class ChatbotComponent implements OnInit {
     if (this.chatForm.invalid) {
       return;
     }
+    this.messagesIn = true;
     this.loading = true;
     console.log('Message send requested');
     // add user message to chat
-    this.messages.push({"role": "user", "content": this.chatForm.value.userPrompt, "timestamp": this.formatDate(new Date()), "name": this.currentUser, "id": 1});
+    this.messages.push({"role": "user", "content": this.chatForm.value.userPrompt, "timestamp": new Date(), "name": this.currentUser, "id": 1});
     this.apiService.postBackendRequest('send-message', this.chatForm.value)
       .subscribe({
         next: (response: any) => {
@@ -66,6 +64,7 @@ export class ChatbotComponent implements OnInit {
   clearChat(): void {
     console.log('Chat clear requested');
     this.messages = [];
+    this.messagesIn = false;
     this.apiService.getBackendRequest('clear-chat')
       .subscribe({
         next: (response: any) => {
@@ -88,6 +87,9 @@ export class ChatbotComponent implements OnInit {
           console.log(response);
           // format all assistant responses to json object
           for (const message of response) {
+            if (message['role'] !== 'system') {
+              this.messagesIn = true;
+            }
             if (message['role'] === 'assistant') {
               message['content'] = JSON.parse(message['content']);
             }

@@ -106,7 +106,7 @@
                     <!-- room item/order -->
                     <div class="d-flex align-items-center mb-5">
                       <div class="flex-shrink-0">
-                        <img [src]="details['images'][0]"
+                        <img [src]="details['images'][0]" (error)="replaceImage($event)"
                           class="img-fluid rounded" style="width: 150px;" alt="Generic placeholder image">
                       </div>
                       <div class="flex-grow-1 ms-3">
