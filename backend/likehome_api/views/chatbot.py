@@ -42,7 +42,8 @@ def add_hotel_to_watchlist(search_obj):
     search_results = get_search_results()
     search_results_prompt = f'''hotel results in json list format: {search_results}.
 Tell the user how many hotels we were able to find and a brief description of each one. If it is an empty list, tell the user you were 
-unable to add any hotels to their watchlist and they can try booking again with you or modify it themselves in the search tab.'''
+unable to add any hotels to their watchlist and they can try booking again with you or modify it themselves in the search tab. DO NOT include images
+in your response.'''
     search_response = { "role": "system", "content": search_results_prompt}
     MESSAGES.append(search_response)
     Message.objects.create(user=get_current_user(), content=search_response, role="system")
