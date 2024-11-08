@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, SecurityContext } from '@angular/core';
+import { Component, OnInit, SecurityContext, ViewChild, ElementRef } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ApiService } from '../../service/api.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -17,6 +17,7 @@ import { MarkdownModule, MarkdownService, SECURITY_CONTEXT } from 'ngx-markdown'
   ]
 })
 export class ChatbotComponent implements OnInit {
+  @ViewChild('chatContainer') chatContainer!: ElementRef;
   chatOpen: boolean = false;
   messages: Array<any> = [];
   currentUser: string = '';
@@ -31,6 +32,9 @@ export class ChatbotComponent implements OnInit {
 
   toggleChat(): void {
     this.chatOpen = !this.chatOpen;
+    setTimeout(() => {
+      this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+    }, 1);
   }
 
   sendMessage(): void {
@@ -42,6 +46,9 @@ export class ChatbotComponent implements OnInit {
     console.log('Message send requested');
     // add user message to chat
     this.messages.push({"role": "user", "content": this.chatForm.value.userPrompt, "timestamp": new Date(), "name": this.currentUser, "id": 1});
+    setTimeout(() => {
+      this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+    }, 1);
     this.apiService.postBackendRequest('send-message', this.chatForm.value)
       .subscribe({
         next: (response: any) => {
@@ -50,6 +57,9 @@ export class ChatbotComponent implements OnInit {
 
           response['content'] = JSON.parse(response['content']); // format the response to json object
           this.messages.push(response); // response has fields role, content, date, id, name (if role is user)
+          setTimeout(() => {
+            this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+          }, 1);
           this.loading = false;
         },
         error: (error: any) => {
@@ -95,6 +105,9 @@ export class ChatbotComponent implements OnInit {
             }
           }
           this.messages = response;
+          setTimeout(() => {
+            this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+          }, 1);
         },
         error: (error: any) => {
           console.log('Error fetching messages');

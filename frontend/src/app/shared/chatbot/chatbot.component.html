@@ -9,75 +9,71 @@
 </head>
 
 <section class="chatbot-container">
-    <div class="container py-5">
-        <div class="row d-flex justify-content-end">
-        <div class="col-md-8 col-lg-6 col-xl-4">
-            <div class="card">
-            <!-- chat messages header -->
-            <div class="card-header d-flex justify-content-between p-3"
-                style="border-top: 4px solid #268edd;">
-                    <p class="mb-0">Nexus Assistant</p>
-                <mat-icon *ngIf="chatOpen" (click)="toggleChat()">close_fullscreen</mat-icon>
-                <mat-icon *ngIf="!chatOpen" (click)="toggleChat()">open_in_full</mat-icon>
-            </div>
-            <ng-container *ngIf="chatOpen">
-            <!-- messages -->
-            <div class="card-body" style="position: relative; height: 400px; overflow: auto;">
-                <div class="d-flex justify-content-center align-items-center" style="position: sticky; z-index: 1; top: 0">
-                    <button (click)="clearChat()" class="btn btn-danger btn-sm w-100" style="margin-top: -1rem; margin-bottom: 0.5rem;">Clear Chat</button>
-                </div>
-                <!-- iterating over all messages -->
-                <div *ngIf="(messages.length === 1 || messages.length === 0) && !messagesIn" class="d-flex justify-content-center align-items-center text-center" style="height: 80%;">
-                    <p class="text-muted">Message Nexus for information on your account or to search for hotels to add to your watchlist</p>
-                </div>  
-                <ng-container *ngFor="let message of messages">
-                    <!-- assistant message -->
-                    <ng-container *ngIf="message['role'] === 'assistant'">
-                        <div class="d-flex justify-content-between">
-                            <p class="small mb-1">Nexus</p>
-                            <p class="small mb-1 text-muted">{{ message['timestamp'] | date: 'yyyy-MM-dd hh:mm a' }}</p>
-                        </div>
-                        <div class="d-flex flex-row justify-content-start">
-                            <img src="assets/images/nexus_logo.png" class="img-fluid rounded-circle"
-                                alt="avatar 1" style="width: 45px; height: 100%;">
-                            <div>
-                                <p class="small p-2 ms-3 mb-3 rounded-3 bg-body-tertiary">
-                                    <markdown> {{message['content']['response']}} </markdown>
-                                </p>
-                            </div>
-                        </div>
-                    </ng-container>
-                    <!-- user message -->
-                    <ng-container *ngIf="message['role'] === 'user'">
-                        <div class="d-flex justify-content-between">
-                            <p class="small mb-1 text-muted">{{ message['timestamp'] | date: 'yyyy-MM-dd hh:mm a' }}</p>
-                            <p class="small mb-1">{{currentUser}}</p>
-                        </div>
-                        <div class="d-flex flex-row justify-content-end mb-4 pt-1">
-                            <div>
-                                <p class="small p-2 me-3 mb-3 text-white rounded-3 bg-primary">{{message['content']}}</p>
-                            </div>
-                            <img src="assets/images/lebron.png" class="img-fluid rounded-circle"
-                                alt="avatar 1" style="width: 45px; height: 100%;">
-                        </div>
-                    </ng-container>
-                </ng-container>
-            </div>
-            <!-- input field and send container -->
-            <form [formGroup]="chatForm" (ngSubmit)="sendMessage()">
-            <div class="card-footer d-flex justify-content-start align-items-center p-3">
-                    <div class="input-group mb-0">
-                        <textarea class="form-control" formControlName="userPrompt" rows="1" placeholder="Type message"></textarea>
-                        <button *ngIf="!loading" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary" type="submit" style="padding-top: .55rem;">
-                            Send
-                        </button>
-                        <mat-spinner *ngIf="loading" diameter="30" class="ml-4"/>
-                    </div>
-            </div>
-            </form>
-            </ng-container>
-            </div>
+    <div class="col-md-8 col-lg-6 col-xl-4">
+        <div class="card">
+        <!-- chat messages header -->
+        <div class="card-header d-flex justify-content-between p-3"
+            style="border-top: 4px solid #268edd;">
+                <p class="mb-0">Nexus Assistant</p>
+            <mat-icon *ngIf="chatOpen" (click)="toggleChat()">close_fullscreen</mat-icon>
+            <mat-icon *ngIf="!chatOpen" (click)="toggleChat()">open_in_full</mat-icon>
         </div>
+        <ng-container *ngIf="chatOpen">
+        <!-- messages -->
+        <div #chatContainer class="card-body" style="position: relative; height: 400px; overflow-y: auto;">
+            <div class="d-flex justify-content-center align-items-center" style="position: sticky; z-index: 1; top: 0">
+                <button (click)="clearChat()" class="btn btn-danger btn-sm w-100" style="margin-top: -1rem; margin-bottom: 0.5rem;">Clear Chat</button>
+            </div>
+            <!-- iterating over all messages -->
+            <div *ngIf="(messages.length === 1 || messages.length === 0) && !messagesIn" class="d-flex justify-content-center align-items-center text-center" style="height: 80%;">
+                <p class="text-muted">Message Nexus for information on your account or to search for hotels to add to your watchlist</p>
+            </div>  
+            <ng-container *ngFor="let message of messages">
+                <!-- assistant message -->
+                <ng-container *ngIf="message['role'] === 'assistant'">
+                    <div class="d-flex justify-content-between">
+                        <p class="small mb-1">Nexus</p>
+                        <p class="small mb-1 text-muted">{{ message['timestamp'] | date: 'yyyy-MM-dd hh:mm a' }}</p>
+                    </div>
+                    <div class="d-flex flex-row justify-content-start">
+                        <img src="assets/images/nexus_logo.png" class="img-fluid rounded-circle"
+                            alt="avatar 1" style="width: 45px; height: 100%;">
+                        <div>
+                            <p class="small p-2 ms-3 mb-3 rounded-3 bg-body-tertiary">
+                                <markdown> {{message['content']['response']}} </markdown>
+                            </p>
+                        </div>
+                    </div>
+                </ng-container>
+                <!-- user message -->
+                <ng-container *ngIf="message['role'] === 'user'">
+                    <div class="d-flex justify-content-between">
+                        <p class="small mb-1 text-muted">{{ message['timestamp'] | date: 'yyyy-MM-dd hh:mm a' }}</p>
+                        <p class="small mb-1">{{currentUser}}</p>
+                    </div>
+                    <div class="d-flex flex-row justify-content-end mb-4 pt-1">
+                        <div>
+                            <p class="small p-2 me-3 mb-3 text-white rounded-3 bg-primary">{{message['content']}}</p>
+                        </div>
+                        <img src="assets/images/lebron.png" class="img-fluid rounded-circle"
+                            alt="avatar 1" style="width: 45px; height: 100%;">
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+        <!-- input field and send container -->
+        <form [formGroup]="chatForm" (ngSubmit)="sendMessage()">
+        <div class="card-footer d-flex justify-content-start align-items-center p-3">
+                <div class="input-group mb-0">
+                    <textarea class="form-control" formControlName="userPrompt" rows="1" placeholder="Type message"></textarea>
+                    <button *ngIf="!loading" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary" type="submit" style="padding-top: .55rem;">
+                        Send
+                    </button>
+                    <mat-spinner *ngIf="loading" diameter="30" class="ml-4"/>
+                </div>
+        </div>
+        </form>
+        </ng-container>
         </div>
     </div>
 </section>
