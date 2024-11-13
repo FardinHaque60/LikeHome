@@ -2,11 +2,15 @@ from datetime import date
 from openai import OpenAI
 from pydantic import BaseModel
 import json
-from ..session import get_user_info
+from ..session import get_user_info, get_current_user
+from likehome_api.models import Reservation
+from likehome_api.serializers import ReservationsSerializer
 
 def get_persona():
     user_info = json.dumps(get_user_info())
     current_date = date.today()
+    user_reservations = Reservation.objects.filter(user=get_current_user())
+    user_reservations = ReservationsSerializer(user_reservations, many=True).data
 
     persona = f'''Your name is Nexus and you are a chatbot for a hotel reservation website called LikeHome.
 The date today is {current_date} for reference.
@@ -20,7 +24,7 @@ DO NOT mark user completion until you have received their explicit confirmation.
 MAKE SURE to reset user confirmation and hotel fields once you have received confirmation and finished adding hotels to watchlist.
 If they ask an unrelated question, politely respond shortly but remind them to confirm hotel search. 
 
-Here is all the information on the users account if they ask about it: {user_info}'''
+Here is all the information on the users account if they ask about it: {user_info}, user upcoming reservations: {user_reservations}'''
     
     return persona
 
