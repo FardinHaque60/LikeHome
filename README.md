@@ -10,11 +10,13 @@ CMPE 165 Team Nexus hotels.com clone.
 
 2. Run `./prep_backend.sh` in the `backend/` dir to activate venv, install any new dependencies, update database schema, and run server
 3. [Optional] Run `./likehome_api/views/clients/hotel_api_status.sh` to check how many hotel api requests are remaining
+4. [Optional] With the backend running, access the database by visiting http://localhost:8000/admin
+    * To create a superuser run `python manage.py createsuperuser` and enter username & password details for this admin account
 
 ### Running Frontend
 
-4. Run `npm install` in the `frontend/` dir to install any new dependencies
-5. Run `ng serve` to start the frontend
+5. Run `npm install` in the `frontend/` dir to install any new dependencies
+6. Run `ng serve` to start the frontend
 
 
 ## Set-Up

@@ -72,7 +72,7 @@ def create_reservation(request):
             "Check-Out: " + str(check_out) + "\n" +
             "Adults: " + str(adults) + "\n" +
             "Children: " + str(children) + "\n" +
-            "Rate: " + str(rate) + "\n" +
+            "Rate: $" + str(rate) + "\n" +
             "Rewards Earned: " + str(rewards_earned) + "\n" +
             "Rewards Used: " + str(rewards_used) + "\n" +
             "Total Price: $" + str(total_price) + "\n\n" +
@@ -106,8 +106,8 @@ Check-Out: {reservation.check_out}
 Nights: {reservation.nights}
 Adults: {reservation.adults}
 Children: {reservation.children}
-Rate: {reservation.rate}
-Total Price Refunded: {reservation.total_price}\n
+Rate: ${reservation.rate}
+Total Price Refunded: ${reservation.total_price}\n
 Forfeited Reward Points: {reservation.rewards_applied}\n
 Sincerely,
 Team Nexus'''
@@ -146,9 +146,9 @@ Check-Out: {reservation.check_out}
 Nights: {reservation.nights}
 Adults: {reservation.adults}
 Children: {reservation.children}
-Rate: {reservation.rate}
-Total Price: {reservation.total_price}\n
-Difference Paid: {difference_paid}\n
+Rate: ${reservation.rate}
+Total Price: ${reservation.total_price}\n
+Difference Paid: ${difference_paid}\n
 Forfeited Reward Points: {reservation.rewards_applied}\n
 Sincerely,
 Team Nexus
