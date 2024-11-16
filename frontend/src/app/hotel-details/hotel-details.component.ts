@@ -28,6 +28,7 @@ export class HotelDetailsComponent implements OnInit{
     'maxRate': 0,
     'rooms': [],
   }; // initialized in the initCurrencyOptions function
+  currencyCode: string = ''; // three letter code that selects from dropdown
   currencyForm = new FormGroup({
     currency: new FormControl('', Validators.required),
   });
@@ -253,10 +254,10 @@ export class HotelDetailsComponent implements OnInit{
   }
 
   convertCurrency() {
-    let currency_code = this.currencyForm.value.currency?.substring(0, 3) ? this.currencyForm.value.currency.substring(0, 3) : '';
+    this.currencyCode = this.currencyForm.value.currency?.substring(0, 3) ? this.currencyForm.value.currency.substring(0, 3) : '';
     let currencyOptions = {
       'fromCurrency': this.originalRates['currency'],
-      'toCurrency': currency_code,
+      'toCurrency': this.currencyCode,
     }
     // returns the rate for fromCurrency to toCurrency
     this.apiService.postBackendRequest('currency-convert', currencyOptions)
@@ -282,6 +283,7 @@ export class HotelDetailsComponent implements OnInit{
 
   initCurrencyOptions() {
     let currency = this.details['currency'].toLowerCase();
+    this.currencyCode = currency;
     this.apiService.getBackendRequest('get-currency-list')
       .subscribe({
         next: (data: any) => {

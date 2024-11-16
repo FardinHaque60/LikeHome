@@ -19,15 +19,12 @@
                 <div class="col-lg-5 px-5 mt-2">
                   <h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Card Details</h3>
                   <form class="mb-5" [formGroup]="paymentForm">
-                    <!--Display account details of user here?-->
-                    <!--First & Last Name, email, phone num etc. -->
-                    <!-- TO-DO: validators for form -->
                     <!--card number field-->
                     <div data-mdb-input-init class="form-outline mb-3">
                       <label class="form-label" for="typeText">Card Number*</label>
                       <input type="text" id="typeText" class="form-control" size="17"
                       placeholder="Enter your card number" minlength="16" maxlength="16" formControlName="cardNum"/>
-                      <div class="alert alert-danger mt-2" *ngIf="paymentForm.get('cardNum')?.touched && paymentForm.get('cardNum')?.invalid">
+                      <div class="alert alert-danger mt-2" *ngIf="paymentForm.get('cardNum')?.touched && (paymentForm.get('cardNum')?.invalid || paymentForm.errors?.['notNumeric'])">
                           <span>Card Number is invalid.</span>
                       </div>
                     </div>
@@ -67,7 +64,6 @@
                     </div>
                     <!-- apply reward nights points dropdown -->
                     <div *ngIf="transaction_type === 'new'" data-mdb-input-init class="form-outline mb-3">
-                      <!-- TODO update for terms and service route -->
                       <label class="form-label" for="dropdown">
                         Number of Reward Nights
                       </label>
@@ -80,7 +76,8 @@
                       <input type="checkbox" class="ml-3 form-check-input" formControlName="earnRewards" (change)="toggleEarnRewards()" />
                       <label class="ml-5 form-label">
                         Earn Rewards?
-                        <a routerLink="/terms-and-service" class="ml-1">Terms and Service</a>
+                        <!-- TODO update for terms of service route -->
+                        <a routerLink="/terms-of-service" class="ml-1">Terms of Service</a>
                       </label>
                     </div>
 

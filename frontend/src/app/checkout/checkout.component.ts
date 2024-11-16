@@ -39,6 +39,12 @@ export class CheckoutComponent implements OnInit{
 
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute, private location: Location) { }
 
+  isNumericValidator: ValidatorFn = (
+    form: AbstractControl,
+  ): ValidationErrors | null => {
+    return /^\d+$/.test(form.get('cardNum')?.value) ? null : { notNumeric: true };
+  }
+
   expDateValidator: ValidatorFn = (
     form: AbstractControl,
   ): ValidationErrors | null => {
@@ -71,7 +77,7 @@ export class CheckoutComponent implements OnInit{
     CVV: new FormControl('', Validators.required),
     rewardsNights: new FormControl(0, Validators.required),
     earnRewards: new FormControl(false),
-  }, { validators: this.expDateValidator });
+  }, { validators: [this.expDateValidator, this.isNumericValidator] });
 
   goBack(): void {
     this.location.back();

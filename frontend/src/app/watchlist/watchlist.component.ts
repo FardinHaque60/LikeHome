@@ -100,6 +100,10 @@ export class WatchlistComponent implements OnInit {
     });
   }
 
+  replaceImage(event: any) {
+    event.target.src = 'assets/images/nexus_logo.png';
+  }
+
   ngOnInit(): void {
     this.getWatchlist();
   }
