@@ -27,11 +27,11 @@ def create_reservation(request):
     description, phone_number, website, email, images = reservation_details['description'], reservation_details['phone'], reservation_details['website'], reservation_details['email'], reservation_details['images']
     # TODO look to save payment details in future
     card_number, card_name, exp_date, cvv = payment_details['cardNum'], payment_details['cardName'], payment_details['expDate'], payment_details['CVV']
-    # TODO use reward points if wanted
     # add to reward points 
     updated_reward_points = reservation_details['newRewards'] # overwrite old reward points in profile with this, this value takes into account applied rewards asw
     rewards_earned = reservation_details['rewardsEarned'] # reward points earned from this reservation
     rewards_used = reservation_details['rewardsApplied'] # reward points used for this reservation
+    rewards_used_cost = reservation_details['rewardsAppliedCost'] # reward points in dollars used for this reservation
 
     try:
         # update reward points
@@ -59,7 +59,8 @@ def create_reservation(request):
             images=images,
             email=email,
             rewards_earned=rewards_earned,
-            rewards_applied=rewards_used
+            rewards_applied=rewards_used,
+            rewards_applied_cost=rewards_used_cost
         )
 
         message = (
