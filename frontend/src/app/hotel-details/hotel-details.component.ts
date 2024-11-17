@@ -282,36 +282,59 @@ export class HotelDetailsComponent implements OnInit{
   }
 
   initCurrencyOptions() {
-    let currency = this.details['currency'].toLowerCase();
+    let originalCurrency = this.details['currency'].toLowerCase(); // currency that api returns
+    let currency = 'usd'; // default currency
     this.currencyCode = currency;
     this.apiService.getBackendRequest('get-currency-list')
       .subscribe({
         next: (data: any) => {
           console.log(data);
-          this.currencyOptions = data;
-          // check for what currency the hotel api sent and default the dropdown to that
+          this.currencyOptions = data; // sets currency list returned from backend
+          // set default currency to USD
+          this.currencyForm.setValue({ currency: "usd (US Dollar)" });
+          /* 
           for (const option of this.currencyOptions) {
             if (option.substring(0, 3) === currency) {
               this.currencyForm.setValue({ currency: option });
               break;
             }
-          }
+          } */
         },
         error: (error: any) => {
           console.log(error);
         }
       });
-    // store the original rates for conversion
-    let originalRoomRates = [];
-    for (const room of this.rooms) {
-      originalRoomRates.push(room['netRate']);
-    }
-    this.originalRates = {
-      'currency': currency,
-      'minRate': this.details['minRate'],
-      'maxRate': this.details['maxRate'],
-      'rooms': originalRoomRates,
-    }
+      // convert from currency in api to USD
+      let currencyOptions = {
+        'fromCurrency': originalCurrency,
+        'toCurrency': this.currencyCode,
+      }
+      // returns the rate for fromCurrency to toCurrency
+      this.apiService.postBackendRequest('currency-convert', currencyOptions)
+        .subscribe({
+          next: (data: any) => {
+            // use the rate to reassign each room value netRate (for each room), minRate, maxRate
+            console.log(data);
+            // store the original rates for conversion
+            // TODO update with USD values so sent to checkout correctly
+            let originalRoomRates = [];
+            for (const room of this.rooms) {
+              room['netRate'] = (room['netRate'] * data['rate']).toFixed(2);
+              originalRoomRates.push(room['netRate']);
+            }
+            this.details['minRate'] = (this.details['minRate'] * data['rate']).toFixed(2); 
+            this.details['maxRate'] = (this.details['maxRate'] * data['rate']).toFixed(2);
+            this.originalRates = {
+              'currency': currency,
+              'minRate': this.details['minRate'],
+              'maxRate': this.details['maxRate'],
+              'rooms': originalRoomRates,
+            };
+          },
+          error: (error: any) => {
+            console.log(error);
+          }
+        });
   }
 
   ngOnInit(): void {

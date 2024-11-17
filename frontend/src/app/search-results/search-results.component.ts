@@ -5,6 +5,7 @@ import { ApiService } from '../service/api.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-search-results',
@@ -105,6 +106,15 @@ export class SearchResultsComponent implements OnInit {
     return new Date(Date.UTC(year, month-1, day+1));
   }
 
+  getToUSDRate(originalCurrency: string): Observable<any> { //returns rate from originalCurrency to USD
+    let currencyOptions = {
+      'fromCurrency': originalCurrency,
+      'toCurrency': 'usd',
+    }
+    // returns the rate for fromCurrency to toCurrency
+    return this.apiService.postBackendRequest('currency-convert', currencyOptions);
+  }
+
   getResults(): void {
     this.apiService.getBackendRequest('get-search-result')
       .subscribe({
@@ -119,6 +129,17 @@ export class SearchResultsComponent implements OnInit {
             check_in: this.selectionFormatDate(response['query']['check_in'].substring(0, 10)),
             check_out: this.selectionFormatDate(response['query']['check_out'].substring(0, 10))
           }); // set check_in date
+          for (const hotel of this.searchResults) {
+            this.getToUSDRate(hotel['currency'])
+              .subscribe({
+                next: (data: any) => {
+                  hotel['convertedMinRate'] = +((hotel['minRate'] * data['rate']).toFixed(2));
+                },
+                error: (error: any) => {
+                  console.log(error);
+                }
+              });
+          }
           this.loading = false;
         },
         error: (error) => {

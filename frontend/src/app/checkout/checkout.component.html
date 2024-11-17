@@ -121,8 +121,8 @@
                           <p class="fw-bold mb-0">Reward Points Available: {{userRewards}} (${{(userRewards/5).toFixed(2)}})</p>
                           <p class="fw-bold mb-0">Reward Points After Transaction: {{userAfterRewards}} (${{(userAfterRewards/5).toFixed(2)}})</p>
                         </ng-container>
-                        <p *ngIf="transaction_type !== 'new'" class="fw-bold mb-0">
-                          Reward Points Forfeit: {{details['rewards_applied']}} (${{(total - details['total_price']).toFixed(2)}})
+                        <p *ngIf="transaction_type !== 'new'" class="fw-bold mb-0"> 
+                          Reward Points Forfeit: {{details['rewards_applied']}} (${{(details['rewards_applied_cost']).toFixed(2)}})
                         </p>
                       </div>
                     </div>
@@ -156,17 +156,17 @@
                             </mat-icon>
                           </p>
                         </div>
-                        <div>
+                        <div class="text-end">
                           <p *ngIf="transaction_type !== 'modify'" class="fw-bold">${{subtotal.toFixed(2)}}</p>
 
                           <p *ngIf="transaction_type === 'modify'" class="fw-bold">${{subtotal.toFixed(2)}}</p>
                           <p class="fw-bold">${{tax.toFixed(2)}}</p>
-                          <p *ngIf="transaction_type === 'cancel'" class="fw-bold">${{(total - details['total_price']).toFixed(2)}}</p>
+                          <p *ngIf="transaction_type === 'cancel'" class="fw-bold">${{details['rewards_applied_cost'].toFixed(2)}}</p>
                           <p *ngIf="transaction_type === 'new'" class="fw-bold">-${{rewardsApplied.toFixed(2)}}</p>
                           <p *ngIf="cancellationFee > 0" class="fw-bold">-${{cancellationFee.toFixed(2)}}</p>
                           <p *ngIf="transaction_type === 'modify'" class="fw-bold">${{total.toFixed(2)}}</p>
                           <p *ngIf="transaction_type === 'modify'" class="fw-bold">${{details['total_price'].toFixed(2)}}</p>
-                          <p *ngIf="transaction_type === 'modify' && modificationFee" class="fw-bold">$100</p>
+                          <p *ngIf="transaction_type === 'modify' && modificationFee" class="fw-bold">$100.00</p>
                         </div>
                     </div>
                     <div class="d-flex justify-content-between p-2 mb-2 bg-primary rounded">

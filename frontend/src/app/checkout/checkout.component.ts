@@ -153,6 +153,7 @@ export class CheckoutComponent implements OnInit{
       this.details['newRewards'] = this.userAfterRewards;
       this.details['rewardsEarned'] = this.rewardsEarned;
       this.details['rewardsApplied'] = this.rewardsPointsUsed;
+      this.details['rewardsAppliedCost'] = +(this.rewardsApplied.toFixed(2));
       let reservationDetails = {
         "paymentDetails": this.paymentForm.value,
         "reservationDetails": this.details
@@ -177,8 +178,8 @@ export class CheckoutComponent implements OnInit{
   }
 
   calculateTax(): number {
-    console.log("TAX IS: " + (+this.subtotal * 0.09).toFixed(2));
-    return +((+this.subtotal * 0.09).toFixed(2));
+    console.log("TAX IS: " + (+this.subtotal * 0.0725).toFixed(2));
+    return +((+this.subtotal * 0.0725).toFixed(2));
   }
 
   calculateTotal(): number {
@@ -257,6 +258,8 @@ export class CheckoutComponent implements OnInit{
     this.rewardsApplied = rate * nights; // cost discounted by rewards (i.e. number of nights request * rate)
     this.rewardsPointsUsed = rewardsPerNight * nights; // reward points used
     this.userAfterRewards = this.userRewards + this.rewardsEarned - this.rewardsPointsUsed; // user rewards after applying
+    let subtotalWithRewards = this.subtotal - this.rewardsApplied;
+    this.tax = +((subtotalWithRewards * 0.0725).toFixed(2)); // update tax to only charge for nights being paid for
     this.total = this.subtotal + this.tax - this.rewardsApplied;
   }
 

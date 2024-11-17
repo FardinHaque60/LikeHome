@@ -10,6 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ChatbotComponent } from '../shared/chatbot/chatbot.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-homepage',
@@ -96,6 +97,15 @@ export class HomepageComponent implements OnInit {
         }
       });
   }
+  
+  getToUSDRate(originalCurrency: string): Observable<any> { //returns rate from originalCurrency to USD
+    let currencyOptions = {
+      'fromCurrency': originalCurrency,
+      'toCurrency': 'usd',
+    }
+    // returns the rate for fromCurrency to toCurrency
+    return this.apiService.postBackendRequest('currency-convert', currencyOptions);
+  }
 
   get_featured_hotels(): void {
     this.apiService.getBackendRequest('get-featured-hotels')
@@ -103,6 +113,18 @@ export class HomepageComponent implements OnInit {
         next: (response) => {
           console.log(response['hotels']);
           this.hotels = response['hotels'];
+          // convert minRate for display to usd
+          for (const hotel of this.hotels) {
+            this.getToUSDRate(hotel['currency'])
+              .subscribe({
+                next: (data: any) => {
+                  hotel['convertedMinRate'] = +((hotel['minRate'] * data['rate']).toFixed(2));
+                },
+                error: (error: any) => {
+                  console.log(error);
+                }
+              });
+          }
         },
         error: (error) => { 
           console.log(error);
