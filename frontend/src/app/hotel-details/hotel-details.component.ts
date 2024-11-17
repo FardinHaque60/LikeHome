@@ -316,7 +316,6 @@ export class HotelDetailsComponent implements OnInit{
             // use the rate to reassign each room value netRate (for each room), minRate, maxRate
             console.log(data);
             // store the original rates for conversion
-            // TODO update with USD values so sent to checkout correctly
             let originalRoomRates = [];
             for (const room of this.rooms) {
               room['netRate'] = (room['netRate'] * data['rate']).toFixed(2);

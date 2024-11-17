@@ -5,7 +5,6 @@ from rest_framework import status
 from .session import set_current_user
 from .chatbot import reset_messages
 
-#TODO: accept username login info in request and return success/fail messages
 @api_view(['POST'])
 def login(request):
     data = request.data

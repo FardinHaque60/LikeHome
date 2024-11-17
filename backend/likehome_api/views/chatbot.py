@@ -30,14 +30,6 @@ def add_hotel_to_watchlist(search_obj):
         # mock=True
     )
 
-    ''' TODO See if we need this guard handling, search results should be set to empty if invalid result
-    try:
-        if response['status_code'] != 200:
-            search_results = [] # empty list signifies no hotels found
-    except: # if response is valid then it has no status_code, thus valid
-        pass
-    '''
-
     # generate response with gpt
     search_results = get_search_results()
     search_results_prompt = f'''hotel results in json list format: {search_results}.

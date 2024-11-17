@@ -129,7 +129,6 @@ export class CheckoutComponent implements OnInit{
     .subscribe({
       next: (data: any) => {
         console.log(data);
-        // TODO check fields
         this.router.navigate(['/confirmation']);
         this.loading = false;
       },

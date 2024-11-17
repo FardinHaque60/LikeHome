@@ -25,7 +25,7 @@ def create_reservation(request):
     check_in, check_out, adults, children, address, city =  reservation_details['checkIn'], reservation_details['checkOut'], reservation_details['adults'], reservation_details['children'], reservation_details['address'], reservation_details['city']
     # hotel related fields
     description, phone_number, website, email, images = reservation_details['description'], reservation_details['phone'], reservation_details['website'], reservation_details['email'], reservation_details['images']
-    # TODO look to save payment details in future
+    # TODO can use to to save payment details
     card_number, card_name, exp_date, cvv = payment_details['cardNum'], payment_details['cardName'], payment_details['expDate'], payment_details['CVV']
     # add to reward points 
     updated_reward_points = reservation_details['newRewards'] # overwrite old reward points in profile with this, this value takes into account applied rewards asw

@@ -29,7 +29,7 @@ def create_account(request):
     profile = Profile(
         user=user,
         phone_number=phone_number,
-        temp_code=generate_code(email) # TODO: send to phone number if applicable
+        temp_code=generate_code(email)
     )
     global user_in_progress
     global profile_in_progress
@@ -50,7 +50,6 @@ def generate_code(email):
 def send_email(email, code):
     global user_in_progress
     subject = "Welcome to LikeHome! Please verify your email."
-    # TODO add more details to welcome email
     message = ("Your verification details: \n \n" +
                 "Code: " + code)
     email_from = settings.EMAIL_HOST_USER
@@ -59,7 +58,6 @@ def send_email(email, code):
         send_mail(subject, message, email_from, recipient)
     except Exception as e:
         print(e)
-        # TODO maybe propagate error into high level call for Response() msg
 
 @api_view(['POST'])
 def verify_code(request):
