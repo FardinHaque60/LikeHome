@@ -22,7 +22,7 @@
             <li *ngIf="signedIn" class="nav-item" routerLinkActive="active"><a routerLink="/watchlist" class="nav-link">Watchlist</a></li>
             <li class="nav-item" routerLinkActive="active"><a routerLink="/about-us" class="nav-link">About Us</a></li>
             <li *ngIf="!signedIn" class="nav-item" routerLinkActive="active"><a routerLink="/login" class="nav-link">Sign in</a></li>
-            <li *ngIf="signedIn" class="nav-item"><a routerLink="/account-details" class="nav-link">Account</a></li>
+            <li *ngIf="signedIn" class="nav-item" routerLinkActive="active"><a routerLink="/account-details" class="nav-link">Account</a></li>
             <li *ngIf="signedIn" class="nav-item"><a (click)="logout()" style="cursor: pointer;" class="nav-link">Logout</a></li>
         </ul>
         </div>
