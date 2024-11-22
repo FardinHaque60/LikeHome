@@ -10,6 +10,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { AccountDetailsComponent } from './account-details/account-details.component';
 import { WatchlistComponent } from './watchlist/watchlist.component';
+import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
 
 export const routes: Routes = [
     { 
@@ -43,4 +44,5 @@ export const routes: Routes = [
     { path: 'create-account/verification', component: VerificationComponent}, 
     { path: 'checkout', component: CheckoutComponent}, // page that appears after user clicks "checkout" in hotel details page
     { path: 'confirmation', component: ConfirmationComponent}, // page that appears when user successfully books a room
+    { path: 'terms-and-conditions', component: TermsAndConditionsComponent},
 ];
