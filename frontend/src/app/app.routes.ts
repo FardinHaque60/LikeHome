@@ -37,6 +37,10 @@ export const routes: Routes = [
                 path: 'watchlist',
                 component: WatchlistComponent,
             },
+            {
+                path: 'terms-and-conditions',
+                component: TermsAndConditionsComponent,
+            }
         ]
     },
     { path: 'login', component: LoginComponent },
@@ -44,5 +48,4 @@ export const routes: Routes = [
     { path: 'create-account/verification', component: VerificationComponent}, 
     { path: 'checkout', component: CheckoutComponent}, // page that appears after user clicks "checkout" in hotel details page
     { path: 'confirmation', component: ConfirmationComponent}, // page that appears when user successfully books a room
-    { path: 'terms-and-conditions', component: TermsAndConditionsComponent},
 ];
