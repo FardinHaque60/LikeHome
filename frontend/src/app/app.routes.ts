@@ -10,6 +10,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { AccountDetailsComponent } from './account-details/account-details.component';
 import { WatchlistComponent } from './watchlist/watchlist.component';
+import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
 
 export const routes: Routes = [
     { 
@@ -36,6 +37,10 @@ export const routes: Routes = [
                 path: 'watchlist',
                 component: WatchlistComponent,
             },
+            {
+                path: 'terms-and-conditions',
+                component: TermsAndConditionsComponent,
+            }
         ]
     },
     { path: 'login', component: LoginComponent },
