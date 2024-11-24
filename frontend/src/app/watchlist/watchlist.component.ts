@@ -7,6 +7,7 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FooterComponent } from '../shared/footer/footer.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-homepage',
@@ -34,12 +35,33 @@ export class WatchlistComponent implements OnInit {
 
   constructor(private apiService: ApiService, private router: Router, private activatedroute: ActivatedRoute) {}
 
+  getToUSDRate(originalCurrency: string): Observable<any> { //returns rate from originalCurrency to USD
+    let currencyOptions = {
+      'fromCurrency': originalCurrency,
+      'toCurrency': 'usd',
+    }
+    // returns the rate for fromCurrency to toCurrency
+    return this.apiService.postBackendRequest('currency-convert', currencyOptions);
+  }
+
   getWatchlist(): void {
     this.apiService.getBackendRequest('get-watchlist')
     .subscribe({
       next: (data: any) => {
         console.log(data); // look in inspect element console to see what format data is in for parsing
         this.watchlistHotels = data;
+        for (const hotel of this.watchlistHotels) {
+          this.getToUSDRate(hotel['currency'])
+            .subscribe({
+              next: (data: any) => {
+                hotel['convertedMinRate'] = +((hotel['min_rate'] * data['rate']).toFixed(2));
+                hotel['convertedMaxRate'] = +((hotel['max_rate'] * data['rate']).toFixed(2));
+              },
+              error: (error: any) => {
+                console.log(error);
+              }
+            });
+        }
       },
       error: (error: any) => {
         console.log('Watchlist Results Error')

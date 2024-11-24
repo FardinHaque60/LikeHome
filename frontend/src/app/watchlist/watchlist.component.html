@@ -60,9 +60,9 @@
                           ~ 
                           <span style="font-weight: bold;"> {{hotel['check_out']}} </span>
                       </p>
-                        <p><span class="price mr-2">{{hotel.min_rate}}</span> <span class="per">per night</span></p>
+                        <p><span class="price mr-2">{{hotel['convertedMinRate'].toFixed(2)}}</span> <span class="per">per night</span></p>
                         <ul class="list">
-                            <li><span>Max Rate:</span> {{hotel.max_rate}} </li>
+                            <li><span>Max Rate:</span> {{hotel['convertedMaxRate'].toFixed(2)}} </li>
                         </ul>
                         <hr>
                         <p class="pt-1"><a class="btn-custom" (click)="seeHotelDetails(i)">See Details</a></p>

@@ -8,6 +8,7 @@ import json
 from dotenv import load_dotenv
 from .geo_client import get_location_coordinates
 import random
+from .currency_client import convert_currency
 
 load_dotenv()
 
@@ -118,6 +119,11 @@ def hotel_availability(location, check_in, check_out, adults, children, radius, 
     paxes = []
     for i in range(children):
         paxes.append({"type": "CH", "age": 12})
+
+    # convert user entered usd to eur to pass into hotels api
+    usd_to_eur = convert_currency('usd', 'eur')
+    min_rate, max_rate = float(min_rate) * usd_to_eur, float(max_rate) * usd_to_eur
+    min_rate, max_rate = str(min_rate), str(max_rate)
     params = {
         "stay": {
             "checkIn": check_in,
