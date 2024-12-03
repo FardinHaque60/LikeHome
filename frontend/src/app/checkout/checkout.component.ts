@@ -320,7 +320,9 @@ export class CheckoutComponent implements OnInit{
 
     if (this.transaction_type === "cancel") {
       this.cancellationFee = this.checkCancellationFee();
-      this.total -= this.cancellationFee;
+      // this.total -= this.cancellationFee;
+      this.tax = this.details['total_price'] - (this.subtotal - this.details['rewards_applied_cost']);
+      // this.tax = this.details['rewards_applied_cost'];
     }
 
     if (this.transaction_type === "modify") {

@@ -134,7 +134,8 @@ def modify_reservation(request):
     reservation.check_out = check_out
     reservation.nights = nights
     reservation.total_price = price
-    reservation.rewards_earned = 0 # set rewards earned from this hotel to 0 since forfeit
+    reservation.rewards_applied = 0 # set rewards applied to 0 since forfeit
+    reservation.rewards_applied_cost = 0
     reservation.save()
     message = (
 f'''Hello {user.first_name} \n
