@@ -1,6 +1,20 @@
 # LikeHome
 CMPE 165 Team Nexus hotels.com clone. 
 
+## Views
+
+### Homepage
+<img src="images/homepage.png" width="1150"/>
+
+### Search Results
+<img src="images/search_results.png" width="1150"/>
+
+### Chatbot + Watchlist 
+<img src="images/watchlist.png" width="1150"/>
+
+### Account
+<img src="images/account.png" width="1150"/>
+
 ## Testing the App After Set-Up
 ### Environment Variables
 
